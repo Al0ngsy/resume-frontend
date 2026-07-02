@@ -52,7 +52,7 @@ export default function AboutClient() {
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
           {siteData.experience.map((exp, i) => (
-            <Box key={exp.company}>
+            <Box key={exp.company + exp.title + i} sx={{ borderLeft: "2px solid", borderColor: "divider", pl: 3, position: "relative" }}>
               <Typography variant="h4">{exp.title}</Typography>
               <Typography variant="body2" color="secondary" sx={{ mb: 1 }}>
                 {exp.company} &middot; {exp.period}

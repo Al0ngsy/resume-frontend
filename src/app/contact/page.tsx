@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import ContactClient from "./ContactClient";
 
 export const metadata: Metadata = {
@@ -7,6 +8,7 @@ export const metadata: Metadata = {
     "Get in touch with Le Quoc Anh Tran. Email, GitHub, and LinkedIn.",
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  await connection();
   return <ContactClient />;
 }

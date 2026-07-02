@@ -32,7 +32,7 @@ export default function Navbar({
     >
       <Toolbar sx={{ maxWidth: 960, width: "100%", mx: "auto", px: { xs: 2, md: 0 } }}>
         <Box component={Link} href="/" sx={{ textDecoration: "none", color: "text.primary", fontWeight: 700, fontSize: "1.25rem", flexGrow: 1 }}>
-          CT
+          LQAT
         </Box>
         <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
           {navLinks.map((link) => (

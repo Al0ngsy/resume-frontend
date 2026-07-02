@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import ProjectsClient from "./ProjectsClient";
 
 export const metadata: Metadata = {
@@ -7,6 +8,7 @@ export const metadata: Metadata = {
     "Explore projects by Le Quoc Anh Tran, including backend systems, APIs, and cloud infrastructure.",
 };
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  await connection();
   return <ProjectsClient />;
 }

@@ -14,7 +14,7 @@ const siteData: SiteData = {
     "Backend Software Engineer with 6+ years of experience across the full backend stack — from payment integrations and authentication systems to CMS platforms, public APIs, and AI-powered services. I've worked on a B2B SaaS video-on-demand platform serving multiple enterprise clients, processing over 100,000 payment transactions annually. Currently focused on building AI-integrated backend services using NestJS, LangChain, and OpenAI.",
   projects: [
     {
-      title: "AI Service Microservice",
+      title: "AI Microservice",
       description:
         "A REST API microservice powering AI features with Retrieval-Augmented Generation (RAG), embeddings, and tool/function calling.",
       problem:
@@ -23,10 +23,9 @@ const siteData: SiteData = {
         "Designed and built a NestJS-based microservice using LangChain, OpenAI API, pgvector for vector storage, and a RAG pipeline. Implemented tool-calling and function-calling patterns for structured AI interactions.",
       technologies: ["NestJS", "TypeScript", "LangChain", "OpenAI API", "pgvector", "PostgreSQL", "RAG"],
       challenges:
-        "Balancing response quality with latency, and designing an embedding pipeline that stays in sync with changing documents.",
+        "Balancing response quality with latency, and designing an embedding pipeline that stays in sync with changing informations.",
       lessons:
-        "RAG pipelines require careful chunking strategies and prompt engineering. Vector search alone isn't enough — hybrid retrieval (keyword + semantic) yields better results.",
-      github: "https://github.com/Al0ngsy",
+        "RAG pipelines require careful chunking strategies and prompt engineering. Vector search alone isn't enough — hybrid retrieval (keyword + semantic) yields better results. Deduplication is a must to avoid redundant information in responses.",
     },
     {
       title: "PostgreSQL Migration Framework",
@@ -41,21 +40,6 @@ const siteData: SiteData = {
         "Handling zero-downtime migrations on live production databases with millions of rows without locking tables.",
       lessons:
         "Database migrations in production require a completely different approach than development. Batching, lock-free strategies, and comprehensive rollback plans are essential.",
-      github: "https://github.com/Al0ngsy",
-    },
-    {
-      title: "Options Trading Platform Prototype",
-      description:
-        "A full-stack prototype for an options trading platform with microservice backend, database design, and monitoring dashboard.",
-      problem:
-        "The business wanted to explore options trading as a new product line, but needed a rapid prototype to validate technical feasibility.",
-      solution:
-        "Built a prototype using the Alpaca Trading API for market data and order execution, Prisma ORM for type-safe database access, and a microservice backend with a monitoring dashboard.",
-      technologies: ["TypeScript", "Node.js", "Prisma ORM", "PostgreSQL", "Alpaca API", "Microservices"],
-      challenges:
-        "Real-time market data processing and ensuring order execution reliability under simulated load.",
-      lessons:
-        "Trading systems have unique requirements around idempotency, audit logging, and exactly-once processing that differ significantly from standard CRUD applications.",
     },
     {
       title: "B2B SaaS VOD Platform Backend",
@@ -70,6 +54,20 @@ const siteData: SiteData = {
         "Supporting multiple payment providers and subscription models simultaneously while maintaining a clean event-driven architecture.",
       lessons:
         "Event-driven architectures with webhooks and message queues are essential for payment processing. Idempotency is non-negotiable when handling financial transactions.",
+    }, 
+    {
+      title: "Options Trading Platform Prototype",
+      description:
+        "A full-stack prototype for an options trading platform with microservice backend, database design, and monitoring dashboard.",
+      problem:
+        "The business wanted to explore options trading as a new product line, but needed a rapid prototype to validate technical feasibility.",
+      solution:
+        "Built a prototype using the Alpaca Trading API for market data and order execution, Prisma ORM for type-safe database access, and a microservice backend with a monitoring dashboard.",
+      technologies: ["TypeScript", "Node.js", "Prisma ORM", "PostgreSQL", "Alpaca API", "Microservices"],
+      challenges:
+        "Real-time market data processing and ensuring order execution reliability under simulated load.",
+      lessons:
+        "Trading systems have unique requirements around idempotency, audit logging, and exactly-once processing that differ significantly from standard CRUD applications.",
     },
   ],
   experience: [
@@ -87,13 +85,13 @@ const siteData: SiteData = {
       period: "Sep 2019 — Jun 2024",
       description:
         "Contributed to the full backend stack of a B2B SaaS VOD platform. Extended CMS features with automated content ingestion from AWS S3. Developed event-driven payment workflows handling 100K+ transactions/year across PayPal, Stripe, and major app store IAPs. Designed and maintained a public RESTful Feed API for partners including Samsung and Waipu. Optimized database schemas, queries, and reporting functionalities.",
-      technologies: ["NestJS", "TypeScript", "PostgreSQL", "React Admin", "Google Pub/Sub", "AWS S3", "PayPal", "Stripe", "Docker"],
+      technologies: ["TypeScript", "PostgreSQL", "React Admin", "Google Pub/Sub", "AWS S3", "PayPal", "Stripe", "Docker"],
     },
   ],
   skills: [
     {
       category: "Languages",
-      items: ["TypeScript", "JavaScript", "Python", "SQL", "C++"],
+      items: ["TypeScript", "JavaScript"],
     },
     {
       category: "Backend",
@@ -113,7 +111,7 @@ const siteData: SiteData = {
     },
     {
       category: "Frontend",
-      items: ["React", "React Admin", "Next.js"],
+      items: ["React", "React Admin", "Vite"],
     },
     {
       category: "Testing",

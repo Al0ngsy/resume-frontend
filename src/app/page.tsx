@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import HomeClient from "./HomeClient";
 
 export const metadata: Metadata = {
@@ -7,6 +8,7 @@ export const metadata: Metadata = {
     "Portfolio of Le Quoc Anh Tran, a Backend Software Engineer specializing in Node.js, PostgreSQL, and cloud infrastructure.",
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  await connection();
   return <HomeClient />;
 }

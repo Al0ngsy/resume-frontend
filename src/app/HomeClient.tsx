@@ -20,7 +20,7 @@ export default function HomeClient() {
       <Hero />
 
       {/* Featured Projects */}
-      <Container maxWidth="md" sx={{ py: 10 }}>
+      <Container maxWidth="lg" sx={{ py: 10 }}>
         <motion.div {...fadeIn}>
           <Typography variant="h2" sx={{ mb: 1, textAlign: "center" }}>
             Featured Projects
