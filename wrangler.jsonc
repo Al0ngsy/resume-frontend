@@ -1,0 +1,11 @@
+{
+    "$schema": "node_modules/wrangler/config-schema.json",
+    "name": "resume-frontend",
+    "compatibility_date": "2026-07-04",
+    "observability": {
+      "enabled": true
+    },
+    "compatibility_flags": [
+      "nodejs_compat"
+    ]
+  }
