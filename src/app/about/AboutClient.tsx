@@ -1,8 +1,8 @@
 "use client";
 
-import { Container, Typography, Box, Chip, Divider } from "@mui/material";
-import { motion } from "framer-motion";
 import siteData from "@/lib/data";
+import { Box, Chip, Container, Divider, Typography } from "@mui/material";
+import { motion } from "framer-motion";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -26,7 +26,11 @@ export default function AboutClient() {
 
       {/* Career Summary */}
       <motion.div {...fadeIn} transition={{ delay: 0.1, duration: 0.5 }}>
-        <Typography variant="body1" color="text.secondary" sx={{ mb: 6, fontSize: { xs: "1rem", md: "1.1rem" } }}>
+        <Typography
+          variant="body1"
+          color="text.secondary"
+          sx={{ mb: 6, fontSize: { xs: "1rem", md: "1.1rem" } }}
+        >
           {siteData.careerSummary}
         </Typography>
       </motion.div>
@@ -34,16 +38,18 @@ export default function AboutClient() {
       <Divider sx={{ mb: 6 }} />
 
       {/* Engineering Philosophy */}
+      {/*   
       <motion.div {...fadeIn} transition={{ delay: 0.2 }}>
-        <Typography variant="h2" sx={{ mb: 2 }}>
-          Engineering Philosophy
-        </Typography>
-        <Typography variant="body1" color="text.secondary" sx={{ mb: 6 }}>
-          {siteData.philosophy}
-        </Typography>
-      </motion.div>
+          <Typography variant="h2" sx={{ mb: 2 }}>
+            Engineering Philosophy
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 6 }}>
+            {siteData.philosophy}
+          </Typography>
+        </motion.div>
 
-      <Divider sx={{ mb: 6 }} />
+        <Divider sx={{ mb: 6 }} /> 
+      */}
 
       {/* Timeline */}
       <motion.div {...fadeIn} transition={{ delay: 0.3 }}>
@@ -52,7 +58,15 @@ export default function AboutClient() {
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
           {siteData.experience.map((exp, i) => (
-            <Box key={exp.company + exp.title + i} sx={{ borderLeft: "2px solid", borderColor: "divider", pl: 3, position: "relative" }}>
+            <Box
+              key={exp.company + exp.title + i}
+              sx={{
+                borderLeft: "2px solid",
+                borderColor: "divider",
+                pl: 3,
+                position: "relative",
+              }}
+            >
               <Typography variant="h4">{exp.title}</Typography>
               <Typography variant="body2" color="secondary" sx={{ mb: 1 }}>
                 {exp.company} &middot; {exp.period}
@@ -60,9 +74,21 @@ export default function AboutClient() {
               <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                 {exp.description}
               </Typography>
-              <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: 0.5 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  gap: 0.5,
+                }}
+              >
                 {exp.technologies.map((tech) => (
-                  <Chip key={tech} label={tech} size="small" variant="outlined" />
+                  <Chip
+                    key={tech}
+                    label={tech}
+                    size="small"
+                    variant="outlined"
+                  />
                 ))}
               </Box>
             </Box>
@@ -83,7 +109,14 @@ export default function AboutClient() {
               <Typography variant="h4" sx={{ mb: 1 }}>
                 {skill.category}
               </Typography>
-              <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: 1 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  gap: 1,
+                }}
+              >
                 {skill.items.map((item) => (
                   <Chip key={item} label={item} variant="outlined" />
                 ))}
