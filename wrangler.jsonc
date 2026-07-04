@@ -1,11 +1,14 @@
 {
-    "$schema": "node_modules/wrangler/config-schema.json",
-    "name": "resume-frontend",
-    "compatibility_date": "2026-07-04",
-    "observability": {
-      "enabled": true
-    },
-    "compatibility_flags": [
-      "nodejs_compat"
-    ]
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "resume-frontend",
+  "main": ".open-next/worker.js",
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "compatibility_date": "2026-07-04",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
   }
+}
