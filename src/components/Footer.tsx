@@ -1,7 +1,18 @@
 "use client";
 
-import { Box, Typography } from "@mui/material";
-import Link from "next/link";
+import { Box, Chip, Stack, Typography } from "@mui/material";
+
+const techStack = [
+  "React 19",
+  "Next.js 16",
+  "TypeScript",
+  "MUI v9",
+  "Framer Motion",
+  "Emotion",
+  "Tailwind CSS",
+  "Cloudflare",
+  "Yarn",
+];
 
 export default function Footer() {
   return (
@@ -15,9 +26,25 @@ export default function Footer() {
         textAlign: "center",
       }}
     >
-      <Typography variant="body2" color="text.secondary">
-        &copy; {new Date().getFullYear()} Le Quoc Anh Tran. Built with Next.js.
+      <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
+        &copy; {new Date().getFullYear()} Le Quoc Anh Tran.
       </Typography>
+      <Stack
+        direction="row"
+        spacing={1}
+        useFlexGap
+        sx={{ justifyContent: "center", flexWrap: "wrap" }}
+      >
+        {techStack.map((tech) => (
+          <Chip
+            key={tech}
+            label={tech}
+            size="small"
+            variant="outlined"
+            color="primary"
+          />
+        ))}
+      </Stack>
     </Box>
   );
 }

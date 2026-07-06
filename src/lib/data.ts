@@ -21,7 +21,15 @@ const siteData: SiteData = {
         "The platform needed intelligent features — semantic search, document Q&A, and AI-assisted workflows — but had no existing AI infrastructure.",
       solution:
         "Designed and built a NestJS-based microservice using LangChain, OpenAI API, pgvector for vector storage, and a RAG pipeline. Implemented tool-calling and function-calling patterns for structured AI interactions.",
-      technologies: ["NestJS", "TypeScript", "LangChain", "OpenAI API", "pgvector", "PostgreSQL", "RAG"],
+      technologies: [
+        "NestJS",
+        "TypeScript",
+        "LangChain",
+        "OpenAI API",
+        "pgvector",
+        "PostgreSQL",
+        "RAG",
+      ],
       challenges:
         "Balancing response quality with latency, and designing an embedding pipeline that stays in sync with changing informations.",
       lessons:
@@ -49,12 +57,21 @@ const siteData: SiteData = {
         "Multiple B2B clients needed a unified backend that could handle diverse content ingestion, payment models (SVOD, TVOD, EST), and third-party integrations.",
       solution:
         "Developed and maintained a comprehensive backend service stack including CMS, payment services (PayPal, Stripe, Apple/Google/Amazon/Roku IAP), reporting, and a public RESTful Feed API for external partners.",
-      technologies: ["NestJS", "TypeScript", "PostgreSQL", "React Admin", "Google Pub/Sub", "AWS S3", "Docker", "Kubernetes"],
+      technologies: [
+        "NestJS",
+        "TypeScript",
+        "PostgreSQL",
+        "React Admin",
+        "Google Pub/Sub",
+        "AWS S3",
+        "Docker",
+        "Kubernetes",
+      ],
       challenges:
         "Supporting multiple payment providers and subscription models simultaneously while maintaining a clean event-driven architecture.",
       lessons:
         "Event-driven architectures with webhooks and message queues are essential for payment processing. Idempotency is non-negotiable when handling financial transactions.",
-    }, 
+    },
     {
       title: "Options Trading Platform Prototype",
       description:
@@ -63,7 +80,14 @@ const siteData: SiteData = {
         "The business wanted to explore options trading as a new product line, but needed a rapid prototype to validate technical feasibility.",
       solution:
         "Built a prototype using the Alpaca Trading API for market data and order execution, Prisma ORM for type-safe database access, and a microservice backend with a monitoring dashboard.",
-      technologies: ["TypeScript", "Node.js", "Prisma ORM", "PostgreSQL", "Alpaca API", "Microservices"],
+      technologies: [
+        "TypeScript",
+        "Node.js",
+        "Prisma ORM",
+        "PostgreSQL",
+        "Alpaca API",
+        "Microservices",
+      ],
       challenges:
         "Real-time market data processing and ensuring order execution reliability under simulated load.",
       lessons:
@@ -77,7 +101,18 @@ const siteData: SiteData = {
       period: "Jul 2024 — Present",
       description:
         "Designing and implementing REST API microservices for AI-powered features using NestJS, LangChain, and OpenAI API. Developed optimized PostgreSQL migration processes, built backend services for a gold trading platform, and prototyped an options trading platform. Automated testing with Jest and managed CI/CD pipelines via Docker and Bitbucket Pipelines.",
-      technologies: ["NestJS", "TypeScript", "LangChain", "OpenAI", "PostgreSQL", "pgvector", "Docker", "Kubernetes", "Helm", "Jest"],
+      technologies: [
+        "NestJS",
+        "TypeScript",
+        "LangChain",
+        "OpenAI",
+        "PostgreSQL",
+        "pgvector",
+        "Docker",
+        "Kubernetes",
+        "Helm",
+        "Jest",
+      ],
     },
     {
       title: "Working Student — Software Development",
@@ -85,7 +120,16 @@ const siteData: SiteData = {
       period: "Sep 2019 — Jun 2024",
       description:
         "Contributed to the full backend stack of a B2B SaaS VOD platform. Extended CMS features with automated content ingestion from AWS S3. Developed event-driven payment workflows handling 100K+ transactions/year across PayPal, Stripe, and major app store IAPs. Designed and maintained a public RESTful Feed API for partners including Samsung and Waipu. Optimized database schemas, queries, and reporting functionalities.",
-      technologies: ["TypeScript", "PostgreSQL", "React Admin", "Google Pub/Sub", "AWS S3", "PayPal", "Stripe", "Docker"],
+      technologies: [
+        "TypeScript",
+        "PostgreSQL",
+        "React Admin",
+        "Google Pub/Sub",
+        "AWS S3",
+        "PayPal",
+        "Stripe",
+        "Docker",
+      ],
     },
   ],
   skills: [
@@ -95,11 +139,23 @@ const siteData: SiteData = {
     },
     {
       category: "Backend",
-      items: ["Node.js", "NestJS", "REST APIs", "Microservices", "Event-Driven Architecture"],
+      items: [
+        "Node.js",
+        "NestJS",
+        "REST APIs",
+        "Microservices",
+        "Event-Driven Architecture",
+      ],
     },
     {
       category: "Databases",
-      items: ["PostgreSQL", "pgvector", "Prisma ORM", "Database Design", "Query Optimization"],
+      items: [
+        "PostgreSQL",
+        "pgvector",
+        "Prisma ORM",
+        "Database Design",
+        "Query Optimization",
+      ],
     },
     {
       category: "AI & ML",
@@ -107,7 +163,15 @@ const siteData: SiteData = {
     },
     {
       category: "Cloud & DevOps",
-      items: ["Docker", "Kubernetes", "Helm", "AWS S3", "Google Pub/Sub", "Bitbucket Pipelines", "CI/CD"],
+      items: [
+        "Docker",
+        "Kubernetes",
+        "Helm",
+        "AWS S3",
+        "Google Pub/Sub",
+        "Bitbucket Pipelines",
+        "CI/CD",
+      ],
     },
     {
       category: "Frontend",
