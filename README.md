@@ -13,8 +13,8 @@ Professional portfolio website for Le Quoc Anh Tran, Backend Software Engineer.
 ## Getting Started
 
 ```bash
-npm install
-npm run dev
+yarn install
+yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
@@ -22,8 +22,8 @@ Open [http://localhost:3000](http://localhost:3000).
 ## Build
 
 ```bash
-npm run build
-npm start
+yarn build
+yarn start
 ```
 
 ## Pages
