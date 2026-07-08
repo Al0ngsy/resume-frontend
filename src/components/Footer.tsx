@@ -11,7 +11,7 @@ const techStack = [
   "Emotion",
   "Tailwind CSS",
   "Cloudflare",
-  "Yarn",
+  "Yarn Berry",
 ];
 
 export default function Footer() {

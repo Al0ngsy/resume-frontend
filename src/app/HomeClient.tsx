@@ -1,11 +1,11 @@
 "use client";
 
-import { Container, Typography, Box, Grid, Chip } from "@mui/material";
-import { motion } from "framer-motion";
-import Link from "next/link";
 import Hero from "@/components/Hero";
 import ProjectCard from "@/components/ProjectCard";
+import RecruiterChat from "@/components/RecruiterChat";
 import siteData from "@/lib/data";
+import { Box, Chip, Container, Grid, Typography } from "@mui/material";
+import { motion } from "framer-motion";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -18,6 +18,9 @@ export default function HomeClient() {
   return (
     <>
       <Hero />
+
+      {/* AI Recruiter Chat */}
+      <RecruiterChat />
 
       {/* Featured Projects */}
       <Container maxWidth="lg" sx={{ py: 10 }}>
@@ -72,7 +75,14 @@ export default function HomeClient() {
               <Typography variant="h4" sx={{ mb: 1 }}>
                 {skill.category}
               </Typography>
-              <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: 1 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  gap: 1,
+                }}
+              >
                 {skill.items.map((item) => (
                   <Chip key={item} label={item} variant="outlined" />
                 ))}
