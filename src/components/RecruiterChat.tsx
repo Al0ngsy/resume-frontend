@@ -40,10 +40,9 @@ export default function RecruiterChat() {
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [initError, setInitError] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const chatMode = (process.env.NEXT_PUBLIC_CHAT_MODE as
-    | "hidden"
-    | "placeholder"
-    | "live") || "placeholder";
+  const chatMode =
+    (process.env.NEXT_PUBLIC_CHAT_MODE as "hidden" | "placeholder" | "live") ||
+    "placeholder";
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   // Avoid hydration mismatch: env vars can differ between SSR and client.
@@ -217,8 +216,8 @@ export default function RecruiterChat() {
             Backend Unreachable
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Could not connect to the resume-backend. Make sure the
-            server is running.
+            Could not connect to the resume-backend. Make sure the server is
+            running.
           </Typography>
         </Paper>
       ) : (
@@ -253,16 +252,10 @@ export default function RecruiterChat() {
                 {siteData.name}'s AI Agent
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                Local Development Mode
+                Ask questions about experience, skills, and projects of{" "}
+                {siteData.name}.
               </Typography>
             </Box>
-            <Chip
-              label="DEV"
-              size="small"
-              color="warning"
-              variant="outlined"
-              sx={{ ml: "auto", fontWeight: 600 }}
-            />
           </Box>
 
           {/* Messages */}
