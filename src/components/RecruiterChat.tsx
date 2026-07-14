@@ -15,12 +15,11 @@ import {
   Typography,
 } from "@mui/material";
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
 
-const IS_LOCAL =
-  typeof process !== "undefined" && process.env.NEXT_PUBLIC_LOCAL === "true";
-
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+// All requests go through same-origin Next.js route handlers (server-side proxy)
+// which inject the API key server-side. The backend URL is never exposed to the browser.
 
 interface Message {
   role: "user" | "assistant";
@@ -38,58 +37,87 @@ export default function RecruiterChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [conversationId] = useState(() =>
-    crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36),
-  );
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [initError, setInitError] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const chatMode = (process.env.NEXT_PUBLIC_CHAT_MODE as
+    | "hidden"
+    | "placeholder"
+    | "live") || "placeholder";
   const chatEndRef = useRef<HTMLDivElement>(null);
+
+  // Avoid hydration mismatch: env vars can differ between SSR and client.
+  useEffect(() => setMounted(true), []);
+
+  // Ping health + create a server-side conversation on mount.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        // Wake-up ping
+        await fetch("/api/health");
+        const res = await fetch("/api/conversations", {
+          method: "POST",
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        if (!cancelled) setConversationId(data.conversation_id);
+      } catch {
+        if (!cancelled) setInitError(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const sendMessage = async (text: string) => {
-    if (!text.trim() || loading) return;
+  const sendMessage = useCallback(
+    async (text: string) => {
+      if (!text.trim() || loading || !conversationId) return;
 
-    const userMsg: Message = { role: "user", content: text };
-    setMessages((prev) => [...prev, userMsg]);
-    setInput("");
-    setLoading(true);
+      const userMsg: Message = { role: "user", content: text };
+      setMessages((prev) => [...prev, userMsg]);
+      setInput("");
+      setLoading(true);
 
-    try {
-      const res = await fetch(`${API_BASE}/api/chat`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Conversation-ID": conversationId,
-        },
-        body: JSON.stringify({
-          message: text,
-          history: messages.map((m) => ({
-            role: m.role,
-            content: m.content,
-          })),
-        }),
-      });
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Conversation-ID": conversationId,
+          },
+          body: JSON.stringify({ message: text }),
+        });
 
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(
+            errData.message || `Server error (HTTP ${res.status})`,
+          );
+        }
 
-      const data = await res.json();
-      const assistantMsg: Message = {
-        role: "assistant",
-        content: data.response,
-      };
-      setMessages((prev) => [...prev, assistantMsg]);
-    } catch {
-      const errorMsg: Message = {
-        role: "assistant",
-        content:
-          "Sorry, I'm having trouble connecting to the backend. Please make sure the resume-backend server is running locally.",
-      };
-      setMessages((prev) => [...prev, errorMsg]);
-    } finally {
-      setLoading(false);
-    }
-  };
+        const data = await res.json();
+        setMessages((prev) => [
+          ...prev,
+          { role: "assistant", content: data.response },
+        ]);
+      } catch (err) {
+        const msg =
+          err instanceof Error
+            ? err.message
+            : "Sorry, I'm having trouble connecting. Please try again.";
+        setMessages((prev) => [...prev, { role: "assistant", content: msg }]);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [conversationId, loading],
+  );
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -97,6 +125,12 @@ export default function RecruiterChat() {
       sendMessage(input);
     }
   };
+
+  const isLive = mounted && chatMode === "live";
+  const isPlaceholder = !mounted || chatMode === "placeholder";
+  const isHidden = mounted && chatMode === "hidden";
+
+  if (isHidden) return null;
 
   return (
     <Container maxWidth="md" sx={{ py: 10 }}>
@@ -114,14 +148,14 @@ export default function RecruiterChat() {
           color="text.secondary"
           sx={{ mb: 5, textAlign: "center", maxWidth: 600, mx: "auto" }}
         >
-          {IS_LOCAL
+          {isLive
             ? `Chat with an AI assistant that knows everything about ${siteData.name}'s experience, skills, and projects.`
             : `An AI-powered chatbot is being built so recruiters can ask questions about ${siteData.name} directly.`}
         </Typography>
       </motion.div>
 
-      {!IS_LOCAL ? (
-        /* ── Production: under-progress notice ── */
+      {isPlaceholder ? (
+        /* ── Placeholder: under-progress notice ── */
         <Paper
           elevation={0}
           sx={{
@@ -144,10 +178,10 @@ export default function RecruiterChat() {
             color="text.secondary"
             sx={{ maxWidth: 480, mx: "auto", mb: 3 }}
           >
-            This feature is currently under development. Soon you&apos;ll be
-            able to ask questions about {siteData.name}&apos;s experience,
-            skills, and projects — powered by an AI assistant trained on his
-            resume and portfolio.
+            This feature is currently under development. Soon you'll be able to
+            ask questions about {siteData.name}'s experience, skills, and
+            projects — powered by an AI assistant trained on his resume and
+            portfolio.
           </Typography>
           <Box
             sx={{
@@ -166,8 +200,29 @@ export default function RecruiterChat() {
             Under Progress
           </Box>
         </Paper>
+      ) : isLive && initError ? (
+        /* ── Backend unreachable (only shown in live mode) ── */
+        <Paper
+          elevation={0}
+          sx={{
+            border: 1,
+            borderColor: "error.main",
+            borderRadius: 3,
+            p: 4,
+            textAlign: "center",
+            bgcolor: "background.paper",
+          }}
+        >
+          <Typography variant="h6" color="error.main" sx={{ mb: 1 }}>
+            Backend Unreachable
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Could not connect to the resume-backend. Make sure the
+            server is running.
+          </Typography>
+        </Paper>
       ) : (
-        /* ── Dev: live chat interface ── */
+        /* ── Live: full chat interface ── */
         <Paper
           elevation={0}
           sx={{
@@ -195,7 +250,7 @@ export default function RecruiterChat() {
             </Avatar>
             <Box>
               <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                {siteData.name}&apos;s AI Agent
+                {siteData.name}'s AI Agent
               </Typography>
               <Typography variant="caption" color="text.secondary">
                 Local Development Mode
@@ -304,7 +359,61 @@ export default function RecruiterChat() {
                         : "text.primary",
                   }}
                 >
-                  <Typography variant="body2">{msg.content}</Typography>
+                  {msg.role === "assistant" ? (
+                    <Box
+                      sx={{
+                        "& p": { margin: 0 },
+                        "& p + p": { marginTop: 1 },
+                        "& ul, & ol": { pl: 3, margin: 0 },
+                        "& li + li": { marginTop: 0.5 },
+                        "& li > p": { margin: 0 },
+                        "& strong": { fontWeight: 600 },
+                        "& code": {
+                          fontSize: "0.85em",
+                          bgcolor: "action.hover",
+                          px: 0.5,
+                          borderRadius: 0.5,
+                        },
+                        "& pre": {
+                          margin: 0,
+                          p: 1,
+                          borderRadius: 1,
+                          bgcolor: "action.hover",
+                          overflowX: "auto",
+                        },
+                        "& pre code": {
+                          bgcolor: "transparent",
+                          px: 0,
+                        },
+                        "& h1, & h2, & h3, & h4, & h5, & h6": {
+                          margin: 0,
+                          fontWeight: 600,
+                        },
+                        "& h1 + p, & h2 + p, & h3 + p": { marginTop: 0.5 },
+                        "& a": { color: "secondary.main" },
+                        "& blockquote": {
+                          margin: 0,
+                          pl: 2,
+                          borderLeft: 2,
+                          borderColor: "divider",
+                        },
+                        "& hr": {
+                          border: 0,
+                          borderTop: 1,
+                          borderColor: "divider",
+                          my: 1,
+                        },
+                        fontSize: "0.875rem",
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    </Box>
+                  ) : (
+                    <Typography variant="body2" sx={{ color: "inherit" }}>
+                      {msg.content}
+                    </Typography>
+                  )}
                 </Paper>
               </Box>
             ))}
@@ -361,7 +470,7 @@ export default function RecruiterChat() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              disabled={loading}
+              disabled={loading || !conversationId}
               sx={{
                 "& .MuiOutlinedInput-root": {
                   borderRadius: 3,
@@ -370,7 +479,7 @@ export default function RecruiterChat() {
             />
             <IconButton
               onClick={() => sendMessage(input)}
-              disabled={!input.trim() || loading}
+              disabled={!input.trim() || loading || !conversationId}
               color="secondary"
               sx={{
                 bgcolor: "secondary.main",
@@ -383,6 +492,30 @@ export default function RecruiterChat() {
             >
               <Send />
             </IconButton>
+          </Box>
+
+          {/* AI disclaimer */}
+          <Box
+            sx={{
+              px: 3,
+              py: 1.5,
+              borderTop: 1,
+              borderColor: "divider",
+              textAlign: "center",
+              bgcolor: "grey.50",
+            }}
+          >
+            <Typography variant="caption" color="text.secondary">
+              AI can make mistakes — better{" "}
+              <Box
+                component="a"
+                href={`mailto:${siteData.email}`}
+                sx={{ color: "secondary.main", textDecoration: "underline" }}
+              >
+                contact {siteData.name} directly
+              </Box>{" "}
+              for important matters.
+            </Typography>
           </Box>
         </Paper>
       )}
