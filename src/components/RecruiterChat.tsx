@@ -33,12 +33,15 @@ const suggestedQuestions = [
   "Describe his backend architecture experience.",
 ];
 
+const STORAGE_KEY = "recruiter-chat-conversation-id";
+
 export default function RecruiterChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [initError, setInitError] = useState(false);
+  const [wakingUp, setWakingUp] = useState(true);
   // Avoid hydration mismatch: useSyncExternalStore returns "placeholder" on SSR
   // and the real env value on the client after hydration.
   const chatMode = useSyncExternalStore(
@@ -48,21 +51,54 @@ export default function RecruiterChat() {
   );
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Ping health + create a server-side conversation on mount.
+  // Restore or create a conversation on mount.
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
-        // Wake-up ping
+        // Wake-up ping (Render free tier cold start)
         await fetch("/api/health");
+
+        // Check if we have a saved conversation ID
+        const savedId = localStorage.getItem(STORAGE_KEY);
+
+        if (savedId) {
+          // Try to restore the existing conversation
+          const res = await fetch(`/api/conversations/${savedId}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (!cancelled && data.messages?.length > 0) {
+              setConversationId(savedId);
+              setMessages(
+                data.messages.map((m: { role: string; content: string }) => ({
+                  role: m.role as "user" | "assistant",
+                  content: m.content,
+                })),
+              );
+              setWakingUp(false);
+              return;
+            }
+          }
+          // Conversation not found (server restarted) — clear stale ID
+          localStorage.removeItem(STORAGE_KEY);
+        }
+
+        // No saved conversation — create a new one
         const res = await fetch("/api/conversations", {
           method: "POST",
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        if (!cancelled) setConversationId(data.conversation_id);
+        if (!cancelled) {
+          setConversationId(data.conversation_id);
+          localStorage.setItem(STORAGE_KEY, data.conversation_id);
+          setWakingUp(false);
+        }
       } catch {
-        if (!cancelled) setInitError(true);
+        if (!cancelled) {
+          setInitError(true);
+          setWakingUp(false);
+        }
       }
     })();
     return () => {
@@ -203,6 +239,101 @@ export default function RecruiterChat() {
           >
             <Construction color="inherit" />
             Under Progress
+          </Box>
+        </Paper>
+      ) : isLive && wakingUp ? (
+        /* ── Backend warming up (Render free tier cold start) ── */
+        <Paper
+          elevation={0}
+          sx={{
+            border: 1,
+            borderColor: "divider",
+            borderRadius: 3,
+            overflow: "hidden",
+            bgcolor: "background.paper",
+          }}
+        >
+          <Box
+            sx={{
+              px: 3,
+              py: 2,
+              borderBottom: 1,
+              borderColor: "divider",
+              display: "flex",
+              alignItems: "center",
+              gap: 1.5,
+            }}
+          >
+            <Avatar sx={{ bgcolor: "secondary.main", width: 36, height: 36 }}>
+              <SmartToy sx={{ fontSize: 20 }} />
+            </Avatar>
+            <Box>
+              <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                {siteData.name}'s AI Agent
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Ask questions about experience, skills, and projects of{" "}
+                {siteData.name}.
+              </Typography>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              height: 400,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 2,
+              px: 3,
+            }}
+          >
+            <CircularProgress size={32} thickness={4} />
+            <Typography variant="body2" color="text.secondary">
+              Starting up the AI agent — this can take up to 30 seconds on a
+              free-tier server.
+            </Typography>
+          </Box>
+          {/* Input — enabled so users can type their question while waiting */}
+          <Box
+            sx={{
+              px: 3,
+              py: 2,
+              borderTop: 1,
+              borderColor: "divider",
+              display: "flex",
+              gap: 1,
+            }}
+          >
+            <TextField
+              fullWidth
+              size="small"
+              placeholder="Type your question while the agent starts up..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              disabled={loading}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: 3,
+                },
+              }}
+            />
+            <IconButton
+              onClick={() => sendMessage(input)}
+              disabled={!input.trim() || loading || !conversationId}
+              color="secondary"
+              sx={{
+                bgcolor: "secondary.main",
+                color: "secondary.contrastText",
+                "&:hover": { bgcolor: "secondary.dark" },
+                "&.Mui-disabled": {
+                  bgcolor: "action.disabledBackground",
+                },
+              }}
+            >
+              <Send />
+            </IconButton>
           </Box>
         </Paper>
       ) : isLive && initError ? (
