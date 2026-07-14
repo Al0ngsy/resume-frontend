@@ -15,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import { motion } from "framer-motion";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import ReactMarkdown from "react-markdown";
 
 // All requests go through same-origin Next.js route handlers (server-side proxy)
@@ -39,14 +39,14 @@ export default function RecruiterChat() {
   const [loading, setLoading] = useState(false);
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [initError, setInitError] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const chatMode =
-    (process.env.NEXT_PUBLIC_CHAT_MODE as "hidden" | "placeholder" | "live") ||
-    "placeholder";
-  const chatEndRef = useRef<HTMLDivElement>(null);
-
-  // Avoid hydration mismatch: env vars can differ between SSR and client.
-  useEffect(() => setMounted(true), []);
+  // Avoid hydration mismatch: useSyncExternalStore returns "placeholder" on SSR
+  // and the real env value on the client after hydration.
+  const chatMode = useSyncExternalStore(
+    () => () => {},
+    () => (process.env.NEXT_PUBLIC_CHAT_MODE as "hidden" | "placeholder" | "live") || "placeholder",
+    () => "placeholder" as const,
+  );
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   // Ping health + create a server-side conversation on mount.
   useEffect(() => {
@@ -70,9 +70,15 @@ export default function RecruiterChat() {
     };
   }, []);
 
+  // Auto-scroll to bottom only when user is already near the bottom.
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    const el = scrollRef.current;
+    if (!el) return;
+    const distFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+    if (distFromBottom < 100) {
+      el.scrollTop = el.scrollHeight;
+    }
+  }, [messages, loading]);
 
   const sendMessage = useCallback(
     async (text: string) => {
@@ -125,9 +131,9 @@ export default function RecruiterChat() {
     }
   };
 
-  const isLive = mounted && chatMode === "live";
-  const isPlaceholder = !mounted || chatMode === "placeholder";
-  const isHidden = mounted && chatMode === "hidden";
+  const isLive = chatMode === "live";
+  const isPlaceholder = chatMode === "placeholder";
+  const isHidden = chatMode === "hidden";
 
   if (isHidden) return null;
 
@@ -260,6 +266,7 @@ export default function RecruiterChat() {
 
           {/* Messages */}
           <Box
+            ref={scrollRef}
             sx={{
               height: 400,
               overflowY: "auto",
@@ -442,7 +449,6 @@ export default function RecruiterChat() {
               </Box>
             )}
 
-            <div ref={chatEndRef} />
           </Box>
 
           {/* Input */}
