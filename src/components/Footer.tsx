@@ -2,7 +2,7 @@
 
 import { Box, Chip, Stack, Typography } from "@mui/material";
 
-const techStack = [
+const feTechStack = [
   "React 19",
   "Next.js 16",
   "TypeScript",
@@ -12,6 +12,18 @@ const techStack = [
   "Tailwind CSS",
   "Cloudflare",
   "Yarn Berry",
+];
+
+const beTechStack = [
+  "Python 3.11",
+  "FastAPI",
+  "OpenAI SDK",
+  "Pydantic Settings",
+  "SlowAPI",
+  "structlog",
+  "tiktoken",
+  "uvicorn",
+  "Render",
 ];
 
 export default function Footer() {
@@ -29,21 +41,57 @@ export default function Footer() {
       <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
         &copy; {new Date().getFullYear()} Le Quoc Anh Tran.
       </Typography>
-      <Stack
-        direction="row"
-        spacing={1}
-        useFlexGap
-        sx={{ justifyContent: "center", flexWrap: "wrap" }}
-      >
-        {techStack.map((tech) => (
-          <Chip
-            key={tech}
-            label={tech}
-            size="small"
-            variant="outlined"
-            color="primary"
-          />
-        ))}
+      <Stack spacing={2} sx={{ alignItems: "center" }}>
+        <Box>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ display: "block", mb: 0.5 }}
+          >
+            Frontend
+          </Typography>
+          <Stack
+            direction="row"
+            spacing={1}
+            useFlexGap
+            sx={{ justifyContent: "center", flexWrap: "wrap" }}
+          >
+            {feTechStack.map((tech) => (
+              <Chip
+                key={tech}
+                label={tech}
+                size="small"
+                variant="outlined"
+                color="primary"
+              />
+            ))}
+          </Stack>
+        </Box>
+        <Box>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ display: "block", mb: 0.5 }}
+          >
+            Backend
+          </Typography>
+          <Stack
+            direction="row"
+            spacing={1}
+            useFlexGap
+            sx={{ justifyContent: "center", flexWrap: "wrap" }}
+          >
+            {beTechStack.map((tech) => (
+              <Chip
+                key={tech}
+                label={tech}
+                size="small"
+                variant="outlined"
+                color="secondary"
+              />
+            ))}
+          </Stack>
+        </Box>
       </Stack>
     </Box>
   );

@@ -135,7 +135,7 @@ const siteData: SiteData = {
   skills: [
     {
       category: "Languages",
-      items: ["TypeScript", "JavaScript"],
+      items: ["TypeScript", "JavaScript", "SQL", "PL/pgSQL"],
     },
     {
       category: "Backend",
@@ -180,6 +180,10 @@ const siteData: SiteData = {
     {
       category: "Testing",
       items: ["Jest", "Unit Testing", "Integration Testing"],
+    },
+    {
+      category: "Learning",
+      items: ["Python", "C#"],
     },
   ],
 };
