@@ -134,8 +134,17 @@ export default function RecruiterChat() {
       setInput("");
       setLoading(true);
 
+      // Add a placeholder assistant message that we'll fill as tokens arrive
+      const assistantIdx = messages.length + 1; // index in the new array
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: "", streaming: true },
+      ]);
+
+      let accumulated = "";
+
       try {
-        const res = await fetch("/api/chat", {
+        const res = await fetch("/api/chat/stream", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -144,29 +153,138 @@ export default function RecruiterChat() {
           body: JSON.stringify({ message: text }),
         });
 
-        if (!res.ok) {
-          const errData = await res.json().catch(() => ({}));
-          throw new Error(
-            errData.message || `Server error (HTTP ${res.status})`,
-          );
+        // 429 or other HTTP error: read response once and show a friendly message
+        if (!res.ok || !res.body) {
+          let message = `Server error (HTTP ${res.status})`;
+          try {
+            const err = await res.json();
+            if (err.detail) message = err.detail;
+            if (err.message) message = err.message;
+          } catch {
+            // response body isn't JSON, use status text
+          }
+          if (res.status === 429) {
+            message =
+              "I've reached the message limit for this session. Please reach out directly via LinkedIn or email to continue the conversation.";
+          }
+          throw new Error(message);
         }
 
-        const data = await res.json();
-        setMessages((prev) => [
-          ...prev,
-          { role: "assistant", content: data.response },
-        ]);
+        // Parse SSE stream from the response body
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = "";
+        let pendingContent: string | null = null;
+
+        const flushContent = () => {
+          if (pendingContent === null) return;
+          const content = pendingContent;
+          pendingContent = null;
+          setMessages((prev) => {
+            const next = [...prev];
+            if (next[assistantIdx]) {
+              next[assistantIdx] = {
+                ...next[assistantIdx],
+                content,
+                streaming: true,
+              };
+            }
+            return next;
+          });
+        };
+
+        const setFinal = (content: string, streaming = false) => {
+          flushContent();
+          setMessages((prev) => {
+            const next = [...prev];
+            if (next[assistantIdx]) {
+              next[assistantIdx] = {
+                ...next[assistantIdx],
+                content,
+                streaming,
+              };
+            }
+            return next;
+          });
+        };
+
+        const processBuffer = () => {
+          // SSE messages are separated by double newlines
+          const events = buffer.split("\n\n");
+          buffer = events.pop() || "";
+
+          for (const rawEvent of events) {
+            if (!rawEvent.trim()) continue;
+
+            let eventType = "";
+            const dataLines: string[] = [];
+            for (const line of rawEvent.split("\n")) {
+              if (line.startsWith("event: ")) {
+                eventType = line.slice(7);
+              } else if (line.startsWith("data: ")) {
+                dataLines.push(line.slice(6));
+              }
+            }
+            const data = dataLines.join("\n");
+
+            if (eventType === "token") {
+              accumulated += data;
+              pendingContent = accumulated;
+            } else if (eventType === "done") {
+              accumulated = data;
+              setFinal(accumulated, false);
+            } else if (eventType === "error") {
+              setFinal(data, false);
+            } else if (eventType === "blocked") {
+              setFinal(data, false);
+            }
+          }
+        };
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          processBuffer();
+          flushContent();
+        }
+
+        // Process any remaining data in buffer
+        if (buffer.trim()) {
+          processBuffer();
+          flushContent();
+        }
+
+        // Safety: if the message is still marked as streaming (e.g. stream
+        // ended without a done event), mark it as complete
+        setMessages((prev) => {
+          const next = [...prev];
+          if (next[assistantIdx] && next[assistantIdx].streaming) {
+            next[assistantIdx] = { ...next[assistantIdx], streaming: false };
+          }
+          return next;
+        });
       } catch (err) {
         const msg =
           err instanceof Error
             ? err.message
             : "Sorry, I'm having trouble connecting. Please try again.";
-        setMessages((prev) => [...prev, { role: "assistant", content: msg }]);
+        setMessages((prev) => {
+          const next = [...prev];
+          if (next[assistantIdx]) {
+            next[assistantIdx] = {
+              ...next[assistantIdx],
+              content: msg,
+              streaming: false,
+            };
+          }
+          return next;
+        });
       } finally {
         setLoading(false);
       }
     },
-    [conversationId, loading],
+    [conversationId, loading, messages.length],
   );
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -261,7 +379,7 @@ export default function RecruiterChat() {
               <ChatMessage key={i} msg={msg} />
             ))}
 
-            {loading && <LoadingBubble />}
+            {loading && !messages.some((m) => m.streaming) && <LoadingBubble />}
 
             <SuggestedQuestions
               questions={remainingQuestions}

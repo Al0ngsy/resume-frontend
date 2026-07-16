@@ -1,6 +1,7 @@
 export interface Message {
   role: "user" | "assistant";
   content: string;
+  streaming?: boolean; // true while assistant tokens are being received
 }
 
 export const suggestedQuestions = [

@@ -39,6 +39,12 @@ export default function SuggestedQuestions({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // When a question is selected and removed from the parent's remainingQuestions list,
+  // keep the shuffled order but remove the used question from the displayed list.
+  useEffect(() => {
+    setShuffled((prev) => prev.filter((q) => questions.includes(q)));
+  }, [questions]);
+
   if (shuffled.length === 0) return null;
 
   return (

@@ -108,6 +108,24 @@ export default function ChatMessage({ msg }: { msg: Message }) {
         {msg.role === "assistant" ? (
           <Box sx={markdownSx}>
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
+            {msg.streaming && (
+              <Box
+                component="span"
+                sx={{
+                  display: "inline-block",
+                  width: "0.5em",
+                  height: "1em",
+                  ml: 0.25,
+                  verticalAlign: "text-bottom",
+                  bgcolor: "text.primary",
+                  animation: "blink 1s step-end infinite",
+                  "@keyframes blink": {
+                    "0%, 100%": { opacity: 1 },
+                    "50%": { opacity: 0 },
+                  },
+                }}
+              />
+            )}
           </Box>
         ) : (
           <Typography variant="body2" sx={{ color: "inherit" }}>
