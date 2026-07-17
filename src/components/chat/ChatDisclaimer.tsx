@@ -1,7 +1,11 @@
 import { Box, Typography } from "@mui/material";
-import siteData from "@/lib/data";
+import { useLanguage } from "@/i18n/LanguageProvider";
+import { useSiteData } from "@/lib/useSiteData";
 
 export default function ChatDisclaimer() {
+  const { t } = useLanguage();
+  const { data: siteData } = useSiteData();
+
   return (
     <Box
       sx={{
@@ -14,15 +18,16 @@ export default function ChatDisclaimer() {
       }}
     >
       <Typography variant="caption" color="text.secondary">
-        AI can make mistakes — better{" "}
+        {t.chat.disclaimer}
         <Box
           component="a"
           href={`mailto:${siteData.email}`}
           sx={{ color: "secondary.main", textDecoration: "underline" }}
         >
-          contact {siteData.name} directly
-        </Box>{" "}
-        for important matters.
+          {t.chat.disclaimerContactPrefix}
+          {siteData.name}
+          {t.chat.disclaimerContactSuffix}
+        </Box>
       </Typography>
     </Box>
   );

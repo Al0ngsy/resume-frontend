@@ -1,6 +1,6 @@
 import { SiteData } from "@/types";
 
-const siteData: SiteData = {
+const siteDataEn: SiteData = {
   name: "Le Quoc Anh Tran",
   title: "Backend Software Engineer",
   introduction:
@@ -188,4 +188,4 @@ const siteData: SiteData = {
   ],
 };
 
-export default siteData;
+export default siteDataEn;

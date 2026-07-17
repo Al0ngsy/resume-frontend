@@ -1,9 +1,10 @@
 "use client";
 
+import ProjectCard from "@/components/ProjectCard";
+import { useLanguage } from "@/i18n/LanguageProvider";
+import { useSiteData } from "@/lib/useSiteData";
 import { Container, Typography, Grid } from "@mui/material";
 import { motion } from "framer-motion";
-import ProjectCard from "@/components/ProjectCard";
-import siteData from "@/lib/data";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -13,6 +14,9 @@ const fadeIn = {
 };
 
 export default function ProjectsClient() {
+  const { t } = useLanguage();
+  const { data: siteData } = useSiteData();
+
   return (
     <Container maxWidth="md" sx={{ py: { xs: 8, md: 14 } }}>
       <motion.div
@@ -21,11 +25,10 @@ export default function ProjectsClient() {
         transition={{ duration: 0.6 }}
       >
         <Typography variant="h1" sx={{ mb: 1 }}>
-          Projects
+          {t.projects.title}
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 5, maxWidth: 600 }}>
-          Detailed case studies of systems I&apos;ve built, including the problems they solved
-          and the lessons learned along the way.
+          {t.projects.subtitle}
         </Typography>
       </motion.div>
 

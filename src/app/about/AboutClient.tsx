@@ -1,6 +1,7 @@
 "use client";
 
-import siteData from "@/lib/data";
+import { useLanguage } from "@/i18n/LanguageProvider";
+import { useSiteData } from "@/lib/useSiteData";
 import { Box, Chip, Container, Divider, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 
@@ -12,6 +13,9 @@ const fadeIn = {
 };
 
 export default function AboutClient() {
+  const { t } = useLanguage();
+  const { data: siteData } = useSiteData();
+
   return (
     <Container maxWidth="md" sx={{ py: { xs: 8, md: 14 } }}>
       <motion.div
@@ -20,7 +24,7 @@ export default function AboutClient() {
         transition={{ duration: 0.6 }}
       >
         <Typography variant="h1" sx={{ mb: 3 }}>
-          About
+          {t.about.title}
         </Typography>
       </motion.div>
 
@@ -37,24 +41,10 @@ export default function AboutClient() {
 
       <Divider sx={{ mb: 6 }} />
 
-      {/* Engineering Philosophy */}
-      {/*   
-      <motion.div {...fadeIn} transition={{ delay: 0.2 }}>
-          <Typography variant="h2" sx={{ mb: 2 }}>
-            Engineering Philosophy
-          </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 6 }}>
-            {siteData.philosophy}
-          </Typography>
-        </motion.div>
-
-        <Divider sx={{ mb: 6 }} /> 
-      */}
-
       {/* Timeline */}
       <motion.div {...fadeIn} transition={{ delay: 0.3 }}>
         <Typography variant="h2" sx={{ mb: 4 }}>
-          Experience
+          {t.about.experience}
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
           {siteData.experience.map((exp, i) => (
@@ -101,7 +91,7 @@ export default function AboutClient() {
       {/* Technologies */}
       <motion.div {...fadeIn} transition={{ delay: 0.4 }}>
         <Typography variant="h2" sx={{ mb: 4 }}>
-          Technologies
+          {t.about.technologies}
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
           {siteData.skills.map((skill) => (

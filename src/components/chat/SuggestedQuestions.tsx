@@ -4,6 +4,7 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import { Box, Chip, Collapse, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useLanguage } from "@/i18n/LanguageProvider";
 
 interface SuggestedQuestionsProps {
   questions: string[];
@@ -31,6 +32,7 @@ export default function SuggestedQuestions({
   disabled = false,
   hasMessages,
 }: SuggestedQuestionsProps) {
+  const { t } = useLanguage();
   const [shuffled, setShuffled] = useState(questions);
 
   // Shuffle once on mount so visitors see a different order each visit.
@@ -62,8 +64,8 @@ export default function SuggestedQuestions({
       >
         <Typography variant="caption" color="text.secondary">
           {hasMessages
-            ? `Suggested questions (${shuffled.length} left)`
-            : "Suggested questions"}
+            ? t.chat.suggestedQuestionsLeft(shuffled.length)
+            : t.chat.suggestedQuestions}
         </Typography>
         {expanded ? (
           <ExpandLess fontSize="small" color="action" />

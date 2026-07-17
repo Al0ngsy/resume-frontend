@@ -1,6 +1,9 @@
 import { Paper, Typography } from "@mui/material";
+import { useLanguage } from "@/i18n/LanguageProvider";
 
 export default function ChatError() {
+  const { t } = useLanguage();
+
   return (
     <Paper
       elevation={0}
@@ -14,11 +17,10 @@ export default function ChatError() {
       }}
     >
       <Typography variant="h6" color="error.main" sx={{ mb: 1 }}>
-        Backend Unreachable
+        {t.chat.errorTitle}
       </Typography>
       <Typography variant="body2" color="text.secondary">
-        Could not connect to the resume-backend. Make sure the server is
-        running.
+        {t.chat.errorMessage}
       </Typography>
     </Paper>
   );

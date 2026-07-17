@@ -1,9 +1,10 @@
 "use client";
 
-import { Container, Typography, Box, Chip, Button, Divider } from "@mui/material";
 import { Download } from "@mui/icons-material";
+import { Container, Typography, Box, Chip, Button, Divider } from "@mui/material";
 import { motion } from "framer-motion";
-import siteData from "@/lib/data";
+import { useLanguage } from "@/i18n/LanguageProvider";
+import { useSiteData } from "@/lib/useSiteData";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -13,6 +14,9 @@ const fadeIn = {
 };
 
 export default function ResumeClient() {
+  const { t } = useLanguage();
+  const { data: siteData } = useSiteData();
+
   return (
     <Container maxWidth="md" sx={{ py: { xs: 8, md: 14 } }}>
       <motion.div
@@ -21,11 +25,11 @@ export default function ResumeClient() {
         transition={{ duration: 0.6 }}
       >
         <Typography variant="h1" sx={{ mb: 1 }}>
-          Resume
+          {t.resume.title}
         </Typography>
         <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, alignItems: { xs: "flex-start", sm: "center" }, gap: 2, mb: 5 }}>
           <Typography variant="body1" color="text.secondary">
-            Professional experience and skills.
+            {t.resume.subtitle}
           </Typography>
           <Box sx={{ display: "flex", gap: 1 }}>
             <Button
@@ -35,7 +39,7 @@ export default function ResumeClient() {
               download
               sx={{ textTransform: "none", borderRadius: 3 }}
             >
-              Download CV (DE)
+              {t.resume.downloadCvDe}
             </Button>
             <Button
               variant="outlined"
@@ -44,7 +48,7 @@ export default function ResumeClient() {
               download
               sx={{ textTransform: "none", borderRadius: 3 }}
             >
-              Download CV (EN)
+              {t.resume.downloadCvEn}
             </Button>
           </Box>
         </Box>
@@ -55,7 +59,7 @@ export default function ResumeClient() {
       {/* Experience */}
       <motion.div {...fadeIn} transition={{ delay: 0.1 }}>
         <Typography variant="h2" sx={{ mb: 4 }}>
-          Professional Experience
+          {t.resume.professionalExperience}
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
           {siteData.experience.map((exp) => (
@@ -82,7 +86,7 @@ export default function ResumeClient() {
       {/* Skills */}
       <motion.div {...fadeIn} transition={{ delay: 0.2 }}>
         <Typography variant="h2" sx={{ mb: 4 }}>
-          Skills
+          {t.resume.skills}
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
           {siteData.skills.map((skill) => (

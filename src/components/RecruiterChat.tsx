@@ -1,6 +1,5 @@
 "use client";
 
-import siteData from "@/lib/data";
 import { Box, Container, Paper, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import {
@@ -20,9 +19,14 @@ import ChatPlaceholder from "./chat/ChatPlaceholder";
 import ChatWakingUp from "./chat/ChatWakingUp";
 import LoadingBubble from "./chat/LoadingBubble";
 import SuggestedQuestions from "./chat/SuggestedQuestions";
-import { Message, STORAGE_KEY, suggestedQuestions } from "./chat/types";
+import { Message, STORAGE_KEY, suggestedQuestionsByLocale } from "./chat/types";
+import { useLanguage } from "@/i18n/LanguageProvider";
+import { useSiteData } from "@/lib/useSiteData";
 
 export default function RecruiterChat() {
+  const { t, locale, mounted } = useLanguage();
+  const { data: siteData } = useSiteData();
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -44,6 +48,11 @@ export default function RecruiterChat() {
     () => "placeholder" as const,
   );
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Use English suggested questions for SSR, locale-specific after mount
+  const suggestedQuestions = mounted
+    ? suggestedQuestionsByLocale[locale]
+    : suggestedQuestionsByLocale["en"];
 
   // Restore or create a conversation on mount.
   useEffect(() => {
@@ -105,6 +114,7 @@ export default function RecruiterChat() {
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Auto-scroll to bottom only when user is already near the bottom.
@@ -164,8 +174,7 @@ export default function RecruiterChat() {
             // response body isn't JSON, use status text
           }
           if (res.status === 429) {
-            message =
-              "I've reached the message limit for this session. Please reach out directly via LinkedIn or email to continue the conversation.";
+            message = t.chat.rateLimitMessage;
           }
           throw new Error(message);
         }
@@ -268,7 +277,7 @@ export default function RecruiterChat() {
         const msg =
           err instanceof Error
             ? err.message
-            : "Sorry, I'm having trouble connecting. Please try again.";
+            : t.chat.connectionError;
         setMessages((prev) => {
           const next = [...prev];
           if (next[assistantIdx]) {
@@ -284,7 +293,7 @@ export default function RecruiterChat() {
         setLoading(false);
       }
     },
-    [conversationId, loading, messages.length],
+    [conversationId, loading, messages.length, t.chat.rateLimitMessage, t.chat.connectionError, suggestedQuestions],
   );
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -313,7 +322,7 @@ export default function RecruiterChat() {
         transition={{ duration: 0.5 }}
       >
         <Typography variant="h2" sx={{ mb: 1, textAlign: "center" }}>
-          Ask the AI Agent
+          {t.home.chatTitle}
         </Typography>
         <Typography
           variant="body2"
@@ -321,8 +330,8 @@ export default function RecruiterChat() {
           sx={{ mb: 5, textAlign: "center", maxWidth: 600, mx: "auto" }}
         >
           {isLive
-            ? `Chat with an AI assistant that knows everything about ${siteData.name}'s experience, skills, and projects.`
-            : `An AI-powered chatbot is being built so recruiters can ask questions about ${siteData.name} directly.`}
+            ? t.home.chatSubtitleLive(siteData.name)
+            : t.home.chatSubtitlePlaceholder(siteData.name)}
         </Typography>
       </motion.div>
 
@@ -371,7 +380,7 @@ export default function RecruiterChat() {
                 color="text.secondary"
                 sx={{ textAlign: "center", py: 2 }}
               >
-                Ask a question to get started:
+                {t.home.askPrompt}
               </Typography>
             )}
 

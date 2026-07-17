@@ -1,4 +1,5 @@
 import { CircularProgress, Box, Paper, Typography } from "@mui/material";
+import { useLanguage } from "@/i18n/LanguageProvider";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 
@@ -19,6 +20,8 @@ export default function ChatWakingUp({
   loading,
   conversationId,
 }: ChatWakingUpProps) {
+  const { t } = useLanguage();
+
   return (
     <Paper
       elevation={0}
@@ -44,7 +47,7 @@ export default function ChatWakingUp({
       >
         <CircularProgress size={32} thickness={4} />
         <Typography variant="body2" color="text.secondary">
-          Starting up the AI agent — this can take up to 30 seconds.
+          {t.chat.wakingUp}
         </Typography>
       </Box>
       <ChatInput
@@ -54,7 +57,7 @@ export default function ChatWakingUp({
         onKeyDown={onKeyDown}
         disabled={loading}
         sendDisabled={!input.trim() || loading || !conversationId}
-        placeholder="Type your question while the agent starts up..."
+        placeholder={t.chat.wakingUpPlaceholder}
       />
     </Paper>
   );

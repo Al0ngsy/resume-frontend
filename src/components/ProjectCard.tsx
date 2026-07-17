@@ -7,13 +7,15 @@ import {
   Typography,
   Button,
   Chip,
-  Stack,
   Box,
 } from "@mui/material";
 import { GitHub, Launch } from "@mui/icons-material";
+import { useLanguage } from "@/i18n/LanguageProvider";
 import { Project } from "@/types";
 
 export default function ProjectCard({ project }: { project: Project }) {
+  const { t } = useLanguage();
+
   return (
     <Card
       elevation={0}
@@ -34,7 +36,7 @@ export default function ProjectCard({ project }: { project: Project }) {
         </Typography>
         <Box sx={{ mb: 1 }}>
           <Typography variant="body2" sx={{ fontWeight: 600 }} gutterBottom>
-            Problem
+            {t.projects.problem}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {project.problem}
@@ -42,7 +44,7 @@ export default function ProjectCard({ project }: { project: Project }) {
         </Box>
         <Box sx={{ mb: 1 }}>
           <Typography variant="body2" sx={{ fontWeight: 600 }} gutterBottom>
-            Solution
+            {t.projects.solution}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {project.solution}
@@ -50,7 +52,7 @@ export default function ProjectCard({ project }: { project: Project }) {
         </Box>
         <Box sx={{ mb: 1 }}>
           <Typography variant="body2" sx={{ fontWeight: 600 }} gutterBottom>
-            Challenges &amp; Lessons
+            {t.projects.challengesLessons}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {project.challenges} {project.lessons}
@@ -71,7 +73,7 @@ export default function ProjectCard({ project }: { project: Project }) {
             target="_blank"
             sx={{ textTransform: "none" }}
           >
-            Code
+            {t.projects.code}
           </Button>
         )}
         {project.liveUrl && (
@@ -82,7 +84,7 @@ export default function ProjectCard({ project }: { project: Project }) {
             target="_blank"
             sx={{ textTransform: "none" }}
           >
-            Live
+            {t.projects.live}
           </Button>
         )}
       </CardActions>

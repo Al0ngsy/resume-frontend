@@ -1,6 +1,7 @@
 "use client";
 
 import { Box, Chip, Stack, Typography } from "@mui/material";
+import { useLanguage } from "@/i18n/LanguageProvider";
 
 const feTechStack = [
   "React 19",
@@ -27,6 +28,8 @@ const beTechStack = [
 ];
 
 export default function Footer() {
+  const { t } = useLanguage();
+
   return (
     <Box
       component="footer"
@@ -39,7 +42,7 @@ export default function Footer() {
       }}
     >
       <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
-        &copy; {new Date().getFullYear()} Le Quoc Anh Tran.
+        &copy; {new Date().getFullYear()} {t.footer.copyright}
       </Typography>
       <Stack spacing={2} sx={{ alignItems: "center" }}>
         <Box>
@@ -48,7 +51,7 @@ export default function Footer() {
             color="text.secondary"
             sx={{ display: "block", mb: 0.5 }}
           >
-            Frontend
+            {t.footer.frontend}
           </Typography>
           <Stack
             direction="row"
@@ -73,7 +76,7 @@ export default function Footer() {
             color="text.secondary"
             sx={{ display: "block", mb: 0.5 }}
           >
-            Backend
+            {t.footer.backend}
           </Typography>
           <Stack
             direction="row"

@@ -1,5 +1,6 @@
 import { Send } from "@mui/icons-material";
 import { Box, IconButton, TextField } from "@mui/material";
+import { useLanguage } from "@/i18n/LanguageProvider";
 
 interface ChatInputProps {
   value: string;
@@ -18,8 +19,11 @@ export default function ChatInput({
   onKeyDown,
   disabled = false,
   sendDisabled = false,
-  placeholder = "Ask about experience, skills, projects...",
+  placeholder,
 }: ChatInputProps) {
+  const { t } = useLanguage();
+  const effectivePlaceholder = placeholder ?? t.chat.placeholder;
+
   return (
     <Box
       sx={{
@@ -34,7 +38,7 @@ export default function ChatInput({
       <TextField
         fullWidth
         size="small"
-        placeholder={placeholder}
+        placeholder={effectivePlaceholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={onKeyDown}

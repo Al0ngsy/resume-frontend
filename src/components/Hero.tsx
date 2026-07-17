@@ -4,9 +4,13 @@ import { Box, Typography, Button, Container } from "@mui/material";
 import { ArrowForward } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import siteData from "@/lib/data";
+import { useLanguage } from "@/i18n/LanguageProvider";
+import { useSiteData } from "@/lib/useSiteData";
 
 export default function Hero() {
+  const { t } = useLanguage();
+  const { data: siteData } = useSiteData();
+
   return (
     <Container maxWidth="md">
       <Box sx={{ py: { xs: 10, md: 16 }, textAlign: "center" }}>
@@ -51,7 +55,7 @@ export default function Hero() {
                 fontSize: "1rem",
               }}
             >
-              View Projects
+              {t.hero.viewProjects}
             </Button>
             <Button
               component={Link}
@@ -67,7 +71,7 @@ export default function Hero() {
                 fontSize: "1rem",
               }}
             >
-              Get in Touch
+              {t.hero.getInTouch}
             </Button>
           </Box>
         </motion.div>

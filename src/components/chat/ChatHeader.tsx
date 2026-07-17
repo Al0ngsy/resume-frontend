@@ -1,8 +1,12 @@
 import { SmartToy } from "@mui/icons-material";
 import { Avatar, Box, Typography } from "@mui/material";
-import siteData from "@/lib/data";
+import { useLanguage } from "@/i18n/LanguageProvider";
+import { useSiteData } from "@/lib/useSiteData";
 
 export default function ChatHeader() {
+  const { t } = useLanguage();
+  const { data: siteData } = useSiteData();
+
   return (
     <Box
       sx={{
@@ -20,10 +24,11 @@ export default function ChatHeader() {
       </Avatar>
       <Box>
         <Typography variant="body2" sx={{ fontWeight: 600 }}>
-          {siteData.name}&apos;s AI Agent
+          {siteData.name}
+          {t.chat.aiAgentSuffix}
         </Typography>
         <Typography variant="caption" color="text.secondary">
-          Ask questions about experience, skills, and projects of{" "}
+          {t.chat.aiAgentSubtitle}
           {siteData.name}.
         </Typography>
       </Box>

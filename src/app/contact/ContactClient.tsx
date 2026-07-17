@@ -3,7 +3,8 @@
 import { Container, Typography, Button, Box } from "@mui/material";
 import { Email, GitHub, LinkedIn } from "@mui/icons-material";
 import { motion } from "framer-motion";
-import siteData from "@/lib/data";
+import { useLanguage } from "@/i18n/LanguageProvider";
+import { useSiteData } from "@/lib/useSiteData";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -13,6 +14,9 @@ const fadeIn = {
 };
 
 export default function ContactClient() {
+  const { t } = useLanguage();
+  const { data: siteData } = useSiteData();
+
   return (
     <Container maxWidth="md" sx={{ py: { xs: 8, md: 14 } }}>
       <motion.div
@@ -21,11 +25,10 @@ export default function ContactClient() {
         transition={{ duration: 0.6 }}
       >
         <Typography variant="h1" sx={{ mb: 1 }}>
-          Contact
+          {t.contact.title}
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 5, maxWidth: 500 }}>
-          I&apos;m always open to discussing new opportunities, collaborations, or
-          interesting backend engineering challenges.
+          {t.contact.subtitle}
         </Typography>
       </motion.div>
 
@@ -60,7 +63,7 @@ export default function ContactClient() {
               fontSize: "1rem",
             }}
           >
-            GitHub
+            {t.contact.github}
           </Button>
           <Button
             variant="outlined"
@@ -76,7 +79,7 @@ export default function ContactClient() {
               fontSize: "1rem",
             }}
           >
-            LinkedIn
+            {t.contact.linkedin}
           </Button>
         </Box>
       </motion.div>

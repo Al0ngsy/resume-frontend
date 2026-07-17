@@ -3,7 +3,8 @@
 import Hero from "@/components/Hero";
 import ProjectCard from "@/components/ProjectCard";
 import RecruiterChat from "@/components/RecruiterChat";
-import siteData from "@/lib/data";
+import { useLanguage } from "@/i18n/LanguageProvider";
+import { useSiteData } from "@/lib/useSiteData";
 import { Box, Chip, Container, Grid, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 
@@ -15,6 +16,9 @@ const fadeIn = {
 };
 
 export default function HomeClient() {
+  const { t } = useLanguage();
+  const { data: siteData } = useSiteData();
+
   return (
     <>
       <Hero />
@@ -26,15 +30,14 @@ export default function HomeClient() {
       <Container maxWidth="lg" sx={{ py: 10 }}>
         <motion.div {...fadeIn}>
           <Typography variant="h2" sx={{ mb: 1, textAlign: "center" }}>
-            Featured Projects
+            {t.home.featuredProjects}
           </Typography>
           <Typography
             variant="body2"
             color="text.secondary"
             sx={{ mb: 5, textAlign: "center", maxWidth: 500, mx: "auto" }}
           >
-            A selection of projects that showcase my approach to building
-            reliable, scalable backend systems.
+            {t.home.featuredProjectsSubtitle}
           </Typography>
         </motion.div>
         <Grid container spacing={3}>
@@ -55,14 +58,14 @@ export default function HomeClient() {
       <Container maxWidth="md" sx={{ py: 10 }}>
         <motion.div {...fadeIn}>
           <Typography variant="h2" sx={{ mb: 1, textAlign: "center" }}>
-            Skills &amp; Technologies
+            {t.home.skills}
           </Typography>
           <Typography
             variant="body2"
             color="text.secondary"
             sx={{ mb: 5, textAlign: "center", maxWidth: 500, mx: "auto" }}
           >
-            Tools and technologies I work with daily.
+            {t.home.skillsSubtitle}
           </Typography>
         </motion.div>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>

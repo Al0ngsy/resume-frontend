@@ -1,9 +1,13 @@
 import Construction from "@mui/icons-material/Construction";
 import SmartToy from "@mui/icons-material/SmartToy";
 import { Box, Paper, Typography } from "@mui/material";
-import siteData from "@/lib/data";
+import { useLanguage } from "@/i18n/LanguageProvider";
+import { useSiteData } from "@/lib/useSiteData";
 
 export default function ChatPlaceholder() {
+  const { t } = useLanguage();
+  const { data: siteData } = useSiteData();
+
   return (
     <Paper
       elevation={0}
@@ -20,17 +24,18 @@ export default function ChatPlaceholder() {
         sx={{ fontSize: 64, color: "text.secondary", mb: 2, opacity: 0.5 }}
       />
       <Typography variant="h4" sx={{ mb: 2, fontWeight: 600 }}>
-        AI Agent of {siteData.name}
+        {t.chat.placeholderTitlePrefix}
+        {siteData.name}
+        {t.chat.placeholderTitleSuffix}
       </Typography>
       <Typography
         variant="body1"
         color="text.secondary"
         sx={{ maxWidth: 480, mx: "auto", mb: 3 }}
       >
-        This feature is currently under development. Soon you&apos;ll be able to
-        ask questions about {siteData.name}&apos;s experience, skills, and
-        projects — powered by an AI assistant trained on his resume and
-        portfolio.
+        {t.chat.placeholderBodyPrefix}
+        {siteData.name}
+        {t.chat.placeholderBodySuffix}
       </Typography>
       <Box
         sx={{
@@ -46,7 +51,7 @@ export default function ChatPlaceholder() {
         }}
       >
         <Construction color="inherit" />
-        Under Progress
+        {t.chat.underProgress}
       </Box>
     </Paper>
   );
