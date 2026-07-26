@@ -3,9 +3,9 @@
 import { createTheme } from "@mui/material/styles";
 
 /**
- * Cyberpunk dystopian design system.
+ * Cyberpunk dystopian design system — dark mode only.
+ * Neon yellow (#FCEE0A) + cyan (#00F0FF) accents on dark base.
  * Transparent backgrounds so the 3D city shows through.
- * Neon yellow (#FCEE0A) + cyan (#00F0FF) accents on monochrome base.
  */
 
 const sharedTypography = {
@@ -18,23 +18,6 @@ const sharedTypography = {
   body2: { fontSize: "0.95rem", lineHeight: 1.6 },
   button: { textTransform: "none" as const, fontWeight: 600 },
 };
-
-export const lightTheme = createTheme({
-  palette: {
-    mode: "light",
-    primary: { main: "#18181b" },
-    secondary: { main: "#71717a", contrastText: "#ffffff" },
-    background: { default: "transparent", paper: "rgba(255,255,255,0.8)" },
-    text: { primary: "#18181b", secondary: "#52525b" },
-    divider: "rgba(0,0,0,0.1)",
-  },
-  typography: sharedTypography,
-  shape: { borderRadius: 12 },
-  components: {
-    MuiButton: { styleOverrides: { root: { borderRadius: 999, fontWeight: 600 } } },
-    MuiChip: { styleOverrides: { root: { borderRadius: 999, fontWeight: 500 } } },
-  },
-});
 
 export const darkTheme = createTheme({
   palette: {

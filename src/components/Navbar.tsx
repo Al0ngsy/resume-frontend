@@ -1,19 +1,13 @@
 "use client";
 
-import { AppBar, Toolbar, Button, Box, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText, useTheme, Menu, MenuItem, ListItemIcon, Divider } from "@mui/material";
-import { Brightness4, Brightness7, Menu as MenuIcon, Language } from "@mui/icons-material";
+import { AppBar, Toolbar, Button, Box, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText, useTheme, Menu, MenuItem, Divider } from "@mui/material";
+import { Menu as MenuIcon, Language } from "@mui/icons-material";
 import Link from "next/link";
 import { useState } from "react";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { locales, localeNames, localeShortNames, type Locale } from "@/i18n/config";
 
-export default function Navbar({
-  toggleTheme,
-  isDark,
-}: {
-  toggleTheme: () => void;
-  isDark: boolean;
-}) {
+export default function Navbar() {
   const theme = useTheme();
   const { t, locale, setLocale, mounted } = useLanguage();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -131,9 +125,6 @@ export default function Navbar({
             aria-label="Open navigation menu"
           >
             <MenuIcon />
-          </IconButton>
-          <IconButton onClick={toggleTheme} sx={{ ml: 1 }}>
-            {isDark ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
         </Toolbar>
       </AppBar>

@@ -4,16 +4,12 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import CyberpunkScene from "@/components/CyberpunkScene";
 import { LanguageProvider } from "@/i18n/LanguageProvider";
-import { darkTheme, lightTheme } from "@/lib/theme";
+import { darkTheme } from "@/lib/theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 export function ThemeRegistry({ children }: { children: React.ReactNode }) {
-  const [darkMode, setDarkMode] = useState(true);
-  const theme = useMemo(() => (darkMode ? darkTheme : lightTheme), [darkMode]);
-
-  // Respect prefers-reduced-motion: skip 3D if user prefers it
   const [enable3D, setEnable3D] = useState(true);
 
   useEffect(() => {
@@ -26,10 +22,10 @@ export function ThemeRegistry({ children }: { children: React.ReactNode }) {
 
   return (
     <AppRouterCacheProvider>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={darkTheme}>
         <CssBaseline />
-        {/* Fixed cyberpunk city background */}
-        {enable3D && (
+        {/* 3D city background or static grid fallback */}
+        {enable3D ? (
           <div
             style={{
               position: "fixed",
@@ -43,9 +39,7 @@ export function ThemeRegistry({ children }: { children: React.ReactNode }) {
           >
             <CyberpunkScene />
           </div>
-        )}
-        {/* Dark overlay for readability (always present, even without 3D) */}
-        {!enable3D && (
+        ) : (
           <div
             style={{
               position: "fixed",
@@ -54,14 +48,15 @@ export function ThemeRegistry({ children }: { children: React.ReactNode }) {
               width: "100vw",
               height: "100vh",
               zIndex: 0,
+              pointerEvents: "none",
               backgroundColor: "#09090b",
               backgroundImage:
                 "linear-gradient(rgba(252,238,10,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px)",
               backgroundSize: "40px 40px",
-              pointerEvents: "none",
             }}
           />
         )}
+        {/* Dark readability overlay */}
         <div
           style={{
             position: "fixed",
@@ -85,7 +80,7 @@ export function ThemeRegistry({ children }: { children: React.ReactNode }) {
               flexDirection: "column",
             }}
           >
-            <Navbar toggleTheme={() => setDarkMode((p) => !p)} isDark={darkMode} />
+            <Navbar />
             <main style={{ flex: 1 }}>{children}</main>
             <Footer />
           </div>

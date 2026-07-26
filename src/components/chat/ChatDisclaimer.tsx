@@ -11,10 +11,10 @@ export default function ChatDisclaimer() {
       sx={{
         px: 3,
         py: 1.5,
-        borderTop: 1,
+        borderTop: "1px solid",
         borderColor: "divider",
         textAlign: "center",
-        bgcolor: "grey.50",
+        bgcolor: "rgba(9, 9, 11, 0.4)",
       }}
     >
       <Typography variant="caption" color="text.secondary">
@@ -22,7 +22,7 @@ export default function ChatDisclaimer() {
         <Box
           component="a"
           href={`mailto:${siteData.email}`}
-          sx={{ color: "secondary.main", textDecoration: "underline" }}
+          sx={{ color: "#00F0FF", textDecoration: "underline", "&:hover": { color: "#7CECFF" } }}
         >
           {t.chat.disclaimerContactPrefix}
           {siteData.name}
