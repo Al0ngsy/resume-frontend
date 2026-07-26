@@ -1,16 +1,16 @@
 # Graph Report - resume-frontend  (2026-07-27)
 
 ## Corpus Check
-- 54 files · ~15,288 words
+- 54 files · ~16,111 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 286 nodes · 404 edges · 33 communities (21 shown, 12 thin omitted)
+- 292 nodes · 412 edges · 34 communities (22 shown, 12 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 8 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `de21bc36`
+- Built from commit: `f238c43b`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -41,6 +41,7 @@
 - RecruiterChat.tsx
 - SuggestedQuestions.tsx
 - This is NOT the Next.js you know
+- ContactClient.tsx
 
 ## God Nodes (most connected - your core abstractions)
 1. `useLanguage()` - 37 edges
@@ -74,11 +75,11 @@
 - **Resume Frontend Tech Stack** — readme_nextjs16, readme_typescript, readme_mui_v9, readme_framer_motion, readme_cloudflare_pages [EXTRACTED 1.00]
 - **Le Quoc Anh Tran Portfolio Assets** — readme_le_quoc_anh_tran, public_lequocanh_tran_cv_en_cv, public_lequocanh_tran_cv_de_cv, readme_pages_routes [INFERRED 0.85]
 
-## Communities (33 total, 12 thin omitted)
+## Communities (34 total, 12 thin omitted)
 
 ### Community 0 - "Home Page"
-Cohesion: 0.24
-Nodes (9): ProjectCard(), siteDataDe, siteDataEn, siteDataByLocale, siteDataVi, Experience, Project, SiteData (+1 more)
+Cohesion: 0.28
+Nodes (8): siteDataDe, siteDataEn, siteDataByLocale, siteDataVi, Experience, Project, SiteData, Skill
 
 ### Community 1 - "UI Dependencies"
 Cohesion: 0.06
@@ -93,16 +94,16 @@ Cohesion: 0.07
 Nodes (28): dom, dom.iterable, esnext, **/*.mts, .next/dev/types/**/*.ts, next-env.d.ts, .next/types/**/*.ts, node_modules (+20 more)
 
 ### Community 4 - "Root Layout & Footer"
-Cohesion: 0.15
-Nodes (8): Building, _color, COLOR_HEX, CyberpunkScene(), generateBuildings(), _matrix, _position, _scale
+Cohesion: 0.12
+Nodes (12): Building, Car, _color, COLOR_HEX, CyberpunkScene(), generateBuildings(), generateCars(), generateSkyVehicles() (+4 more)
 
 ### Community 5 - "Package Scripts"
 Cohesion: 0.17
 Nodes (11): name, packageManager, private, scripts, build, deploy, dev, lint (+3 more)
 
 ### Community 6 - "TS Path Aliases"
-Cohesion: 0.11
-Nodes (22): geistMono, geistSans, Footer(), techGroups, Navbar(), ThemeRegistry(), getStoredLocale(), Locale (+14 more)
+Cohesion: 0.17
+Nodes (14): Navbar(), getStoredLocale(), Locale, localeNames, locales, localeShortNames, setStoredLocale(), LanguageContextValue (+6 more)
 
 ### Community 7 - "Project Docs & Guides"
 Cohesion: 0.09
@@ -113,8 +114,8 @@ Cohesion: 0.21
 Nodes (7): markdownSx, STEP_ICONS, STEP_ORDER, StepProgressPanelProps, Message, StepInfo, suggestedQuestionsByLocale
 
 ### Community 9 - "Contact Page"
-Cohesion: 0.40
-Nodes (3): AboutClient(), fadeIn, metadata
+Cohesion: 0.20
+Nodes (7): geistMono, geistSans, Footer(), techGroups, ThemeRegistry(), darkTheme, sharedTypography
 
 ### Community 10 - "Resume Page"
 Cohesion: 0.40
@@ -129,25 +130,29 @@ Cohesion: 1.00
 Nodes (3): Le Quoc Anh Tran CV (German), Le Quoc Anh Tran CV (English), Le Quoc Anh Tran (Backend Software Engineer)
 
 ### Community 28 - "RecruiterChat.tsx"
-Cohesion: 0.11
-Nodes (24): ContactClient(), fadeIn, metadata, fadeIn, HomeClient(), metadata, fadeIn, ProjectsClient() (+16 more)
+Cohesion: 0.12
+Nodes (26): AboutClient(), fadeIn, metadata, fadeIn, HomeClient(), metadata, fadeIn, ProjectsClient() (+18 more)
+
+### Community 33 - "ContactClient.tsx"
+Cohesion: 0.40
+Nodes (3): ContactClient(), fadeIn, metadata
 
 ## Knowledge Gaps
-- **122 isolated node(s):** `eslintConfig`, `nextConfig`, `name`, `version`, `private` (+117 more)
+- **124 isolated node(s):** `eslintConfig`, `nextConfig`, `name`, `version`, `private` (+119 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **12 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `useLanguage()` connect `RecruiterChat.tsx` to `Home Page`, `Contact Page`, `Resume Page`, `TS Path Aliases`?**
+- **Why does `useLanguage()` connect `RecruiterChat.tsx` to `ContactClient.tsx`, `Resume Page`, `Contact Page`, `TS Path Aliases`?**
   _High betweenness centrality (0.044) - this node is a cross-community bridge._
 - **Why does `dependencies` connect `UI Dependencies` to `Package Scripts`?**
-  _High betweenness centrality (0.043) - this node is a cross-community bridge._
+  _High betweenness centrality (0.041) - this node is a cross-community bridge._
 - **Why does `devDependencies` connect `Dev Dependencies & Config` to `Package Scripts`?**
-  _High betweenness centrality (0.031) - this node is a cross-community bridge._
+  _High betweenness centrality (0.030) - this node is a cross-community bridge._
 - **What connects `eslintConfig`, `nextConfig`, `name` to the rest of the system?**
-  _122 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _124 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `UI Dependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.05714285714285714 - nodes in this community are weakly interconnected._
 - **Should `Dev Dependencies & Config` be split into smaller, more focused modules?**

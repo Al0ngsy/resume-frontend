@@ -229,6 +229,217 @@ function ScanLine({
   );
 }
 
+/**
+ * Flying cars — small wireframe vehicles zipping between buildings.
+ * Uses InstancedMesh (1 draw call for all cars) with per-frame position
+ * updates. Each car has its own velocity and wraps toroidally like buildings.
+ */
+const CAR_COUNT = 30;
+
+type Car = {
+  x: number;
+  y: number;
+  z: number;
+  vx: number;
+  vz: number;
+  colorIndex: number;
+};
+
+function generateCars(seed: number): Car[] {
+  let s = seed;
+  const rand = () => {
+    s = (s * 9301 + 49297) % 233280;
+    return s / 233280;
+  };
+
+  const cars: Car[] = [];
+  const halfRange = CITY_RANGE / 2;
+
+  for (let i = 0; i < CAR_COUNT; i++) {
+    const angle = rand() * Math.PI * 2;
+    const speed = 2 + rand() * 3;
+    cars.push({
+      x: rand() * CITY_RANGE - halfRange,
+      y: 2 + rand() * 5, // fly at building-mid height
+      z: rand() * CITY_RANGE - halfRange,
+      vx: Math.cos(angle) * speed,
+      vz: Math.sin(angle) * speed,
+      colorIndex: rand() > 0.5 ? 0 : 1, // yellow or cyan
+    });
+  }
+  return cars;
+}
+
+function FlyingCars({
+  cars,
+  camPosRef,
+}: {
+  cars: Car[];
+  camPosRef: React.RefObject<THREE.Vector3>;
+}) {
+  const meshRef = useRef<THREE.InstancedMesh>(null);
+  const halfRange = CITY_RANGE / 2;
+
+  useEffect(() => {
+    if (!meshRef.current) return;
+    meshRef.current.frustumCulled = false;
+    for (let i = 0; i < cars.length; i++) {
+      _color.set(cars[i].colorIndex === 0 ? NEON_YELLOW : NEON_CYAN);
+      meshRef.current.setColorAt(i, _color);
+    }
+    meshRef.current.instanceColor!.needsUpdate = true;
+  }, [cars]);
+
+  useFrame((state, delta) => {
+    const mesh = meshRef.current;
+    const cam = camPosRef.current;
+    if (!mesh || !cam) return;
+
+    const dt = Math.min(delta, 0.1); // clamp delta to avoid jumps
+
+    for (let i = 0; i < cars.length; i++) {
+      const c = cars[i];
+
+      // Move car
+      c.x += c.vx * dt;
+      c.z += c.vz * dt;
+
+      // Toroidal wrap relative to camera
+      let dx = c.x - cam.x;
+      let dz = c.z - cam.z;
+      dx = ((dx + halfRange) % CITY_RANGE + CITY_RANGE) % CITY_RANGE - halfRange;
+      dz = ((dz + halfRange) % CITY_RANGE + CITY_RANGE) % CITY_RANGE - halfRange;
+
+      // Bob slightly for life
+      const bob = Math.sin(state.clock.elapsedTime * 2 + i) * 0.15;
+
+      // Orient car along velocity direction
+      const angle = Math.atan2(c.vx, c.vz);
+      _position.set(cam.x + dx, c.y + bob, cam.z + dz);
+      _scale.set(0.4, 0.15, 0.7); // small elongated box
+      const quat = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, angle, 0));
+      _matrix.compose(_position, quat, _scale);
+      mesh.setMatrixAt(i, _matrix);
+    }
+    mesh.instanceMatrix.needsUpdate = true;
+  });
+
+  return (
+    <instancedMesh
+      ref={meshRef}
+      args={[undefined, undefined, cars.length]}
+    >
+      <boxGeometry args={[1, 1, 1]} />
+      <meshBasicMaterial wireframe transparent opacity={0.8} />
+    </instancedMesh>
+  );
+}
+
+/**
+ * Sky vehicles — planes and zeppelins flying high above the city.
+ * Same InstancedMesh approach: 1 draw call each, toroidal wrap.
+ */
+type SkyVehicle = {
+  x: number;
+  y: number;
+  z: number;
+  vx: number;
+  vz: number;
+  colorIndex: number;
+};
+
+function generateSkyVehicles(seed: number, count: number, minY: number, maxY: number): SkyVehicle[] {
+  let s = seed;
+  const rand = () => {
+    s = (s * 9301 + 49297) % 233280;
+    return s / 233280;
+  };
+
+  const vehicles: SkyVehicle[] = [];
+  const halfRange = CITY_RANGE / 2;
+
+  for (let i = 0; i < count; i++) {
+    const angle = rand() * Math.PI * 2;
+    const speed = 1.5 + rand() * 2;
+    vehicles.push({
+      x: rand() * CITY_RANGE - halfRange,
+      y: minY + rand() * (maxY - minY),
+      z: rand() * CITY_RANGE - halfRange,
+      vx: Math.cos(angle) * speed,
+      vz: Math.sin(angle) * speed,
+      colorIndex: rand() > 0.5 ? 0 : 1,
+    });
+  }
+  return vehicles;
+}
+
+function FlyingSkyVehicles({
+  vehicles,
+  camPosRef,
+  scaleX,
+  scaleY,
+  scaleZ,
+}: {
+  vehicles: SkyVehicle[];
+  camPosRef: React.RefObject<THREE.Vector3>;
+  scaleX: number;
+  scaleY: number;
+  scaleZ: number;
+}) {
+  const meshRef = useRef<THREE.InstancedMesh>(null);
+  const halfRange = CITY_RANGE / 2;
+
+  useEffect(() => {
+    if (!meshRef.current) return;
+    meshRef.current.frustumCulled = false;
+    for (let i = 0; i < vehicles.length; i++) {
+      _color.set(vehicles[i].colorIndex === 0 ? NEON_YELLOW : NEON_CYAN);
+      meshRef.current.setColorAt(i, _color);
+    }
+    meshRef.current.instanceColor!.needsUpdate = true;
+  }, [vehicles]);
+
+  useFrame((state, delta) => {
+    const mesh = meshRef.current;
+    const cam = camPosRef.current;
+    if (!mesh || !cam) return;
+
+    const dt = Math.min(delta, 0.1);
+
+    for (let i = 0; i < vehicles.length; i++) {
+      const v = vehicles[i];
+
+      v.x += v.vx * dt;
+      v.z += v.vz * dt;
+
+      let dx = v.x - cam.x;
+      let dz = v.z - cam.z;
+      dx = ((dx + halfRange) % CITY_RANGE + CITY_RANGE) % CITY_RANGE - halfRange;
+      dz = ((dz + halfRange) % CITY_RANGE + CITY_RANGE) % CITY_RANGE - halfRange;
+
+      const bob = Math.sin(state.clock.elapsedTime * 0.8 + i * 2) * 0.2;
+      const angle = Math.atan2(v.vx, v.vz);
+
+      _position.set(cam.x + dx, v.y + bob, cam.z + dz);
+      _scale.set(scaleX, scaleY, scaleZ);
+      const quat = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, angle, 0));
+      _matrix.compose(_position, quat, _scale);
+      mesh.setMatrixAt(i, _matrix);
+    }
+    mesh.instanceMatrix.needsUpdate = true;
+  });
+
+  return (
+    <instancedMesh
+      ref={meshRef}
+      args={[undefined, undefined, vehicles.length]}
+    >
+      <boxGeometry args={[1, 1, 1]} />
+      <meshBasicMaterial wireframe transparent opacity={0.6} />
+    </instancedMesh>
+  );
+}
+
 function FlightController({
   camPosRef,
   yawRef,
@@ -297,6 +508,9 @@ export default function CyberpunkScene() {
   const camPosRef = useRef(new THREE.Vector3(0, 8, 15));
   const yawRef = useRef(0);
   const buildings = useMemo(() => generateBuildings(42), []);
+  const cars = useMemo(() => generateCars(99), []);
+  const planes = useMemo(() => generateSkyVehicles(77, 6, 10, 14), []);
+  const zeppelins = useMemo(() => generateSkyVehicles(33, 3, 12, 16), []);
 
   return (
     <Canvas
@@ -314,6 +528,11 @@ export default function CyberpunkScene() {
 
         <FollowingGround camPosRef={camPosRef} />
         <InstancedCity buildings={buildings} camPosRef={camPosRef} />
+        <FlyingCars cars={cars} camPosRef={camPosRef} />
+        {/* Planes: wide flat boxes (wings), high in the sky */}
+        <FlyingSkyVehicles vehicles={planes} camPosRef={camPosRef} scaleX={1.5} scaleY={0.2} scaleZ={0.5} />
+        {/* Zeppelins: long fat boxes, even higher */}
+        <FlyingSkyVehicles vehicles={zeppelins} camPosRef={camPosRef} scaleX={2.5} scaleY={0.8} scaleZ={0.8} />
         <ScanLine camPosRef={camPosRef} yawRef={yawRef} />
         <FlightController camPosRef={camPosRef} yawRef={yawRef} />
         <VisibilityPause />
