@@ -1,11 +1,11 @@
 "use client";
 
-import { Box, Typography, Button, Container, IconButton } from "@mui/material";
-import { ArrowDownward, Email, GitHub, LinkedIn } from "@mui/icons-material";
-import { motion } from "framer-motion";
-import Link from "next/link";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { useSiteData } from "@/lib/useSiteData";
+import { ArrowDownward, Email, GitHub, LinkedIn } from "@mui/icons-material";
+import { Box, Button, Container, IconButton, Typography } from "@mui/material";
+import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function Hero() {
   const { t } = useLanguage();
@@ -58,13 +58,6 @@ export default function Hero() {
               sx={{ fontSize: { xs: "1rem", md: "1.1rem" }, mb: 0.5 }}
             >
               {siteData.introduction}
-            </Typography>
-            <Typography
-              variant="body1"
-              color="text.secondary"
-              sx={{ fontSize: { xs: "1rem", md: "1.1rem" } }}
-            >
-              Passionate about clean code and exceptional user experiences.
             </Typography>
           </Box>
 
