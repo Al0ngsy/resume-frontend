@@ -24,7 +24,16 @@ export default function ContactClient() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <Typography variant="h1" sx={{ mb: 1 }}>
+        <Typography
+          variant="h1"
+          sx={{
+            mb: 1,
+            background: "linear-gradient(to top right, #ec4899, #ef4444, #fb923c)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
           {t.contact.title}
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 5, maxWidth: 500 }}>
@@ -43,8 +52,15 @@ export default function ContactClient() {
               justifyContent: "flex-start",
               textTransform: "none",
               py: 1.5,
-              borderRadius: 3,
+              borderRadius: 999,
               fontSize: "1rem",
+              borderWidth: 2,
+              borderColor: "divider",
+              "&:hover": {
+                borderWidth: 2,
+                borderColor: "primary.main",
+                bgcolor: "rgba(236, 72, 153, 0.08)",
+              },
             }}
           >
             {siteData.email}
@@ -59,8 +75,15 @@ export default function ContactClient() {
               justifyContent: "flex-start",
               textTransform: "none",
               py: 1.5,
-              borderRadius: 3,
+              borderRadius: 999,
               fontSize: "1rem",
+              borderWidth: 2,
+              borderColor: "divider",
+              "&:hover": {
+                borderWidth: 2,
+                borderColor: "primary.main",
+                bgcolor: "rgba(236, 72, 153, 0.08)",
+              },
             }}
           >
             {t.contact.github}
@@ -75,8 +98,15 @@ export default function ContactClient() {
               justifyContent: "flex-start",
               textTransform: "none",
               py: 1.5,
-              borderRadius: 3,
+              borderRadius: 999,
               fontSize: "1rem",
+              borderWidth: 2,
+              borderColor: "divider",
+              "&:hover": {
+                borderWidth: 2,
+                borderColor: "primary.main",
+                bgcolor: "rgba(236, 72, 153, 0.08)",
+              },
             }}
           >
             {t.contact.linkedin}

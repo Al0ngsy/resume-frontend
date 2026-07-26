@@ -354,7 +354,17 @@ export default function RecruiterChat() {
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
       >
-        <Typography variant="h2" sx={{ mb: 1, textAlign: "center" }}>
+        <Typography
+          variant="h2"
+          sx={{
+            mb: 1,
+            textAlign: "center",
+            background: "linear-gradient(to top right, #ec4899, #ef4444, #fb923c)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
           {t.home.chatTitle}
         </Typography>
         <Typography
@@ -387,9 +397,10 @@ export default function RecruiterChat() {
           sx={{
             border: 1,
             borderColor: "divider",
-            borderRadius: 3,
+            borderRadius: 4,
             overflow: "hidden",
-            bgcolor: "background.paper",
+            bgcolor: "rgba(24, 24, 27, 0.8)",
+            backdropFilter: "blur(8px)",
             position: "relative",
           }}
         >

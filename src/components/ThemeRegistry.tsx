@@ -9,7 +9,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { useMemo, useState } from "react";
 
 export function ThemeRegistry({ children }: { children: React.ReactNode }) {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const theme = useMemo(() => (darkMode ? darkTheme : lightTheme), [darkMode]);
 
   return (

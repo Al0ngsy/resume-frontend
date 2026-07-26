@@ -46,6 +46,8 @@ export default function Footer() {
         py: 4,
         mt: "auto",
         textAlign: "center",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
       <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>

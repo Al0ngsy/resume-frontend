@@ -24,7 +24,16 @@ export default function ProjectsClient() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <Typography variant="h1" sx={{ mb: 1 }}>
+        <Typography
+          variant="h1"
+          sx={{
+            mb: 1,
+            background: "linear-gradient(to top right, #ec4899, #ef4444, #fb923c)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
           {t.projects.title}
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 5, maxWidth: 600 }}>

@@ -58,7 +58,21 @@ export default function Navbar({
         }}
       >
         <Toolbar sx={{ maxWidth: 960, width: "100%", mx: "auto", px: { xs: 2, md: 0 } }}>
-          <Box component={Link} href="/" sx={{ textDecoration: "none", color: "text.primary", fontWeight: 700, fontSize: "1.25rem", flexGrow: 1 }}>
+          <Box
+            component={Link}
+            href="/"
+            sx={{
+              textDecoration: "none",
+              fontWeight: 800,
+              fontSize: "1.25rem",
+              flexGrow: 1,
+              letterSpacing: "-0.02em",
+              background: "linear-gradient(to top right, #ec4899, #ef4444, #fb923c)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
             LQAT
           </Box>
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
@@ -67,7 +81,7 @@ export default function Navbar({
                 key={link.href}
                 component={Link}
                 href={link.href}
-                sx={{ color: "text.secondary", textTransform: "none", fontWeight: 500, "&:hover": { color: "text.primary" } }}
+                sx={{ color: "text.secondary", textTransform: "none", fontWeight: 500, borderRadius: 999, px: 1.5, "&:hover": { color: "primary.main", bgcolor: "rgba(236, 72, 153, 0.08)" } }}
               >
                 {link.label}
               </Button>

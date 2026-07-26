@@ -24,7 +24,16 @@ export default function ResumeClient() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <Typography variant="h1" sx={{ mb: 1 }}>
+        <Typography
+          variant="h1"
+          sx={{
+            mb: 1,
+            background: "linear-gradient(to top right, #ec4899, #ef4444, #fb923c)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
           {t.resume.title}
         </Typography>
         <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, alignItems: { xs: "flex-start", sm: "center" }, gap: 2, mb: 5 }}>
@@ -37,7 +46,19 @@ export default function ResumeClient() {
               startIcon={<Download />}
               href="/lequocanh_tran_cv_de.pdf"
               download
-              sx={{ textTransform: "none", borderRadius: 3 }}
+              disableElevation
+              sx={{
+                textTransform: "none",
+                borderRadius: 999,
+                color: "#fff",
+                background: "linear-gradient(to top right, #ec4899, #ef4444, #fb923c)",
+                px: 3,
+                py: 1.2,
+                "&:hover": {
+                  background: "linear-gradient(to top right, #ec4899, #ef4444, #fb923c)",
+                  filter: "brightness(1.1)",
+                },
+              }}
             >
               {t.resume.downloadCvDe}
             </Button>
@@ -46,7 +67,19 @@ export default function ResumeClient() {
               startIcon={<Download />}
               href="/lequocanh_tran_cv_en.pdf"
               download
-              sx={{ textTransform: "none", borderRadius: 3 }}
+              sx={{
+                textTransform: "none",
+                borderRadius: 999,
+                borderWidth: 2,
+                borderColor: "divider",
+                px: 3,
+                py: 1.2,
+                "&:hover": {
+                  borderWidth: 2,
+                  borderColor: "primary.main",
+                  bgcolor: "rgba(236, 72, 153, 0.08)",
+                },
+              }}
             >
               {t.resume.downloadCvEn}
             </Button>

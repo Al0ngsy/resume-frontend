@@ -29,7 +29,17 @@ export default function HomeClient() {
       {/* Featured Projects */}
       <Container maxWidth="lg" sx={{ py: 10 }}>
         <motion.div {...fadeIn}>
-          <Typography variant="h2" sx={{ mb: 1, textAlign: "center" }}>
+          <Typography
+            variant="h2"
+            sx={{
+              mb: 1,
+              textAlign: "center",
+              background: "linear-gradient(to top right, #ec4899, #ef4444, #fb923c)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
             {t.home.featuredProjects}
           </Typography>
           <Typography
@@ -57,7 +67,17 @@ export default function HomeClient() {
       {/* Skills Summary */}
       <Container maxWidth="md" sx={{ py: 10 }}>
         <motion.div {...fadeIn}>
-          <Typography variant="h2" sx={{ mb: 1, textAlign: "center" }}>
+          <Typography
+            variant="h2"
+            sx={{
+              mb: 1,
+              textAlign: "center",
+              background: "linear-gradient(to top right, #ec4899, #ef4444, #fb923c)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
             {t.home.skills}
           </Typography>
           <Typography
