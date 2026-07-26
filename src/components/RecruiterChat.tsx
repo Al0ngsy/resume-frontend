@@ -18,8 +18,14 @@ import ChatMessage from "./chat/ChatMessage";
 import ChatPlaceholder from "./chat/ChatPlaceholder";
 import ChatWakingUp from "./chat/ChatWakingUp";
 import LoadingBubble from "./chat/LoadingBubble";
+import StepProgressPanel from "./chat/StepProgressPanel";
 import SuggestedQuestions from "./chat/SuggestedQuestions";
-import { Message, STORAGE_KEY, suggestedQuestionsByLocale } from "./chat/types";
+import {
+  Message,
+  STORAGE_KEY,
+  StepInfo,
+  suggestedQuestionsByLocale,
+} from "./chat/types";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { useSiteData } from "@/lib/useSiteData";
 
@@ -35,6 +41,7 @@ export default function RecruiterChat() {
   const [wakingUp, setWakingUp] = useState(true);
   const [usedQuestions, setUsedQuestions] = useState<Set<string>>(new Set());
   const [suggestionsExpanded, setSuggestionsExpanded] = useState(true);
+  const [steps, setSteps] = useState<StepInfo[]>([]);
 
   // Avoid hydration mismatch: useSyncExternalStore returns "placeholder" on SSR
   // and the real env value on the client after hydration.
@@ -130,6 +137,8 @@ export default function RecruiterChat() {
   const sendMessage = useCallback(
     async (text: string) => {
       if (!text.trim() || loading || !conversationId) return;
+
+      setSteps([]);
 
       // Track if this was a suggested question
       setUsedQuestions((prev) => {
@@ -246,6 +255,25 @@ export default function RecruiterChat() {
               setFinal(data, false);
             } else if (eventType === "blocked") {
               setFinal(data, false);
+            } else if (eventType === "step") {
+              try {
+                const parsed = JSON.parse(data) as {
+                  step: string;
+                  label: string;
+                  status: "running" | "done";
+                };
+                setSteps((prev) => {
+                  const idx = prev.findIndex((s) => s.step === parsed.step);
+                  if (idx >= 0) {
+                    const next = [...prev];
+                    next[idx] = parsed;
+                    return next;
+                  }
+                  return [...prev, parsed];
+                });
+              } catch {
+                // ignore malformed step events
+              }
             }
           }
         };
@@ -360,6 +388,11 @@ export default function RecruiterChat() {
           }}
         >
           <ChatHeader />
+
+          <StepProgressPanel
+            steps={steps}
+            visible={loading && steps.length > 0}
+          />
 
           {/* Messages */}
           <Box

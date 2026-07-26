@@ -18,11 +18,18 @@ const feTechStack = [
 const beTechStack = [
   "Python 3.11",
   "FastAPI",
+  "SQLAlchemy 2.0",
+  "asyncpg",
+  "Alembic",
+  "pgvector",
+  "PyMuPDF",
   "OpenAI SDK",
   "Pydantic Settings",
   "SlowAPI",
   "structlog",
   "tiktoken",
+  "Neon PostgreSQL",
+  "Jina AI",
   "uvicorn",
   "Render",
 ];

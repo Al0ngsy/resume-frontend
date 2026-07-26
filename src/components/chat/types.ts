@@ -52,3 +52,9 @@ export const suggestedQuestionsByLocale: Record<Locale, string[]> = {
 };
 
 export const STORAGE_KEY = "recruiter-chat-conversation-id";
+
+export interface StepInfo {
+  step: string;
+  label: string;
+  status: "running" | "done";
+}
