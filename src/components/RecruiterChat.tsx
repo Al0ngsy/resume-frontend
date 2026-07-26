@@ -42,6 +42,7 @@ export default function RecruiterChat() {
   const [usedQuestions, setUsedQuestions] = useState<Set<string>>(new Set());
   const [suggestionsExpanded, setSuggestionsExpanded] = useState(true);
   const [steps, setSteps] = useState<StepInfo[]>([]);
+  const [stepError, setStepError] = useState(false);
 
   // Avoid hydration mismatch: useSyncExternalStore returns "placeholder" on SSR
   // and the real env value on the client after hydration.
@@ -139,6 +140,7 @@ export default function RecruiterChat() {
       if (!text.trim() || loading || !conversationId) return;
 
       setSteps([]);
+      setStepError(false);
 
       // Track if this was a suggested question
       setUsedQuestions((prev) => {
@@ -252,8 +254,10 @@ export default function RecruiterChat() {
               accumulated = data;
               setFinal(accumulated, false);
             } else if (eventType === "error") {
+              setStepError(true);
               setFinal(data, false);
             } else if (eventType === "blocked") {
+              setStepError(true);
               setFinal(data, false);
             } else if (eventType === "step") {
               try {
@@ -302,6 +306,7 @@ export default function RecruiterChat() {
           return next;
         });
       } catch (err) {
+        setStepError(true);
         const msg =
           err instanceof Error
             ? err.message
@@ -385,14 +390,10 @@ export default function RecruiterChat() {
             borderRadius: 3,
             overflow: "hidden",
             bgcolor: "background.paper",
+            position: "relative",
           }}
         >
           <ChatHeader />
-
-          <StepProgressPanel
-            steps={steps}
-            visible={loading && steps.length > 0}
-          />
 
           {/* Messages */}
           <Box
@@ -432,6 +433,12 @@ export default function RecruiterChat() {
               hasMessages={messages.length > 0}
             />
           </Box>
+
+          <StepProgressPanel
+            steps={steps}
+            visible={steps.length > 0}
+            hasError={stepError}
+          />
 
           <ChatInput
             value={input}
