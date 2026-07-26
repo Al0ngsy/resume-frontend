@@ -1,6 +1,6 @@
 # Resume Frontend
 
-Professional portfolio website for Le Quoc Anh Tran, Backend Software Engineer.
+Professional portfolio website for Lê Quốc Anh Trần, Backend Software Engineer.
 
 ## Tech Stack
 
@@ -36,8 +36,8 @@ yarn start
 
 ## Environment Variables
 
-| Variable | Description |
-|----------|-------------|
+| Variable              | Description               |
+| --------------------- | ------------------------- |
 | `NEXT_PUBLIC_API_URL` | Backend API URL (Phase 2) |
 
 ## Deployment
