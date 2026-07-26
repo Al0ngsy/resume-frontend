@@ -3,9 +3,9 @@ import { connection } from "next/server";
 import AboutClient from "./AboutClient";
 
 export const metadata: Metadata = {
-  title: "About — Le Quoc Anh Tran",
+  title: "About — Lê Quốc Anh Trần",
   description:
-    "Learn about Le Quoc Anh Tran's career, engineering philosophy, and technical background.",
+    "Learn about Lê Quốc Anh Trần's career, engineering philosophy, and technical background.",
 };
 
 export default async function AboutPage() {

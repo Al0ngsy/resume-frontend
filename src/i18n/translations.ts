@@ -142,7 +142,7 @@ const en: Translation = {
     linkedin: "LinkedIn",
   },
   footer: {
-    copyright: "Le Quoc Anh Tran.",
+    copyright: "Lê Quốc Anh Trần.",
     frontend: "Frontend",
     backend: "Backend",
   },
@@ -191,7 +191,8 @@ const de: Translation = {
     featuredProjectsSubtitle:
       "Eine Auswahl von Projekten, die meinen Ansatz für zuverlässige, skalierbare Backend-Systeme zeigen.",
     skills: "Fähigkeiten & Technologien",
-    skillsSubtitle: "Werkzeuge und Technologien, mit denen ich täglich arbeite.",
+    skillsSubtitle:
+      "Werkzeuge und Technologien, mit denen ich täglich arbeite.",
     chatTitle: "Fragen Sie den KI-Agenten",
     chatSubtitleLive: (name) =>
       `Chatten Sie mit einem KI-Assistenten, der alles über ${name}s Erfahrung, Fähigkeiten und Projekte weiß.`,
@@ -230,13 +231,14 @@ const de: Translation = {
     linkedin: "LinkedIn",
   },
   footer: {
-    copyright: "Le Quoc Anh Tran.",
+    copyright: "Lê Quốc Anh Trần.",
     frontend: "Frontend",
     backend: "Backend",
   },
   chat: {
     aiAgentSuffix: "s KI-Agent",
-    aiAgentSubtitle: "Fragen Sie über Erfahrungen, Fähigkeiten und Projekte von ",
+    aiAgentSubtitle:
+      "Fragen Sie über Erfahrungen, Fähigkeiten und Projekte von ",
     placeholder: "Fragen Sie über Erfahrung, Fähigkeiten, Projekte...",
     wakingUp: "KI-Agent wird gestartet — das kann bis zu 30 Sekunden dauern.",
     wakingUpPlaceholder: "Tippen Sie Ihre Frage, während der Agent startet...",
@@ -248,10 +250,12 @@ const de: Translation = {
       "Verbindung zum resume-backend konnte nicht hergestellt werden. Stellen Sie sicher, dass der Server läuft.",
     disclaimer: "KI kann Fehler machen — besser ",
     disclaimerContactPrefix: "",
-    disclaimerContactSuffix: " direkt kontaktieren für wichtige Angelegenheiten.",
+    disclaimerContactSuffix:
+      " direkt kontaktieren für wichtige Angelegenheiten.",
     rateLimitMessage:
       "Das Nachrichtenlimit für diese Sitzung wurde erreicht. Bitte kontaktieren Sie mich direkt über LinkedIn oder E-Mail, um das Gespräch fortzusetzen.",
-    connectionError: "Entschuldigung, beim Verbinden ist ein Problem aufgetreten. Bitte versuchen Sie es erneut.",
+    connectionError:
+      "Entschuldigung, beim Verbinden ist ein Problem aufgetreten. Bitte versuchen Sie es erneut.",
     placeholderTitlePrefix: "KI-Agent von ",
     placeholderTitleSuffix: "",
     placeholderBodyPrefix:
@@ -318,7 +322,7 @@ const vi: Translation = {
     linkedin: "LinkedIn",
   },
   footer: {
-    copyright: "Le Quoc Anh Tran.",
+    copyright: "Lê Quốc Anh Trần.",
     frontend: "Frontend",
     backend: "Backend",
   },

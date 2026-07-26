@@ -1,7 +1,7 @@
 import { SiteData } from "@/types";
 
 const siteDataVi: SiteData = {
-  name: "Le Quoc Anh Tran",
+  name: "Lê Quốc Anh Trần",
   title: "Backend Software Engineer",
   introduction:
     "Lập trình viên backend với hơn 6 năm kinh nghiệm xây dựng kiến trúc microservice phân tán và ứng dụng SaaS trên nền tảng đám mây. Tập trung vào TypeScript, NestJS và PostgreSQL — thiết kế RESTful API hiệu năng cao và hệ thống backend có khả năng mở rộng.",
