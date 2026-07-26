@@ -37,7 +37,20 @@ export default function ResumeClient() {
               startIcon={<Download />}
               href="/lequocanh_tran_cv_de.pdf"
               download
-              sx={{ textTransform: "none", borderRadius: 3 }}
+              disableElevation
+              sx={{
+                textTransform: "none",
+                borderRadius: 999,
+                bgcolor: "#FCEE0A",
+                color: "#18181b",
+                boxShadow: "0 0 16px rgba(252, 238, 10, 0.2)",
+                px: 3,
+                py: 1.2,
+                "&:hover": {
+                  bgcolor: "#FFD700",
+                  boxShadow: "0 0 24px rgba(252, 238, 10, 0.4)",
+                },
+              }}
             >
               {t.resume.downloadCvDe}
             </Button>
@@ -46,7 +59,23 @@ export default function ResumeClient() {
               startIcon={<Download />}
               href="/lequocanh_tran_cv_en.pdf"
               download
-              sx={{ textTransform: "none", borderRadius: 3 }}
+              sx={{
+                textTransform: "none",
+                borderRadius: 999,
+                borderWidth: 1,
+                borderColor: "rgba(0, 240, 255, 0.3)",
+                color: "#00F0FF",
+                backdropFilter: "blur(8px)",
+                bgcolor: "rgba(24, 24, 27, 0.4)",
+                px: 3,
+                py: 1.2,
+                "&:hover": {
+                  borderWidth: 1,
+                  borderColor: "#00F0FF",
+                  bgcolor: "rgba(24, 24, 27, 0.6)",
+                  boxShadow: "0 0 16px rgba(0, 240, 255, 0.15)",
+                },
+              }}
             >
               {t.resume.downloadCvEn}
             </Button>

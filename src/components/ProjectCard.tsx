@@ -20,11 +20,18 @@ export default function ProjectCard({ project }: { project: Project }) {
     <Card
       elevation={0}
       sx={{
-        border: 1,
-        borderColor: "divider",
-        borderRadius: 3,
-        transition: "border-color 0.2s",
-        "&:hover": { borderColor: "primary.main" },
+        border: "1px solid",
+        borderColor: "rgba(255,255,255,0.08)",
+        borderRadius: 4,
+        bgcolor: "rgba(24, 24, 27, 0.5)",
+        backdropFilter: "blur(12px)",
+        transition: "all 0.2s",
+        overflow: "hidden",
+        "&:hover": {
+          borderColor: "rgba(252, 238, 10, 0.4)",
+          boxShadow: "0 0 24px rgba(252, 238, 10, 0.1)",
+          transform: "translateY(-2px)",
+        },
       }}
     >
       <CardContent sx={{ p: 3 }}>
@@ -60,7 +67,19 @@ export default function ProjectCard({ project }: { project: Project }) {
         </Box>
         <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: 0.5, mt: 2 }}>
           {project.technologies.map((tech) => (
-            <Chip key={tech} label={tech} size="small" variant="outlined" />
+            <Chip
+              key={tech}
+              label={tech}
+              size="small"
+              variant="outlined"
+              sx={{
+                borderColor: "divider",
+                "&:hover": {
+                  borderColor: "#52525b",
+                  bgcolor: "rgba(255,255,255,0.05)",
+                },
+              }}
+            />
           ))}
         </Box>
       </CardContent>
@@ -71,7 +90,7 @@ export default function ProjectCard({ project }: { project: Project }) {
             startIcon={<GitHub />}
             href={project.github}
             target="_blank"
-            sx={{ textTransform: "none" }}
+            sx={{ textTransform: "none", borderRadius: 999 }}
           >
             {t.projects.code}
           </Button>
@@ -82,7 +101,7 @@ export default function ProjectCard({ project }: { project: Project }) {
             startIcon={<Launch />}
             href={project.liveUrl}
             target="_blank"
-            sx={{ textTransform: "none" }}
+            sx={{ textTransform: "none", borderRadius: 999 }}
           >
             {t.projects.live}
           </Button>

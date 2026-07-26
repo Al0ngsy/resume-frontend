@@ -1,19 +1,13 @@
 "use client";
 
-import { AppBar, Toolbar, Button, Box, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText, useTheme, Menu, MenuItem, ListItemIcon, Divider } from "@mui/material";
-import { Brightness4, Brightness7, Menu as MenuIcon, Language } from "@mui/icons-material";
+import { AppBar, Toolbar, Button, Box, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText, useTheme, Menu, MenuItem, Divider } from "@mui/material";
+import { Menu as MenuIcon, Language } from "@mui/icons-material";
 import Link from "next/link";
 import { useState } from "react";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { locales, localeNames, localeShortNames, type Locale } from "@/i18n/config";
 
-export default function Navbar({
-  toggleTheme,
-  isDark,
-}: {
-  toggleTheme: () => void;
-  isDark: boolean;
-}) {
+export default function Navbar() {
   const theme = useTheme();
   const { t, locale, setLocale, mounted } = useLanguage();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -58,7 +52,19 @@ export default function Navbar({
         }}
       >
         <Toolbar sx={{ maxWidth: 960, width: "100%", mx: "auto", px: { xs: 2, md: 0 } }}>
-          <Box component={Link} href="/" sx={{ textDecoration: "none", color: "text.primary", fontWeight: 700, fontSize: "1.25rem", flexGrow: 1 }}>
+          <Box
+            component={Link}
+            href="/"
+            sx={{
+              textDecoration: "none",
+              fontWeight: 700,
+              fontSize: "1.25rem",
+              flexGrow: 1,
+              letterSpacing: "-0.02em",
+              color: "#FCEE0A",
+              textShadow: "0 0 12px rgba(252, 238, 10, 0.4)",
+            }}
+          >
             LQAT
           </Box>
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
@@ -67,7 +73,7 @@ export default function Navbar({
                 key={link.href}
                 component={Link}
                 href={link.href}
-                sx={{ color: "text.secondary", textTransform: "none", fontWeight: 500, "&:hover": { color: "text.primary" } }}
+                sx={{ color: "text.secondary", textTransform: "none", fontWeight: 500, borderRadius: 999, px: 1.5, "&:hover": { color: "#00F0FF", bgcolor: "rgba(0, 240, 255, 0.08)" } }}
               >
                 {link.label}
               </Button>
@@ -119,9 +125,6 @@ export default function Navbar({
             aria-label="Open navigation menu"
           >
             <MenuIcon />
-          </IconButton>
-          <IconButton onClick={toggleTheme} sx={{ ml: 1 }}>
-            {isDark ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
         </Toolbar>
       </AppBar>
