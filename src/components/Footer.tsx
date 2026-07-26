@@ -41,11 +41,13 @@ export default function Footer() {
     <Box
       component="footer"
       sx={{
-        borderTop: 1,
-        borderColor: "divider",
+        borderTop: "1px solid",
+        borderColor: "rgba(252, 238, 10, 0.15)",
         py: 4,
         mt: "auto",
         textAlign: "center",
+        backdropFilter: "blur(16px)",
+        bgcolor: "rgba(9, 9, 11, 0.6)",
       }}
     >
       <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>

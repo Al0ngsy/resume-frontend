@@ -385,11 +385,12 @@ export default function RecruiterChat() {
         <Paper
           elevation={0}
           sx={{
-            border: 1,
-            borderColor: "divider",
-            borderRadius: 3,
+            border: "1px solid",
+            borderColor: "rgba(0, 240, 255, 0.15)",
+            borderRadius: 4,
             overflow: "hidden",
-            bgcolor: "background.paper",
+            bgcolor: "rgba(24, 24, 27, 0.5)",
+            backdropFilter: "blur(12px)",
             position: "relative",
           }}
         >

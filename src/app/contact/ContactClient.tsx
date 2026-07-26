@@ -43,8 +43,19 @@ export default function ContactClient() {
               justifyContent: "flex-start",
               textTransform: "none",
               py: 1.5,
-              borderRadius: 3,
+              borderRadius: 999,
               fontSize: "1rem",
+              borderWidth: 1,
+              borderColor: "rgba(252, 238, 10, 0.3)",
+              color: "#FCEE0A",
+              backdropFilter: "blur(8px)",
+              bgcolor: "rgba(24, 24, 27, 0.4)",
+              "&:hover": {
+                borderWidth: 1,
+                borderColor: "#FCEE0A",
+                bgcolor: "rgba(24, 24, 27, 0.6)",
+                boxShadow: "0 0 16px rgba(252, 238, 10, 0.15)",
+              },
             }}
           >
             {siteData.email}
@@ -59,8 +70,19 @@ export default function ContactClient() {
               justifyContent: "flex-start",
               textTransform: "none",
               py: 1.5,
-              borderRadius: 3,
+              borderRadius: 999,
               fontSize: "1rem",
+              borderWidth: 1,
+              borderColor: "rgba(0, 240, 255, 0.3)",
+              color: "#00F0FF",
+              backdropFilter: "blur(8px)",
+              bgcolor: "rgba(24, 24, 27, 0.4)",
+              "&:hover": {
+                borderWidth: 1,
+                borderColor: "#00F0FF",
+                bgcolor: "rgba(24, 24, 27, 0.6)",
+                boxShadow: "0 0 16px rgba(0, 240, 255, 0.15)",
+              },
             }}
           >
             {t.contact.github}
@@ -75,8 +97,19 @@ export default function ContactClient() {
               justifyContent: "flex-start",
               textTransform: "none",
               py: 1.5,
-              borderRadius: 3,
+              borderRadius: 999,
               fontSize: "1rem",
+              borderWidth: 1,
+              borderColor: "rgba(0, 240, 255, 0.3)",
+              color: "#00F0FF",
+              backdropFilter: "blur(8px)",
+              bgcolor: "rgba(24, 24, 27, 0.4)",
+              "&:hover": {
+                borderWidth: 1,
+                borderColor: "#00F0FF",
+                bgcolor: "rgba(24, 24, 27, 0.6)",
+                boxShadow: "0 0 16px rgba(0, 240, 255, 0.15)",
+              },
             }}
           >
             {t.contact.linkedin}
