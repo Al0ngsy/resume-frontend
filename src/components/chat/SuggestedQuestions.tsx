@@ -41,10 +41,19 @@ export default function SuggestedQuestions({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // When a question is selected and removed from the parent's remainingQuestions list,
-  // keep the shuffled order but remove the used question from the displayed list.
+  // When the questions prop changes, detect whether it's:
+  // - A question removal (partial overlap) → filter out used ones
+  // - A language switch (no overlap at all) → re-shuffle the new set
   useEffect(() => {
-    setShuffled((prev) => prev.filter((q) => questions.includes(q)));
+    const overlap = shuffled.filter((q) => questions.includes(q));
+    if (overlap.length === 0) {
+      // Language switched — completely new strings. Re-shuffle.
+      setShuffled(shuffle(questions));
+    } else {
+      // Same language, some questions removed by selection.
+      setShuffled(overlap);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [questions]);
 
   if (shuffled.length === 0) return null;

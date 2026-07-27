@@ -39,7 +39,9 @@ export default function RecruiterChat() {
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [initError, setInitError] = useState(false);
   const [wakingUp, setWakingUp] = useState(true);
-  const [usedQuestions, setUsedQuestions] = useState<Set<string>>(new Set());
+  const [usedQuestionIndices, setUsedQuestionIndices] = useState<Set<number>>(
+    new Set(),
+  );
   const [suggestionsExpanded, setSuggestionsExpanded] = useState(true);
   const [steps, setSteps] = useState<StepInfo[]>([]);
   const [stepError, setStepError] = useState(false);
@@ -88,11 +90,12 @@ export default function RecruiterChat() {
               );
               setMessages(restored);
               // Mark any suggested questions that were already asked
-              const askedSuggestions = restored
+              const askedIndices = restored
                 .filter((m: Message) => m.role === "user")
                 .map((m: Message) => m.content)
-                .filter((c: string) => suggestedQuestions.includes(c));
-              setUsedQuestions(new Set(askedSuggestions));
+                .map((c: string) => suggestedQuestions.indexOf(c))
+                .filter((idx: number) => idx >= 0);
+              setUsedQuestionIndices(new Set(askedIndices));
               setWakingUp(false);
               return;
             }
@@ -142,13 +145,12 @@ export default function RecruiterChat() {
       setSteps([]);
       setStepError(false);
 
-      // Track if this was a suggested question
-      setUsedQuestions((prev) => {
-        if (suggestedQuestions.includes(text)) {
-          return new Set(prev).add(text);
-        }
-        return prev;
-      });
+      // Track if this was a suggested question (by index, not string,
+      // so it survives language switches)
+      const qIndex = suggestedQuestions.indexOf(text);
+      if (qIndex >= 0) {
+        setUsedQuestionIndices((prev) => new Set(prev).add(qIndex));
+      }
 
       const userMsg: Message = { role: "user", content: text };
       setMessages((prev) => [...prev, userMsg]);
@@ -341,7 +343,7 @@ export default function RecruiterChat() {
   const isHidden = chatMode === "hidden";
 
   const remainingQuestions = suggestedQuestions.filter(
-    (q) => !usedQuestions.has(q),
+    (_, idx) => !usedQuestionIndices.has(idx),
   );
 
   if (isHidden) return null;

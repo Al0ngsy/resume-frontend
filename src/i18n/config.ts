@@ -25,8 +25,16 @@ export function getStoredLocale(): Locale {
     if (stored && locales.includes(stored as Locale)) {
       return stored as Locale;
     }
+    // No stored preference — detect from browser language
+    const browserLangs = navigator.languages ?? [navigator.language];
+    for (const lang of browserLangs) {
+      const code = lang.toLowerCase();
+      if (code.startsWith("de")) return "de";
+      if (code.startsWith("vi")) return "vi";
+      if (code.startsWith("en")) return "en";
+    }
   } catch {
-    // localStorage might be unavailable
+    // localStorage or navigator might be unavailable
   }
   return defaultLocale;
 }
