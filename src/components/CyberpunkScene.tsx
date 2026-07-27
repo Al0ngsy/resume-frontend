@@ -31,7 +31,7 @@ const CITY_RANGE = 90;
 const BLOCK_SPACING = 3;
 const BUILDING_MIN_H = 1;
 const BUILDING_MAX_H = 8;
-const SPEED = 3; // units per second forward flight (was 8 — too fast)
+const SPEED = 1; // units per second forward flight
 
 type Building = {
   x: number;
@@ -121,8 +121,12 @@ function InstancedCity({
       // Toroidal wrap relative to camera
       let dx = b.x - cam.x;
       let dz = b.z - cam.z;
-      dx = ((dx + halfRange) % CITY_RANGE + CITY_RANGE) % CITY_RANGE - halfRange;
-      dz = ((dz + halfRange) % CITY_RANGE + CITY_RANGE) % CITY_RANGE - halfRange;
+      dx =
+        ((((dx + halfRange) % CITY_RANGE) + CITY_RANGE) % CITY_RANGE) -
+        halfRange;
+      dz =
+        ((((dz + halfRange) % CITY_RANGE) + CITY_RANGE) % CITY_RANGE) -
+        halfRange;
 
       _position.set(cam.x + dx, b.h / 2, cam.z + dz);
       _scale.set(b.w, b.h, b.d);
@@ -200,10 +204,7 @@ type ScanInstance = {
   colorIndex: number; // 0=yellow, 1=cyan
 };
 
-function generateScanInstances(
-  seed: number,
-  count: number,
-): ScanInstance[] {
+function generateScanInstances(seed: number, count: number): ScanInstance[] {
   let s = seed;
   const rand = () => {
     s = (s * 9301 + 49297) % 233280;
@@ -293,8 +294,7 @@ function ScanLines({
 
       const dist = local * SCAN_SWEEP_DIST;
       // Vertical lines stand on the ground; horizontal lines lie on it.
-      const y =
-        orientation === "vertical" ? SCAN_LINE_LENGTH / 2 : 0.02;
+      const y = orientation === "vertical" ? SCAN_LINE_LENGTH / 2 : 0.02;
       _scanPos.set(cam.x + _sDir.x * dist, y, cam.z + _sDir.z * dist);
 
       // Build an orientation basis from the sweep direction.
@@ -423,8 +423,12 @@ function FlyingCars({
       // Toroidal wrap relative to camera
       let dx = c.x - cam.x;
       let dz = c.z - cam.z;
-      dx = ((dx + halfRange) % CITY_RANGE + CITY_RANGE) % CITY_RANGE - halfRange;
-      dz = ((dz + halfRange) % CITY_RANGE + CITY_RANGE) % CITY_RANGE - halfRange;
+      dx =
+        ((((dx + halfRange) % CITY_RANGE) + CITY_RANGE) % CITY_RANGE) -
+        halfRange;
+      dz =
+        ((((dz + halfRange) % CITY_RANGE) + CITY_RANGE) % CITY_RANGE) -
+        halfRange;
 
       // Bob slightly for life
       const bob = Math.sin(state.clock.elapsedTime * 2 + i) * 0.15;
@@ -433,7 +437,9 @@ function FlyingCars({
       const angle = Math.atan2(c.vx, c.vz);
       _position.set(cam.x + dx, c.y + bob, cam.z + dz);
       _scale.set(0.4, 0.15, 0.7); // small elongated box
-      const quat = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, angle, 0));
+      const quat = new THREE.Quaternion().setFromEuler(
+        new THREE.Euler(0, angle, 0),
+      );
       _matrix.compose(_position, quat, _scale);
       mesh.setMatrixAt(i, _matrix);
     }
@@ -441,10 +447,7 @@ function FlyingCars({
   });
 
   return (
-    <instancedMesh
-      ref={meshRef}
-      args={[undefined, undefined, cars.length]}
-    >
+    <instancedMesh ref={meshRef} args={[undefined, undefined, cars.length]}>
       <boxGeometry args={[1, 1, 1]} />
       <meshBasicMaterial wireframe transparent opacity={0.8} />
     </instancedMesh>
@@ -464,7 +467,12 @@ type SkyVehicle = {
   colorIndex: number;
 };
 
-function generateSkyVehicles(seed: number, count: number, minY: number, maxY: number): SkyVehicle[] {
+function generateSkyVehicles(
+  seed: number,
+  count: number,
+  minY: number,
+  maxY: number,
+): SkyVehicle[] {
   let s = seed;
   const rand = () => {
     s = (s * 9301 + 49297) % 233280;
@@ -530,15 +538,125 @@ function FlyingSkyVehicles({
 
       let dx = v.x - cam.x;
       let dz = v.z - cam.z;
-      dx = ((dx + halfRange) % CITY_RANGE + CITY_RANGE) % CITY_RANGE - halfRange;
-      dz = ((dz + halfRange) % CITY_RANGE + CITY_RANGE) % CITY_RANGE - halfRange;
+      dx =
+        ((((dx + halfRange) % CITY_RANGE) + CITY_RANGE) % CITY_RANGE) -
+        halfRange;
+      dz =
+        ((((dz + halfRange) % CITY_RANGE) + CITY_RANGE) % CITY_RANGE) -
+        halfRange;
 
       const bob = Math.sin(state.clock.elapsedTime * 0.8 + i * 2) * 0.2;
       const angle = Math.atan2(v.vx, v.vz);
 
       _position.set(cam.x + dx, v.y + bob, cam.z + dz);
       _scale.set(scaleX, scaleY, scaleZ);
-      const quat = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, angle, 0));
+      const quat = new THREE.Quaternion().setFromEuler(
+        new THREE.Euler(0, angle, 0),
+      );
+      _matrix.compose(_position, quat, _scale);
+      mesh.setMatrixAt(i, _matrix);
+    }
+    mesh.instanceMatrix.needsUpdate = true;
+  });
+
+  return (
+    <instancedMesh ref={meshRef} args={[undefined, undefined, vehicles.length]}>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshBasicMaterial wireframe transparent opacity={0.6} />
+    </instancedMesh>
+  );
+}
+
+/**
+ * Satellites — small wireframe octahedrons drifting high in the sky.
+ * Slow orbital-style movement, toroidal wrap like other sky objects.
+ * Uses InstancedMesh (1 draw call). Each has a faint axial tilt + spin.
+ */
+type Satellite = {
+  x: number;
+  y: number;
+  z: number;
+  vx: number;
+  vz: number;
+  spin: number; // rad/s
+  tilt: number; // axial tilt
+  colorIndex: number;
+};
+
+function generateSatellites(seed: number, count: number): Satellite[] {
+  let s = seed;
+  const rand = () => {
+    s = (s * 9301 + 49297) % 233280;
+    return s / 233280;
+  };
+  const arr: Satellite[] = [];
+  const halfRange = CITY_RANGE / 2;
+  for (let i = 0; i < count; i++) {
+    const angle = rand() * Math.PI * 2;
+    const speed = 0.3 + rand() * 0.5; // slow drift
+    arr.push({
+      x: rand() * CITY_RANGE - halfRange,
+      y: 11 + rand() * 6, // upper sky, within camera FOV
+      z: rand() * CITY_RANGE - halfRange,
+      vx: Math.cos(angle) * speed,
+      vz: Math.sin(angle) * speed,
+      spin: (rand() - 0.5) * 1.2,
+      tilt: (rand() - 0.5) * 0.8,
+      colorIndex: rand() > 0.5 ? 0 : 1,
+    });
+  }
+  return arr;
+}
+
+function Satellites({
+  satellites,
+  camPosRef,
+}: {
+  satellites: Satellite[];
+  camPosRef: React.RefObject<THREE.Vector3>;
+}) {
+  const meshRef = useRef<THREE.InstancedMesh>(null);
+  const halfRange = CITY_RANGE / 2;
+
+  useEffect(() => {
+    if (!meshRef.current) return;
+    meshRef.current.frustumCulled = false;
+    for (let i = 0; i < satellites.length; i++) {
+      _color.set(satellites[i].colorIndex === 0 ? NEON_YELLOW : NEON_CYAN);
+      meshRef.current.setColorAt(i, _color);
+    }
+    meshRef.current.instanceColor!.needsUpdate = true;
+  }, [satellites]);
+
+  useFrame((state, delta) => {
+    const mesh = meshRef.current;
+    const cam = camPosRef.current;
+    if (!mesh || !cam) return;
+    const dt = Math.min(delta, 0.1);
+    const t = state.clock.elapsedTime;
+
+    for (let i = 0; i < satellites.length; i++) {
+      const sat = satellites[i];
+      sat.x += sat.vx * dt;
+      sat.z += sat.vz * dt;
+
+      let dx = sat.x - cam.x;
+      let dz = sat.z - cam.z;
+      dx =
+        ((((dx + halfRange) % CITY_RANGE) + CITY_RANGE) % CITY_RANGE) -
+        halfRange;
+      dz =
+        ((((dz + halfRange) % CITY_RANGE) + CITY_RANGE) % CITY_RANGE) -
+        halfRange;
+
+      const bob = Math.sin(t * 0.3 + i * 1.5) * 0.4;
+      _position.set(cam.x + dx, sat.y + bob, cam.z + dz);
+      _scale.set(0.8, 0.8, 0.8);
+      // Spin around tilted axis
+      const spin = t * sat.spin;
+      const quat = new THREE.Quaternion().setFromEuler(
+        new THREE.Euler(sat.tilt, spin, sat.tilt * 0.5),
+      );
       _matrix.compose(_position, quat, _scale);
       mesh.setMatrixAt(i, _matrix);
     }
@@ -548,11 +666,203 @@ function FlyingSkyVehicles({
   return (
     <instancedMesh
       ref={meshRef}
-      args={[undefined, undefined, vehicles.length]}
+      args={[undefined, undefined, satellites.length]}
     >
-      <boxGeometry args={[1, 1, 1]} />
-      <meshBasicMaterial wireframe transparent opacity={0.6} />
+      <octahedronGeometry args={[1, 0]} />
+      <meshBasicMaterial wireframe transparent opacity={0.7} />
     </instancedMesh>
+  );
+}
+
+/**
+ * Orbital habitat — large ring-stations (torus + central sphere + spokes)
+ * hanging in the sky. Multiple instances drift independently in world
+ * space and wrap toroidally, so there's always at least one in view.
+ */
+const HABITAT_COUNT = 3;
+
+type Habitat = {
+  x: number;
+  y: number;
+  z: number;
+  vx: number;
+  vz: number;
+  rotSpeedY: number;
+  rotSpeedZ: number;
+  scale: number;
+  ringCount: number; // 1-3 concentric rings
+  ringRotations: [number, number, number][]; // per-ring Euler rotation
+};
+
+function generateHabitats(seed: number, count: number): Habitat[] {
+  let s = seed;
+  const rand = () => {
+    s = (s * 9301 + 49297) % 233280;
+    return s / 233280;
+  };
+  const arr: Habitat[] = [];
+  const halfRange = CITY_RANGE / 2;
+  for (let i = 0; i < count; i++) {
+    const angle = rand() * Math.PI * 2;
+    const speed = 0.2 + rand() * 0.3;
+    const ringCount = 1 + Math.floor(rand() * 3);
+    const scale = 0.7 + rand() * 0.4; // 0.7-1.1
+    // Each ring gets a distinct orientation: spread rings around
+    // different axes so they're tilted in 3D, not coplanar.
+    const ringRotations: [number, number, number][] = [];
+    for (let r = 0; r < ringCount; r++) {
+      ringRotations.push([
+        rand() * Math.PI,
+        rand() * Math.PI,
+        rand() * Math.PI,
+      ]);
+    }
+    // Place y so the lowest point of a fully-tilted outermost ring
+    // stays above the tallest building (BUILDING_MAX_H) with margin.
+    const outerRadius = (3.5 + (ringCount - 1) * 1.2) * scale;
+    const minY = BUILDING_MAX_H + 3 + outerRadius;
+    arr.push({
+      x: rand() * CITY_RANGE - halfRange,
+      y: minY + rand() * 2, // slight variation above the safe floor
+      z: rand() * CITY_RANGE - halfRange,
+      vx: Math.cos(angle) * speed,
+      vz: Math.sin(angle) * speed,
+      rotSpeedY: 0.03 + rand() * 0.04,
+      rotSpeedZ: 0.01 + rand() * 0.02,
+      scale,
+      ringCount,
+      ringRotations,
+    });
+  }
+  return arr;
+}
+
+function OrbitalHabitat({
+  habitats,
+  camPosRef,
+}: {
+  habitats: Habitat[];
+  camPosRef: React.RefObject<THREE.Vector3>;
+}) {
+  const groupRefs = useRef<(THREE.Group | null)[]>([]);
+  const halfRange = CITY_RANGE / 2;
+
+  useEffect(() => {
+    groupRefs.current.forEach((g) => {
+      if (g) g.frustumCulled = false;
+    });
+  }, []);
+
+  useFrame((state, delta) => {
+    if (!camPosRef.current) return;
+    const dt = Math.min(delta, 0.1);
+    const cam = camPosRef.current;
+    const t = state.clock.elapsedTime;
+
+    for (let i = 0; i < habitats.length; i++) {
+      const g = groupRefs.current[i];
+      if (!g) continue;
+      const h = habitats[i];
+
+      // Drift in world space
+      h.x += h.vx * dt;
+      h.z += h.vz * dt;
+
+      // Toroidal wrap relative to camera
+      let dx = h.x - cam.x;
+      let dz = h.z - cam.z;
+      dx =
+        ((((dx + halfRange) % CITY_RANGE) + CITY_RANGE) % CITY_RANGE) -
+        halfRange;
+      dz =
+        ((((dz + halfRange) % CITY_RANGE) + CITY_RANGE) % CITY_RANGE) -
+        halfRange;
+
+      g.position.set(
+        cam.x + dx,
+        h.y + Math.sin(t * 0.15 + i * 2) * 0.5,
+        cam.z + dz,
+      );
+      g.rotation.y += delta * h.rotSpeedY;
+      g.rotation.z += delta * h.rotSpeedZ;
+    }
+  });
+
+  return (
+    <>
+      {habitats.map((h, i) => {
+        const outerRadius = 3.5 + (h.ringCount - 1) * 1.2;
+        return (
+          <group
+            key={i}
+            ref={(el) => {
+              groupRefs.current[i] = el;
+            }}
+            scale={h.scale}
+          >
+            {/* Rings — 1 to 4, each at a distinct 3D angle around the core */}
+            {Array.from({ length: h.ringCount }, (_, r) => (
+              <mesh key={r} rotation={h.ringRotations[r]}>
+                <torusGeometry args={[3.5 + r * 1.2, 0.4, 8, 24]} />
+                <meshBasicMaterial
+                  color={NEON_CYAN}
+                  wireframe
+                  transparent
+                  opacity={0.5 - r * 0.08}
+                />
+              </mesh>
+            ))}
+            {/* Central sphere — core */}
+            <mesh>
+              <sphereGeometry args={[1.2, 12, 8]} />
+              <meshBasicMaterial
+                color={NEON_YELLOW}
+                wireframe
+                transparent
+                opacity={0.6}
+              />
+            </mesh>
+            {/* Spokes connecting outermost ring to core */}
+            <mesh rotation={[0, 0, 0]}>
+              <boxGeometry args={[0.1, 0.1, outerRadius]} />
+              <meshBasicMaterial
+                color={NEON_YELLOW}
+                wireframe
+                transparent
+                opacity={0.4}
+              />
+            </mesh>
+            <mesh rotation={[0, 0, Math.PI / 2]}>
+              <boxGeometry args={[0.1, 0.1, outerRadius]} />
+              <meshBasicMaterial
+                color={NEON_YELLOW}
+                wireframe
+                transparent
+                opacity={0.4}
+              />
+            </mesh>
+            <mesh rotation={[0, 0, Math.PI]}>
+              <boxGeometry args={[0.1, 0.1, outerRadius]} />
+              <meshBasicMaterial
+                color={NEON_YELLOW}
+                wireframe
+                transparent
+                opacity={0.4}
+              />
+            </mesh>
+            <mesh rotation={[0, 0, -Math.PI / 2]}>
+              <boxGeometry args={[0.1, 0.1, outerRadius]} />
+              <meshBasicMaterial
+                color={NEON_YELLOW}
+                wireframe
+                transparent
+                opacity={0.4}
+              />
+            </mesh>
+          </group>
+        );
+      })}
+    </>
   );
 }
 
@@ -614,7 +924,8 @@ function VisibilityPause() {
       setPaused(document.hidden);
     };
     document.addEventListener("visibilitychange", handleVisibility);
-    return () => document.removeEventListener("visibilitychange", handleVisibility);
+    return () =>
+      document.removeEventListener("visibilitychange", handleVisibility);
   }, [setPaused]);
 
   return null;
@@ -629,6 +940,8 @@ export default function CyberpunkScene() {
   const zeppelins = useMemo(() => generateSkyVehicles(33, 3, 12, 16), []);
   const scanH = useMemo(() => generateScanInstances(101, SCAN_H_COUNT), []);
   const scanV = useMemo(() => generateScanInstances(202, SCAN_V_COUNT), []);
+  const satellites = useMemo(() => generateSatellites(555, 5), []);
+  const habitats = useMemo(() => generateHabitats(888, HABITAT_COUNT), []);
 
   return (
     <Canvas
@@ -648,9 +961,25 @@ export default function CyberpunkScene() {
         <InstancedCity buildings={buildings} camPosRef={camPosRef} />
         <FlyingCars cars={cars} camPosRef={camPosRef} />
         {/* Planes: wide flat boxes (wings), high in the sky */}
-        <FlyingSkyVehicles vehicles={planes} camPosRef={camPosRef} scaleX={1.5} scaleY={0.2} scaleZ={0.5} />
+        <FlyingSkyVehicles
+          vehicles={planes}
+          camPosRef={camPosRef}
+          scaleX={1.5}
+          scaleY={0.2}
+          scaleZ={0.5}
+        />
         {/* Zeppelins: long fat boxes, even higher */}
-        <FlyingSkyVehicles vehicles={zeppelins} camPosRef={camPosRef} scaleX={2.5} scaleY={0.8} scaleZ={0.8} />
+        <FlyingSkyVehicles
+          vehicles={zeppelins}
+          camPosRef={camPosRef}
+          scaleX={2.5}
+          scaleY={0.8}
+          scaleZ={0.8}
+        />
+        {/* Satellites: octahedrons drifting very high, with spin */}
+        <Satellites satellites={satellites} camPosRef={camPosRef} />
+        {/* Orbital habitat: ring-station + core, far in the sky */}
+        <OrbitalHabitat habitats={habitats} camPosRef={camPosRef} />
         <ScanLines
           camPosRef={camPosRef}
           yawRef={yawRef}
