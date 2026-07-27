@@ -172,60 +172,176 @@ function FollowingGround({
 }
 
 /**
- * Scanning line that sweeps forward across the city in the flight direction.
- * Lies flat on the ground, oriented perpendicular to flight path.
+ * Scan lines — neon sweep planes scanning across the city in all 4
+ * cardinal directions (forward / backward / left / right relative to
+ * flight yaw). Both horizontal (flat on ground) and vertical (standing
+ * upright) lines spawn, each with a random phase so they appear at
+ * random times, and a rest period between sweeps so spawns feel discrete.
+ *
+ * Each line is an individual <mesh> (count is small, ~6 per orientation)
+ * so per-instance opacity fade works (InstancedMesh shares one material).
  */
-function ScanLine({
+const SCAN_LINE_LENGTH = 50;
+const SCAN_LINE_THICKNESS = 0.2;
+const SCAN_SWEEP_DIST = 35;
+const SCAN_H_COUNT = 6;
+const SCAN_V_COUNT = 6;
+const SCAN_FADE = 0.4;
+// Fraction of each cycle spent visibly sweeping; the rest is downtime
+// (line invisible), which makes spawns feel discrete rather than looped.
+const SWEEP_FRACTION = 0.6;
+
+const SCAN_COLORS = [NEON_YELLOW, NEON_CYAN];
+
+type ScanInstance = {
+  direction: number; // 0=forward, 1=backward, 2=left, 3=right
+  phase: number; // random 0..1 cycle offset → random spawn time
+  speed: number; // cycles per second
+  colorIndex: number; // 0=yellow, 1=cyan
+};
+
+function generateScanInstances(
+  seed: number,
+  count: number,
+): ScanInstance[] {
+  let s = seed;
+  const rand = () => {
+    s = (s * 9301 + 49297) % 233280;
+    return s / 233280;
+  };
+  const arr: ScanInstance[] = [];
+  for (let i = 0; i < count; i++) {
+    arr.push({
+      direction: Math.floor(rand() * 4),
+      phase: rand(),
+      speed: 0.2 + rand() * 0.3, // 0.2–0.5 cycles/s (~2–5s full cycle)
+      colorIndex: rand() > 0.5 ? 0 : 1,
+    });
+  }
+  return arr;
+}
+
+// Reusable temp objects for scan-line math
+const _scanPos = new THREE.Vector3();
+const _scanQuat = new THREE.Quaternion();
+const _scanBasis = new THREE.Matrix4();
+const _sUp = new THREE.Vector3(0, 1, 0);
+const _sDir = new THREE.Vector3();
+const _sPerp = new THREE.Vector3();
+const _sXa = new THREE.Vector3();
+const _sYa = new THREE.Vector3();
+const _sZa = new THREE.Vector3();
+
+function ScanLines({
   camPosRef,
   yawRef,
+  instances,
+  orientation,
 }: {
   camPosRef: React.RefObject<THREE.Vector3>;
   yawRef: React.RefObject<number>;
+  instances: ScanInstance[];
+  orientation: "horizontal" | "vertical";
 }) {
-  const meshRef = useRef<THREE.Mesh>(null);
-  const cycleRef = useRef(0);
+  const refs = useRef<(THREE.Mesh | null)[]>([]);
 
   useEffect(() => {
-    if (meshRef.current) meshRef.current.frustumCulled = false;
+    refs.current.forEach((m) => {
+      if (m) m.frustumCulled = false;
+    });
   }, []);
 
-  useFrame((state, delta) => {
-    if (!meshRef.current || !camPosRef.current) return;
-    cycleRef.current += delta * 0.4; // 2.5s cycle
-    const cycle = cycleRef.current % 1;
+  const geomArgs: [number, number] =
+    orientation === "horizontal"
+      ? [SCAN_LINE_LENGTH, SCAN_LINE_THICKNESS]
+      : [SCAN_LINE_THICKNESS, SCAN_LINE_LENGTH];
+
+  useFrame((state) => {
+    const cam = camPosRef.current;
+    if (!cam) return;
     const yaw = yawRef.current;
+    const t = state.clock.elapsedTime;
 
-    // Flight direction
-    const dirX = Math.sin(yaw);
-    const dirZ = -Math.cos(yaw);
+    // Direction vectors for the 4 cardinals, relative to flight yaw.
+    // forward = (sin, -cos); right is forward rotated +90° about Y.
+    const dirTable = [
+      [Math.sin(yaw), -Math.cos(yaw)], // 0 forward
+      [-Math.sin(yaw), Math.cos(yaw)], // 1 backward
+      [-Math.cos(yaw), -Math.sin(yaw)], // 2 left
+      [Math.cos(yaw), Math.sin(yaw)], // 3 right
+    ];
 
-    // Sweep forward from camera, 0 to 35 units ahead
-    const dist = cycle * 35;
+    for (let i = 0; i < instances.length; i++) {
+      const mesh = refs.current[i];
+      if (!mesh) continue;
+      const inst = instances[i];
 
-    meshRef.current.position.set(
-      camPosRef.current.x + dirX * dist,
-      0.02,
-      camPosRef.current.z + dirZ * dist,
-    );
+      const cycle = (t * inst.speed + inst.phase) % 1;
+      const mat = mesh.material as THREE.MeshBasicMaterial;
 
-    // Rotate flat on ground: rotate X -90° to lie flat, then Y by -yaw to align perpendicular to flight
-    meshRef.current.rotation.set(-Math.PI / 2, 0, -yaw);
+      if (cycle >= SWEEP_FRACTION) {
+        // Downtime: invisible between sweeps (discrete random spawns).
+        mat.opacity = 0;
+        continue;
+      }
 
-    // Fade in then fade out over the sweep
-    const fade = Math.sin(cycle * Math.PI); // 0→1→0
-    (meshRef.current.material as THREE.MeshBasicMaterial).opacity = fade * 0.4;
+      // Local progress within the visible sweep (0..1).
+      const local = cycle / SWEEP_FRACTION;
+      const d = dirTable[inst.direction];
+      _sDir.set(d[0], 0, d[1]).normalize();
+      _sPerp.crossVectors(_sUp, _sDir).normalize(); // horizontal perpendicular
+
+      const dist = local * SCAN_SWEEP_DIST;
+      // Vertical lines stand on the ground; horizontal lines lie on it.
+      const y =
+        orientation === "vertical" ? SCAN_LINE_LENGTH / 2 : 0.02;
+      _scanPos.set(cam.x + _sDir.x * dist, y, cam.z + _sDir.z * dist);
+
+      // Build an orientation basis from the sweep direction.
+      // Geometry is a plane in XY (normal +Z); we map its local axes
+      // so the long axis spans perpendicular to the sweep (horizontal)
+      // or straight up (vertical), and the thin axis aligns with sweep.
+      if (orientation === "horizontal") {
+        // geom [LENGTH, THICK]: X(long)->perp, Y(thin)->dir, Z(normal)->up
+        _sXa.copy(_sPerp);
+        _sYa.copy(_sDir).multiplyScalar(-1);
+        _sZa.copy(_sUp);
+      } else {
+        // geom [THICK, LENGTH]: X(thin)->dir, Y(long)->up, Z(normal)->perp
+        _sXa.copy(_sDir);
+        _sYa.copy(_sUp);
+        _sZa.copy(_sPerp).multiplyScalar(-1);
+      }
+      _scanBasis.makeBasis(_sXa, _sYa, _sZa);
+      _scanQuat.setFromRotationMatrix(_scanBasis);
+
+      mesh.position.copy(_scanPos);
+      mesh.quaternion.copy(_scanQuat);
+
+      // Fade in then out over the visible sweep.
+      mat.opacity = Math.sin(local * Math.PI) * SCAN_FADE;
+    }
   });
 
   return (
-    <mesh ref={meshRef} rotation={[-Math.PI / 2, 0, 0]}>
-      <planeGeometry args={[50, 0.2]} />
-      <meshBasicMaterial
-        color={NEON_YELLOW}
-        transparent
-        opacity={0.4}
-        side={THREE.DoubleSide}
-      />
-    </mesh>
+    <>
+      {instances.map((inst, i) => (
+        <mesh
+          key={i}
+          ref={(el) => {
+            refs.current[i] = el;
+          }}
+        >
+          <planeGeometry args={geomArgs} />
+          <meshBasicMaterial
+            color={SCAN_COLORS[inst.colorIndex]}
+            transparent
+            opacity={0}
+            side={THREE.DoubleSide}
+          />
+        </mesh>
+      ))}
+    </>
   );
 }
 
@@ -511,6 +627,8 @@ export default function CyberpunkScene() {
   const cars = useMemo(() => generateCars(99), []);
   const planes = useMemo(() => generateSkyVehicles(77, 6, 10, 14), []);
   const zeppelins = useMemo(() => generateSkyVehicles(33, 3, 12, 16), []);
+  const scanH = useMemo(() => generateScanInstances(101, SCAN_H_COUNT), []);
+  const scanV = useMemo(() => generateScanInstances(202, SCAN_V_COUNT), []);
 
   return (
     <Canvas
@@ -533,7 +651,18 @@ export default function CyberpunkScene() {
         <FlyingSkyVehicles vehicles={planes} camPosRef={camPosRef} scaleX={1.5} scaleY={0.2} scaleZ={0.5} />
         {/* Zeppelins: long fat boxes, even higher */}
         <FlyingSkyVehicles vehicles={zeppelins} camPosRef={camPosRef} scaleX={2.5} scaleY={0.8} scaleZ={0.8} />
-        <ScanLine camPosRef={camPosRef} yawRef={yawRef} />
+        <ScanLines
+          camPosRef={camPosRef}
+          yawRef={yawRef}
+          instances={scanH}
+          orientation="horizontal"
+        />
+        <ScanLines
+          camPosRef={camPosRef}
+          yawRef={yawRef}
+          instances={scanV}
+          orientation="vertical"
+        />
         <FlightController camPosRef={camPosRef} yawRef={yawRef} />
         <VisibilityPause />
 
