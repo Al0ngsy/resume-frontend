@@ -20,6 +20,11 @@ export const suggestedQuestionsByLocale: Record<Locale, string[]> = {
     "What is his work philosophy?",
     "How many years of experience does he have?",
     "Is he open to remote work or relocation?",
+    "What are his soft skills?",
+    "How does he handle stress and pressure?",
+    "How does he approach problem-solving?",
+    "How quickly does he learn new things?",
+    "How would you describe his work style?",
   ],
   de: [
     "Mit welchen Technologien arbeitet Le Quoc Anh?",
@@ -34,6 +39,11 @@ export const suggestedQuestionsByLocale: Record<Locale, string[]> = {
     "Was ist seine Arbeitsphilosophie?",
     "Wie viele Jahre Erfahrung hat er?",
     "Ist er offen für Remote-Arbeit oder Umzug?",
+    "Was sind seine Soft Skills?",
+    "Wie geht er mit Stress und Druck um?",
+    "Wie geht er an Problemlösungen heran?",
+    "Wie schnell lernt er neue Dinge?",
+    "Wie würden Sie seine Arbeitsweise beschreiben?",
   ],
   vi: [
     "Le Quoc Anh làm việc với những công nghệ nào?",
@@ -48,6 +58,11 @@ export const suggestedQuestionsByLocale: Record<Locale, string[]> = {
     "Triết lý làm việc của anh ấy là gì?",
     "Anh ấy có bao nhiêu năm kinh nghiệm?",
     "Anh ấy có sẵn sàng làm remote hoặc chuyển nơi làm không?",
+    "Anh ấy có những soft skills nào?",
+    "Anh ấy xử lý stress và áp lực như thế nào?",
+    "Anh ấy tiếp cận vấn đề như thế nào?",
+    "Anh ấy học nhanh thế nào?",
+    "Anh ấy làm việc theo phong cách nào?",
   ],
 };
 

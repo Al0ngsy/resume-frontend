@@ -24,6 +24,10 @@ const STEP_ORDER = [
   "saving",
 ];
 
+// CP2077 palette
+const NEON_YELLOW = "#FCEE0A";
+const NEON_CYAN = "#00F0FF";
+
 interface StepProgressPanelProps {
   steps: StepInfo[];
   visible: boolean;
@@ -67,9 +71,9 @@ export default function StepProgressPanel({
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 8 }}
         transition={{ duration: 0.2 }}
         style={{
           position: "absolute",
@@ -84,15 +88,18 @@ export default function StepProgressPanel({
           sx={{
             px: 2,
             py: 1,
-            bgcolor: "rgba(255, 255, 255, 0.85)",
-            backdropFilter: "blur(6px)",
-            borderTop: 1,
-            borderColor: "divider",
+            // Dark translucent glass — matches the rest of the chat UI.
+            bgcolor: "rgba(9, 9, 11, 0.78)",
+            backdropFilter: "blur(10px)",
+            borderTop: `1px solid ${NEON_CYAN}55`,
             position: "relative",
             overflow: "hidden",
+            // CP2077 angular corner — clipped top-right notch.
+            clipPath:
+              "polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%)",
           }}
         >
-          {/* Progress bar fill — runs left to right behind the steps */}
+          {/* Progress bar fill — neon gradient sweep left to right behind steps */}
           <motion.div
             initial={{ width: "0%" }}
             animate={{ width: `${progress * 100}%` }}
@@ -102,8 +109,23 @@ export default function StepProgressPanel({
               top: 0,
               left: 0,
               bottom: 0,
-              background: "rgba(144, 202, 249, 0.12)",
+              background: `linear-gradient(90deg, ${NEON_CYAN}1f, ${NEON_YELLOW}14)`,
               zIndex: 0,
+            }}
+          />
+          {/* Thin neon track along the top edge of the fill */}
+          <motion.div
+            initial={{ width: "0%" }}
+            animate={{ width: `${progress * 100}%` }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              height: 2,
+              background: `linear-gradient(90deg, ${NEON_CYAN}, ${NEON_YELLOW})`,
+              boxShadow: `0 0 8px ${NEON_CYAN}aa`,
+              zIndex: 2,
             }}
           />
 
@@ -133,7 +155,7 @@ export default function StepProgressPanel({
                     flexShrink: 0,
                   }}
                 >
-                  {/* Step indicator: checkmark for done, pulsing dot for running */}
+                  {/* Step indicator: angular neon token */}
                   <Box
                     component="span"
                     sx={{
@@ -142,32 +164,40 @@ export default function StepProgressPanel({
                       justifyContent: "center",
                       width: 18,
                       height: 18,
-                      borderRadius: "50%",
+                      // CP2077 angular shape instead of circle
+                      clipPath:
+                        "polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%)",
                       flexShrink: 0,
                       bgcolor: isDone
-                        ? "success.main"
+                        ? NEON_YELLOW
                         : isRunning
-                        ? "primary.main"
-                        : "action.disabled",
-                      transition: "background-color 0.3s ease",
+                        ? NEON_CYAN
+                        : "rgba(255,255,255,0.12)",
+                      boxShadow: isRunning
+                        ? `0 0 10px ${NEON_CYAN}cc`
+                        : isDone
+                        ? `0 0 6px ${NEON_YELLOW}88`
+                        : "none",
+                      transition: "background-color 0.3s ease, box-shadow 0.3s ease",
                     }}
                   >
                     {isDone ? (
-                      <Check size={12} color="#fff" strokeWidth={3} />
+                      <Check size={12} color="#09090b" strokeWidth={3} />
                     ) : isRunning ? (
                       <motion.span
-                        animate={{ scale: [1, 1.3, 1] }}
+                        animate={{ opacity: [1, 0.3, 1] }}
                         transition={{
                           repeat: Infinity,
-                          duration: 1,
+                          duration: 0.9,
                           ease: "easeInOut",
                         }}
                         style={{
                           display: "inline-block",
                           width: 8,
                           height: 8,
-                          borderRadius: "50%",
-                          background: "#fff",
+                          clipPath:
+                            "polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%)",
+                          background: "#09090b",
                         }}
                       />
                     ) : (
@@ -177,26 +207,34 @@ export default function StepProgressPanel({
                           display: "inline-block",
                           width: 6,
                           height: 6,
-                          borderRadius: "50%",
-                          bgcolor: "rgba(255,255,255,0.5)",
+                          clipPath:
+                            "polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%)",
+                          bgcolor: "rgba(255,255,255,0.35)",
                         }}
                       />
                     )}
                   </Box>
 
-                  {/* Emoji + label */}
+                  {/* Emoji + label — uppercase, tracked, neon-tinted */}
                   <Typography
                     variant="caption"
                     sx={{
-                      fontSize: "0.7rem",
+                      fontSize: "0.68rem",
+                      letterSpacing: "0.06em",
+                      textTransform: "uppercase",
                       color: isDone
-                        ? "text.disabled"
+                        ? "rgba(252, 238, 10, 0.7)"
                         : isRunning
-                        ? "text.primary"
+                        ? NEON_CYAN
                         : "text.disabled",
-                      fontWeight: isRunning ? 600 : 400,
-                      transition: "color 0.3s ease, opacity 0.3s ease",
-                      opacity: isDone ? 0.6 : 1,
+                      fontWeight: isRunning ? 700 : 500,
+                      transition: "color 0.3s ease, opacity 0.3s ease, text-shadow 0.3s ease",
+                      opacity: isDone ? 0.8 : 1,
+                      textShadow: isRunning
+                        ? `0 0 8px ${NEON_CYAN}88`
+                        : isDone
+                        ? `0 0 4px ${NEON_YELLOW}55`
+                        : "none",
                       display: "inline-flex",
                       alignItems: "center",
                       gap: 0.25,
@@ -206,14 +244,14 @@ export default function StepProgressPanel({
                     <span>{s.label}</span>
                   </Typography>
 
-                  {/* Connector line between steps */}
+                  {/* Connector — angular neon dash between steps */}
                   {i < steps.length - 1 && (
                     <Box
                       sx={{
-                        width: 16,
+                        width: 14,
                         height: 2,
-                        borderRadius: 1,
-                        bgcolor: isDone ? "success.light" : "divider",
+                        clipPath: "polygon(0 0, 100% 0, 80% 100%, 0 100%)",
+                        bgcolor: isDone ? `${NEON_YELLOW}88` : "rgba(255,255,255,0.1)",
                         flexShrink: 0,
                         transition: "background-color 0.3s ease",
                       }}
