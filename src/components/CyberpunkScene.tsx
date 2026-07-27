@@ -56,18 +56,63 @@ function generateBuildings(seed: number): Building[] {
   const half = CITY_RANGE / 2;
   const count = Math.floor(CITY_RANGE / BLOCK_SPACING);
 
+  // Generate 3-5 "downtown" clusters — dense, tall buildings cluster
+  // here. Everywhere else is sparse outskirts.
+  const clusterCount = 3 + Math.floor(rand() * 3);
+  const clusters: { x: number; z: number; radius: number; intensity: number }[] = [];
+  for (let c = 0; c < clusterCount; c++) {
+    clusters.push({
+      x: rand() * CITY_RANGE - half,
+      z: rand() * CITY_RANGE - half,
+      radius: 12 + rand() * 15,
+      intensity: 0.6 + rand() * 0.4,
+    });
+  }
+
+  // Returns 0..1 — proximity to nearest cluster (1 = at cluster center)
+  const clusterInfluence = (x: number, z: number) => {
+    let max = 0;
+    for (const c of clusters) {
+      const dx = x - c.x;
+      const dz = z - c.z;
+      const dist = Math.sqrt(dx * dx + dz * dz);
+      const inf = Math.max(0, 1 - dist / c.radius) * c.intensity;
+      if (inf > max) max = inf;
+    }
+    return max;
+  };
+
   for (let gx = 0; gx < count; gx++) {
     for (let gz = 0; gz < count; gz++) {
-      if (rand() < 0.18) continue;
+      const baseX = gx * BLOCK_SPACING - half;
+      const baseZ = gz * BLOCK_SPACING - half;
+      const influence = clusterInfluence(baseX, baseZ);
 
-      const x = gx * BLOCK_SPACING - half + (rand() - 0.5) * 0.5;
-      const z = gz * BLOCK_SPACING - half + (rand() - 0.5) * 0.5;
-      const h = BUILDING_MIN_H + rand() * (BUILDING_MAX_H - BUILDING_MIN_H);
-      const w = 1.2 + rand() * 0.6;
-      const d = 1.2 + rand() * 0.6;
+      // Sparse in outskirts, dense in clusters
+      const skipChance = 0.55 - influence * 0.5;
+      if (rand() < skipChance) continue;
+
+      // Occasional plaza (empty gap) even in dense areas
+      if (influence > 0.3 && rand() < 0.05) continue;
+
+      // Larger jitter for organic feel
+      const x = baseX + (rand() - 0.5) * 1.5;
+      const z = baseZ + (rand() - 0.5) * 1.5;
+
+      // Taller in clusters, shorter on outskirts
+      const hBoost = influence * (BUILDING_MAX_H - BUILDING_MIN_H);
+      const h = BUILDING_MIN_H + rand() * (BUILDING_MAX_H - BUILDING_MIN_H - 3) + hBoost;
+
+      // Wider footprints in dense areas
+      const sizeBoost = influence * 0.8;
+      const w = 1.0 + rand() * 0.8 + sizeBoost;
+      const d = 1.0 + rand() * 0.8 + sizeBoost;
 
       const r = rand();
-      const colorIndex = r > 0.75 ? 0 : r > 0.2 ? 1 : 2;
+      // Clusters favor cyan/yellow; outskirts more red
+      const colorIndex = influence > 0.3
+        ? (r > 0.5 ? 0 : 1)
+        : (r > 0.75 ? 0 : r > 0.35 ? 1 : 2);
       const opacity = 0.3 + rand() * 0.4;
 
       buildings.push({ x, z, h, w, d, colorIndex, opacity });
