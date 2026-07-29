@@ -83,6 +83,19 @@ export default function ResumeClient() {
         </Box>
       </motion.div>
 
+      <Typography
+        variant="caption"
+        color="text.secondary"
+        sx={{
+          display: "block",
+          mb: 5,
+          fontStyle: "italic",
+          opacity: 0.7,
+        }}
+      >
+        {t.resume.referencesNote}
+      </Typography>
+
       <Divider sx={{ mb: 6 }} />
 
       {/* Experience */}

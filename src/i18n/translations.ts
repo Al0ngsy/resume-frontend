@@ -50,6 +50,7 @@ export type Translation = {
     downloadCvEn: string;
     professionalExperience: string;
     skills: string;
+    referencesNote: string;
   };
   contact: {
     title: string;
@@ -133,6 +134,8 @@ const en: Translation = {
     downloadCvEn: "Download CV (EN)",
     professionalExperience: "Professional Experience",
     skills: "Skills",
+    referencesNote:
+      "Employment certificates and references available upon request.",
   },
   contact: {
     title: "Contact",
@@ -222,6 +225,8 @@ const de: Translation = {
     downloadCvEn: "CV herunterladen (EN)",
     professionalExperience: "Berufserfahrung",
     skills: "Fähigkeiten",
+    referencesNote:
+      "Arbeitszeugnisse und Referenzen sind auf Anfrage verfügbar.",
   },
   contact: {
     title: "Kontakt",
@@ -313,6 +318,8 @@ const vi: Translation = {
     downloadCvEn: "Tải CV (EN)",
     professionalExperience: "Kinh nghiệm làm việc",
     skills: "Kỹ năng",
+    referencesNote:
+      "Giấy chứng nhận việc làm và thư giới thiệu có sẵn khi yêu cầu.",
   },
   contact: {
     title: "Liên hệ",
