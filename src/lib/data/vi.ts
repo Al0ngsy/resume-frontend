@@ -78,6 +78,9 @@ const siteDataVi: SiteData = {
       solution:
         "Phát triển và bảo trì một stack dịch vụ backend toàn diện bao gồm CMS, dịch vụ thanh toán (PayPal, Stripe, Apple/Google/Amazon/Roku IAP), reporting và RESTful Feed API công khai cho đối tác bên ngoài.",
       technologies: [
+        "Express.js",
+        "Fastify",
+        "Koa",
         "NestJS",
         "TypeScript",
         "PostgreSQL",
@@ -142,6 +145,10 @@ const siteDataVi: SiteData = {
         "Đóng góp cho toàn bộ stack backend của nền tảng B2B SaaS VOD. Mở rộng tính năng CMS với content ingestion tự động từ AWS S3. Phát triển quy trình thanh toán event-driven xử lý 100K+ giao dịch/năm qua PayPal, Stripe và IAP của các app store lớn. Thiết kế và bảo trì RESTful Feed API công khai cho đối tác bao gồm Samsung và Waipu. Tối ưu hóa schema cơ sở dữ liệu, truy vấn và chức năng reporting.",
       technologies: [
         "TypeScript",
+        "Node.js",
+        "Express.js",
+        "Fastify",
+        "Koa",
         "PostgreSQL",
         "React Admin",
         "Google Pub/Sub",
@@ -161,6 +168,9 @@ const siteDataVi: SiteData = {
       category: "Backend",
       items: [
         "Node.js",
+        "Express.js",
+        "Fastify",
+        "Koa",
         "NestJS",
         "REST APIs",
         "Microservices",
