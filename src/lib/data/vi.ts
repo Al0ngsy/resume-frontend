@@ -4,14 +4,14 @@ const siteDataVi: SiteData = {
   name: "Lê Quốc Anh Trần",
   title: "Backend Software Engineer",
   introduction:
-    "Lập trình viên backend với hơn 6 năm kinh nghiệm xây dựng kiến trúc microservice phân tán và ứng dụng SaaS trên nền tảng đám mây. Tập trung vào TypeScript, NestJS và PostgreSQL — thiết kế RESTful API hiệu năng cao và hệ thống backend có khả năng mở rộng.",
+    "Lập trình viên backend với hơn 6 năm kinh nghiệm xây dựng kiến trúc microservice phân tán và ứng dụng SaaS trên nền tảng đám mây. Tập trung vào TypeScript, Node.js và PostgreSQL — thiết kế RESTful API hiệu năng cao và hệ thống backend có khả năng mở rộng với Express.js, Fastify, Koa và NestJS.",
   email: "lequocanhtr@gmail.com",
   github: "https://github.com/Al0ngsy",
   linkedin: "https://linkedin.com/in/lequocanhtr",
   philosophy:
     "Tôi tin rằng một hệ thống backend xuất sắc được xây dựng trên ba trụ cột: sự đơn giản, độ tin cậy và sự hiểu biết sâu sắc về lĩnh vực. Mọi API đều nên trực quan, mọi truy vấn cơ sở dữ liệu đều cần có chủ đích, và mọi hệ thống đều nên được thiết kế để phát triển bền vững mà không tích lũy nợ kỹ thuật.",
   careerSummary:
-    "Backend Software Engineer với hơn 6 năm kinh nghiệm trên toàn bộ stack backend — từ tích hợp thanh toán và hệ thống xác thực đến nền tảng CMS, API công khai và dịch vụ AI. Tôi đã làm việc với nền tảng B2B SaaS video-on-demand phục vụ nhiều khách doanh nghiệp, xử lý hơn 100.000 giao dịch thanh toán hàng năm. Hiện đang tập trung xây dựng dịch vụ backend tích hợp AI bằng NestJS, LangChain và OpenAI.",
+    "Backend Software Engineer với hơn 6 năm kinh nghiệm trên toàn bộ stack backend — từ tích hợp thanh toán và hệ thống xác thực đến nền tảng CMS, API công khai và dịch vụ AI. Tôi đã làm việc với nền tảng B2B SaaS video-on-demand phục vụ nhiều khách doanh nghiệp, xử lý hơn 100.000 giao dịch thanh toán hàng năm. Kinh nghiệm với nhiều Node.js framework bao gồm Express.js, Fastify, Koa và NestJS. Hiện đang tập trung xây dựng dịch vụ backend tích hợp AI bằng NestJS, LangChain và OpenAI.",
   projects: [
     {
       title: "AI Microservice",

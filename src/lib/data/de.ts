@@ -4,14 +4,14 @@ const siteDataDe: SiteData = {
   name: "Lê Quốc Anh Trần",
   title: "Backend Software Engineer",
   introduction:
-    "Backend-Entwickler mit über 6 Jahren Erfahrung im Aufbau verteilter Microservice-Architekturen und cloudbasierter SaaS-Anwendungen. Fokus auf TypeScript, NestJS und PostgreSQL — Entwurf performanter RESTful APIs und skalierbarer Backend-Systeme.",
+    "Backend-Entwickler mit über 6 Jahren Erfahrung im Aufbau verteilter Microservice-Architekturen und cloudbasierter SaaS-Anwendungen. Fokus auf TypeScript, Node.js und PostgreSQL — Entwurf performanter RESTful APIs und skalierbarer Backend-Systeme mit Express.js, Fastify, Koa und NestJS.",
   email: "lequocanhtr@gmail.com",
   github: "https://github.com/Al0ngsy",
   linkedin: "https://linkedin.com/in/lequocanhtr",
   philosophy:
     "Ich glaube, dass großartige Backend-Systeme auf drei Säulen ruhen: Einfachheit, Zuverlässigkeit und tiefem Verständnis der Domäne. Jede API sollte intuitiv sein, jede Datenbankabfrage bewusst, und jedes System sollte so gestaltet sein, dass es ohne technische Schulden wachsen kann.",
   careerSummary:
-    "Backend Software Engineer mit über 6 Jahren Erfahrung im gesamten Backend-Stack — von Zahlungsintegrationen und Authentifizierungssystemen über CMS-Plattformen und öffentliche APIs bis hin zu KI-gestützten Diensten. Ich habe an einer B2B-SaaS-Video-on-Demand-Plattform für mehrere Unternehmenskunden gearbeitet, die jährlich über 100.000 Zahlungsvorgänge verarbeitet. Aktuell fokussiert auf die Entwicklung KI-integrierter Backend-Services mit NestJS, LangChain und OpenAI.",
+    "Backend Software Engineer mit über 6 Jahren Erfahrung im gesamten Backend-Stack — von Zahlungsintegrationen und Authentifizierungssystemen über CMS-Plattformen und öffentliche APIs bis hin zu KI-gestützten Diensten. Ich habe an einer B2B-SaaS-Video-on-Demand-Plattform für mehrere Unternehmenskunden gearbeitet, die jährlich über 100.000 Zahlungsvorgänge verarbeitet. Erfahrung mit verschiedenen Node.js-Frameworks inklusive Express.js, Fastify, Koa und NestJS. Aktuell fokussiert auf die Entwicklung KI-integrierter Backend-Services mit NestJS, LangChain und OpenAI.",
   projects: [
     {
       title: "KI-Microservice",
@@ -78,6 +78,9 @@ const siteDataDe: SiteData = {
       solution:
         "Entwicklung und Wartung eines umfassenden Backend-Service-Stacks inklusive CMS, Zahlungsservices (PayPal, Stripe, Apple/Google/Amazon/Roku IAP), Reporting und einer öffentlichen RESTful Feed API für externe Partner.",
       technologies: [
+        "Express.js",
+        "Fastify",
+        "Koa",
         "NestJS",
         "TypeScript",
         "PostgreSQL",
@@ -120,7 +123,7 @@ const siteDataDe: SiteData = {
       company: "simpleTechs GmbH",
       period: "Jul 2024 — Heute",
       description:
-        "Entwurf und Implementierung von REST-API-Microservices für KI-gestützte Funktionen mit NestJS, LangChain und OpenAI API. Entwicklung optimierter PostgreSQL-Migrationsprozesse, Backend-Beiträge zur Goldhandelsplattform FlexGold ab Ende 2025, und Prototyp einer Optionshandelsplattform. Automatisierte Tests mit Jest und CI/CD-Pipelines via Docker und Bitbucket Pipelines.",
+        "Entwurf und Implementierung von REST-API-Microservices für KI-gestützte Funktionen mit NestJS, LangChain und OpenAI API. Entwicklung optimierter PostgreSQL-Migrationsprozesse, Backend-Beiträge zur Goldhandelsplattform FlexGold ab Ende 2025, und Prototyp einer Optionshandelsplattform. Automatisierte Tests mit Jest und CI/CD-Pipelines via Docker und Bitbucket Pipelines. Zuvor jahrelange Arbeit mit Express.js, Fastify und Koa im B2B-SaaS-VOD-Backend.",
       technologies: [
         "NestJS",
         "TypeScript",
@@ -142,6 +145,10 @@ const siteDataDe: SiteData = {
         "Beiträge zum gesamten Backend-Stack einer B2B-SaaS-VOD-Plattform. Erweiterung der CMS-Funktionen mit automatisierter Content-Ingestion aus AWS S3. Entwicklung Event-Driven-Zahlungs-Workflows mit 100K+ Transaktionen/Jahr über PayPal, Stripe und große App-Store-IAPs. Entwurf und Wartung einer öffentlichen RESTful Feed API für Partner inklusive Samsung und Waipu. Optimierung von Datenbankschemas, Queries und Reporting-Funktionen.",
       technologies: [
         "TypeScript",
+        "Node.js",
+        "Express.js",
+        "Fastify",
+        "Koa",
         "PostgreSQL",
         "React Admin",
         "Google Pub/Sub",
@@ -161,6 +168,9 @@ const siteDataDe: SiteData = {
       category: "Backend",
       items: [
         "Node.js",
+        "Express.js",
+        "Fastify",
+        "Koa",
         "NestJS",
         "REST APIs",
         "Microservices",

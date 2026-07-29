@@ -4,14 +4,14 @@ const siteDataEn: SiteData = {
   name: "Lê Quốc Anh Trần",
   title: "Backend Software Engineer",
   introduction:
-    "Backend developer with over 6 years of experience building distributed microservice architectures and cloud-based SaaS applications. Focused on TypeScript, NestJS, and PostgreSQL — designing performant RESTful APIs and scalable backend systems.",
+    "Backend developer with over 6 years of experience building distributed microservice architectures and cloud-based SaaS applications. Focused on TypeScript, Node.js, and PostgreSQL — designing performant RESTful APIs and scalable backend systems across Express.js, Fastify, Koa, and NestJS.",
   email: "lequocanhtr@gmail.com",
   github: "https://github.com/Al0ngsy",
   linkedin: "https://linkedin.com/in/lequocanhtr",
   philosophy:
     "I believe great backend systems are built on three pillars: simplicity, reliability, and deep understanding of the domain. Every API should be intuitive, every database query should be intentional, and every system should be designed to grow gracefully without accumulating technical debt.",
   careerSummary:
-    "Backend Software Engineer with 6+ years of experience across the full backend stack — from payment integrations and authentication systems to CMS platforms, public APIs, and AI-powered services. I've worked on a B2B SaaS video-on-demand platform serving multiple enterprise clients, processing over 100,000 payment transactions annually. Currently focused on building AI-integrated backend services using NestJS, LangChain, and OpenAI.",
+    "Backend Software Engineer with 6+ years of experience across the full backend stack — from payment integrations and authentication systems to CMS platforms, public APIs, and AI-powered services. I've worked on a B2B SaaS video-on-demand platform serving multiple enterprise clients, processing over 100,000 payment transactions annually. Experienced across multiple Node.js frameworks including Express.js, Fastify, Koa, and NestJS. Currently focused on building AI-integrated backend services using NestJS, LangChain, and OpenAI.",
   projects: [
     {
       title: "AI Microservice",
@@ -78,6 +78,9 @@ const siteDataEn: SiteData = {
       solution:
         "Developed and maintained a comprehensive backend service stack including CMS, payment services (PayPal, Stripe, Apple/Google/Amazon/Roku IAP), reporting, and a public RESTful Feed API for external partners.",
       technologies: [
+        "Express.js",
+        "Fastify",
+        "Koa",
         "NestJS",
         "TypeScript",
         "PostgreSQL",
@@ -142,6 +145,10 @@ const siteDataEn: SiteData = {
         "Contributed to the full backend stack of a B2B SaaS VOD platform. Extended CMS features with automated content ingestion from AWS S3. Developed event-driven payment workflows handling 100K+ transactions/year across PayPal, Stripe, and major app store IAPs. Designed and maintained a public RESTful Feed API for partners including Samsung and Waipu. Optimized database schemas, queries, and reporting functionalities.",
       technologies: [
         "TypeScript",
+        "Node.js",
+        "Express.js",
+        "Fastify",
+        "Koa",
         "PostgreSQL",
         "React Admin",
         "Google Pub/Sub",
@@ -161,6 +168,9 @@ const siteDataEn: SiteData = {
       category: "Backend",
       items: [
         "Node.js",
+        "Express.js",
+        "Fastify",
+        "Koa",
         "NestJS",
         "REST APIs",
         "Microservices",

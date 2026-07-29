@@ -9,7 +9,7 @@ export interface Message {
 export const suggestedQuestionsByLocale: Record<Locale, string[]> = {
   en: [
     "What technologies does Le Quoc Anh work with?",
-    "Tell me about his experience with NestJS",
+    "Tell me about his experience with backend frameworks",
     "What projects has he worked on?",
     "Describe his backend architecture experience.",
     "How does he use AI and LLMs in production?",
@@ -28,7 +28,7 @@ export const suggestedQuestionsByLocale: Record<Locale, string[]> = {
   ],
   de: [
     "Mit welchen Technologien arbeitet Le Quoc Anh?",
-    "Erzählen Sie mir von seiner Erfahrung mit NestJS",
+    "Erzählen Sie mir von seiner Erfahrung mit Backend-Frameworks",
     "An welchen Projekten hat er gearbeitet?",
     "Beschreiben Sie seine Backend-Architektur-Erfahrung.",
     "Wie setzt er KI und LLMs in Produktion ein?",
@@ -47,7 +47,7 @@ export const suggestedQuestionsByLocale: Record<Locale, string[]> = {
   ],
   vi: [
     "Le Quoc Anh làm việc với những công nghệ nào?",
-    "Kể về kinh nghiệm NestJS của anh ấy",
+    "Kể về kinh nghiệm với các backend framework của anh ấy",
     "Anh ấy đã làm những dự án nào?",
     "Mô tả kinh nghiệm kiến trúc backend của anh ấy.",
     "Anh ấy dùng AI và LLM trong production như thế nào?",
