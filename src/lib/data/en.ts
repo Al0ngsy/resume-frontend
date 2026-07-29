@@ -50,6 +50,26 @@ const siteDataEn: SiteData = {
         "Database migrations in production require a completely different approach than development. Batching, lock-free strategies, and comprehensive rollback plans are essential.",
     },
     {
+      title: "FlexGold: Gold Trading Platform",
+      description:
+        "Backend contributions to an existing gold trading platform, implementing transaction processing, pricing logic, and API endpoints.",
+      problem:
+        "The platform needed additional backend features and support during an active development phase.",
+      solution:
+        "Joined the existing project and contributed NestJS-based backend services for transaction processing and pricing logic, working within the established infrastructure.",
+      technologies: [
+        "NestJS",
+        "TypeScript",
+        "PostgreSQL",
+        "Docker",
+        "Kubernetes",
+      ],
+      challenges:
+        "Ramping up quickly on an existing codebase and contributing features without disrupting ongoing operations.",
+      lessons:
+        "Onboarding onto an existing project requires understanding conventions before writing code. Small, well-scoped contributions build trust faster than large changes.",
+    },
+    {
       title: "B2B SaaS VOD Platform Backend",
       description:
         "Core backend services for a multi-tenant video-on-demand platform serving enterprise clients including Samsung and Waipu.",
@@ -100,7 +120,7 @@ const siteDataEn: SiteData = {
       company: "simpleTechs GmbH",
       period: "Jul 2024 — Present",
       description:
-        "Designing and implementing REST API microservices for AI-powered features using NestJS, LangChain, and OpenAI API. Developed optimized PostgreSQL migration processes, built backend services for a gold trading platform, and prototyped an options trading platform. Automated testing with Jest and managed CI/CD pipelines via Docker and Bitbucket Pipelines.",
+        "Designing and implementing REST API microservices for AI-powered features using NestJS, LangChain, and OpenAI API. Developed optimized PostgreSQL migration processes, contributed backend features to a gold trading platform (FlexGold) from late 2025, and prototyped an options trading platform. Automated testing with Jest and managed CI/CD pipelines via Docker and Bitbucket Pipelines.",
       technologies: [
         "NestJS",
         "TypeScript",

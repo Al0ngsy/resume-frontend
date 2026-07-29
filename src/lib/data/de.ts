@@ -50,6 +50,26 @@ const siteDataDe: SiteData = {
         "Datenbankmigrationen in der Produktion erfordern einen völlig anderen Ansatz als in der Entwicklung. Batching, Lock-free-Strategien und umfassende Rollback-Pläne sind essenziell.",
     },
     {
+      title: "FlexGold: Goldhandelsplattform",
+      description:
+        "Backend-Beiträge zu einer bestehenden Goldhandelsplattform, Implementierung von Transaktionsverarbeitung, Preislogik und API-Endpunkten.",
+      problem:
+        "Die Plattform benötigte zusätzliche Backend-Funktionen und Unterstützung während einer aktiven Entwicklungsphase.",
+      solution:
+        "Einstieg in das bestehende Projekt und Beitrag von NestJS-basierten Backend-Services für Transaktionsverarbeitung und Preislogik, innerhalb der bestehenden Infrastruktur.",
+      technologies: [
+        "NestJS",
+        "TypeScript",
+        "PostgreSQL",
+        "Docker",
+        "Kubernetes",
+      ],
+      challenges:
+        "Schnelles Einarbeiten in eine bestehende Codebase und Beitrag von Features ohne Unterbrechung des laufenden Betriebs.",
+      lessons:
+        "Das Onboarding in ein bestehendes Projekt erfordert das Verständnis der Konventionen vor dem Schreiben von Code. Kleine, gut abgegrenzte Beiträge bauen schneller Vertrauen auf als große Änderungen.",
+    },
+    {
       title: "B2B SaaS VOD-Plattform Backend",
       description:
         "Kern-Backend-Services für eine Multi-Tenant-Video-on-Demand-Plattform für Unternehmenskunden inklusive Samsung und Waipu.",
@@ -100,7 +120,7 @@ const siteDataDe: SiteData = {
       company: "simpleTechs GmbH",
       period: "Jul 2024 — Heute",
       description:
-        "Entwurf und Implementierung von REST-API-Microservices für KI-gestützte Funktionen mit NestJS, LangChain und OpenAI API. Entwicklung optimierter PostgreSQL-Migrationsprozesse, Aufbau von Backend-Services für eine Goldhandelsplattform und Prototyp einer Optionshandelsplattform. Automatisierte Tests mit Jest und CI/CD-Pipelines via Docker und Bitbucket Pipelines.",
+        "Entwurf und Implementierung von REST-API-Microservices für KI-gestützte Funktionen mit NestJS, LangChain und OpenAI API. Entwicklung optimierter PostgreSQL-Migrationsprozesse, Backend-Beiträge zur Goldhandelsplattform FlexGold ab Ende 2025, und Prototyp einer Optionshandelsplattform. Automatisierte Tests mit Jest und CI/CD-Pipelines via Docker und Bitbucket Pipelines.",
       technologies: [
         "NestJS",
         "TypeScript",

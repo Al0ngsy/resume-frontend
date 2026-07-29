@@ -50,6 +50,26 @@ const siteDataVi: SiteData = {
         "Migration cơ sở dữ liệu trên production đòi hỏi cách tiếp cận hoàn toàn khác so với development. Batching, chiến lược lock-free và kế hoạch rollback toàn diện là thiết yếu.",
     },
     {
+      title: "FlexGold: Nền tảng Giao dịch Vàng",
+      description:
+        "Đóng góp backend cho nền tảng giao dịch vàng đang hoạt động, triển khai xử lý giao dịch, logic định giá và các API endpoint.",
+      problem:
+        "Nền tảng cần thêm tính năng backend và hỗ trợ trong giai đoạn phát triển tích cực.",
+      solution:
+        "Tham gia dự án đang có sẵn và đóng góp dịch vụ backend dựa trên NestJS cho xử lý giao dịch và logic định giá, hoạt động trong cơ sở hạ tầng đã thiết lập.",
+      technologies: [
+        "NestJS",
+        "TypeScript",
+        "PostgreSQL",
+        "Docker",
+        "Kubernetes",
+      ],
+      challenges:
+        "Nhanh chóng làm quen với codebase có sẵn và đóng góp tính năng mà không gián đoạn hoạt động đang chạy.",
+      lessons:
+        "Onboarding vào dự án có sẵn đòi hỏi hiểu quy ước trước khi viết code. Các đóng góp nhỏ, có phạm vi rõ ràng xây dựng niềm tin nhanh hơn những thay đổi lớn.",
+    },
+    {
       title: "Backend Nền tảng B2B SaaS VOD",
       description:
         "Các dịch vụ backend cốt lõi cho nền tảng video-on-demand multi-tenant phục vụ khách hàng doanh nghiệp bao gồm Samsung và Waipu.",
@@ -100,7 +120,7 @@ const siteDataVi: SiteData = {
       company: "simpleTechs GmbH",
       period: "Thg 7 2024 — Hiện tại",
       description:
-        "Thiết kế và triển khai các microservice REST API cho tính năng AI với NestJS, LangChain và OpenAI API. Phát triển quy trình migration PostgreSQL tối ưu, xây dựng dịch vụ backend cho nền tảng giao dịch vàng và prototype nền tảng giao dịch options. Tự động hóa kiểm thử với Jest và quản lý CI/CD pipeline qua Docker và Bitbucket Pipelines.",
+        "Thiết kế và triển khai các microservice REST API cho tính năng AI với NestJS, LangChain và OpenAI API. Phát triển quy trình migration PostgreSQL tối ưu, đóng góp tính năng backend cho nền tảng giao dịch vàng (FlexGold) từ cuối 2025, và prototype nền tảng giao dịch options. Tự động hóa kiểm thử với Jest và quản lý CI/CD pipeline qua Docker và Bitbucket Pipelines.",
       technologies: [
         "NestJS",
         "TypeScript",
