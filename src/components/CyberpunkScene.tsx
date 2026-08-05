@@ -1,13 +1,13 @@
 "use client";
 
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   Bloom,
   ChromaticAberration,
   EffectComposer,
 } from "@react-three/postprocessing";
 import { BlendFunction } from "postprocessing";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 
 /**
@@ -126,6 +126,15 @@ const _matrix = new THREE.Matrix4();
 const _position = new THREE.Vector3();
 const _scale = new THREE.Vector3();
 const _color = new THREE.Color();
+const _quat = new THREE.Quaternion();
+const _euler = new THREE.Euler();
+// Reusable direction table for scan lines (4 cardinals relative to yaw)
+const _dirTable: [number, number][] = [
+  [0, 0],
+  [0, 0],
+  [0, 0],
+  [0, 0],
+];
 
 /**
  * Instanced city — ALL buildings in a single InstancedMesh draw call.
@@ -175,7 +184,7 @@ function InstancedCity({
 
       _position.set(cam.x + dx, b.h / 2, cam.z + dz);
       _scale.set(b.w, b.h, b.d);
-      _matrix.compose(_position, new THREE.Quaternion(), _scale);
+      _matrix.compose(_position, _quat.identity(), _scale);
       mesh.setMatrixAt(i, _matrix);
     }
     mesh.instanceMatrix.needsUpdate = true;
@@ -310,12 +319,15 @@ function ScanLines({
 
     // Direction vectors for the 4 cardinals, relative to flight yaw.
     // forward = (sin, -cos); right is forward rotated +90° about Y.
-    const dirTable = [
-      [Math.sin(yaw), -Math.cos(yaw)], // 0 forward
-      [-Math.sin(yaw), Math.cos(yaw)], // 1 backward
-      [-Math.cos(yaw), -Math.sin(yaw)], // 2 left
-      [Math.cos(yaw), Math.sin(yaw)], // 3 right
-    ];
+    // Reuses a module-level table to avoid per-frame allocation.
+    _dirTable[0][0] = Math.sin(yaw);
+    _dirTable[0][1] = -Math.cos(yaw);
+    _dirTable[1][0] = -Math.sin(yaw);
+    _dirTable[1][1] = Math.cos(yaw);
+    _dirTable[2][0] = -Math.cos(yaw);
+    _dirTable[2][1] = -Math.sin(yaw);
+    _dirTable[3][0] = Math.cos(yaw);
+    _dirTable[3][1] = Math.sin(yaw);
 
     for (let i = 0; i < instances.length; i++) {
       const mesh = refs.current[i];
@@ -333,7 +345,7 @@ function ScanLines({
 
       // Local progress within the visible sweep (0..1).
       const local = cycle / SWEEP_FRACTION;
-      const d = dirTable[inst.direction];
+      const d = _dirTable[inst.direction];
       _sDir.set(d[0], 0, d[1]).normalize();
       _sPerp.crossVectors(_sUp, _sDir).normalize(); // horizontal perpendicular
 
@@ -482,10 +494,9 @@ function FlyingCars({
       const angle = Math.atan2(c.vx, c.vz);
       _position.set(cam.x + dx, c.y + bob, cam.z + dz);
       _scale.set(0.4, 0.15, 0.7); // small elongated box
-      const quat = new THREE.Quaternion().setFromEuler(
-        new THREE.Euler(0, angle, 0),
-      );
-      _matrix.compose(_position, quat, _scale);
+      _euler.set(0, angle, 0);
+      _quat.setFromEuler(_euler);
+      _matrix.compose(_position, _quat, _scale);
       mesh.setMatrixAt(i, _matrix);
     }
     mesh.instanceMatrix.needsUpdate = true;
@@ -595,10 +606,9 @@ function FlyingSkyVehicles({
 
       _position.set(cam.x + dx, v.y + bob, cam.z + dz);
       _scale.set(scaleX, scaleY, scaleZ);
-      const quat = new THREE.Quaternion().setFromEuler(
-        new THREE.Euler(0, angle, 0),
-      );
-      _matrix.compose(_position, quat, _scale);
+      _euler.set(0, angle, 0);
+      _quat.setFromEuler(_euler);
+      _matrix.compose(_position, _quat, _scale);
       mesh.setMatrixAt(i, _matrix);
     }
     mesh.instanceMatrix.needsUpdate = true;
@@ -699,10 +709,9 @@ function Satellites({
       _scale.set(0.8, 0.8, 0.8);
       // Spin around tilted axis
       const spin = t * sat.spin;
-      const quat = new THREE.Quaternion().setFromEuler(
-        new THREE.Euler(sat.tilt, spin, sat.tilt * 0.5),
-      );
-      _matrix.compose(_position, quat, _scale);
+      _euler.set(sat.tilt, spin, sat.tilt * 0.5);
+      _quat.setFromEuler(_euler);
+      _matrix.compose(_position, _quat, _scale);
       mesh.setMatrixAt(i, _matrix);
     }
     mesh.instanceMatrix.needsUpdate = true;
@@ -959,19 +968,20 @@ function FlightController({
 
 /**
  * Pauses the render loop when the tab is hidden (Page Visibility API).
- * Saves CPU/GPU when user switches away.
+ * Saves CPU/GPU when user switches away. Uses R3F's setFrameloop so the
+ * loop genuinely stops (previously this was a no-op that set unused state).
  */
 function VisibilityPause() {
-  const setPaused = useState(false)[1];
+  const setFrameloop = useThree((s) => s.setFrameloop);
 
   useEffect(() => {
     const handleVisibility = () => {
-      setPaused(document.hidden);
+      setFrameloop(document.hidden ? "never" : "always");
     };
     document.addEventListener("visibilitychange", handleVisibility);
     return () =>
       document.removeEventListener("visibilitychange", handleVisibility);
-  }, [setPaused]);
+  }, [setFrameloop]);
 
   return null;
 }
@@ -992,8 +1002,15 @@ export default function CyberpunkScene() {
     <Canvas
       camera={{ position: [0, 8, 15], fov: 60 }}
       style={{ width: "100%", height: "100%" }}
-      dpr={[1, 1.5]}
-      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+      dpr={[1, 1.25]}
+      gl={{
+        // antialias is pointless here: the EffectComposer renders to its
+        // own non-MSAA intermediate buffers, so context MSAA never reaches
+        // the final composite. Dropping it saves GPU memory/bandwidth.
+        antialias: false,
+        alpha: true,
+        powerPreference: "high-performance",
+      }}
       frameloop="always"
     >
       <Suspense fallback={null}>

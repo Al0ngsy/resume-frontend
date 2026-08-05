@@ -13,7 +13,13 @@ import { GitHub, Launch } from "@mui/icons-material";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { Project } from "@/types";
 
-export default function ProjectCard({ project }: { project: Project }) {
+export default function ProjectCard({
+  project,
+  compact = false,
+}: {
+  project: Project;
+  compact?: boolean;
+}) {
   const { t } = useLanguage();
 
   return (
@@ -27,6 +33,9 @@ export default function ProjectCard({ project }: { project: Project }) {
         backdropFilter: "blur(12px)",
         transition: "all 0.2s",
         overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
         "&:hover": {
           borderColor: "rgba(252, 238, 10, 0.4)",
           boxShadow: "0 0 24px rgba(252, 238, 10, 0.1)",
@@ -34,37 +43,41 @@ export default function ProjectCard({ project }: { project: Project }) {
         },
       }}
     >
-      <CardContent sx={{ p: 3 }}>
-        <Typography variant="h4" gutterBottom>
+      <CardContent sx={{ p: compact ? 2.5 : 3, flex: 1 }}>
+        <Typography variant={compact ? "h5" : "h4"} gutterBottom>
           {project.title}
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
           {project.description}
         </Typography>
-        <Box sx={{ mb: 1 }}>
-          <Typography variant="body2" sx={{ fontWeight: 600 }} gutterBottom>
-            {t.projects.problem}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {project.problem}
-          </Typography>
-        </Box>
-        <Box sx={{ mb: 1 }}>
-          <Typography variant="body2" sx={{ fontWeight: 600 }} gutterBottom>
-            {t.projects.solution}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {project.solution}
-          </Typography>
-        </Box>
-        <Box sx={{ mb: 1 }}>
-          <Typography variant="body2" sx={{ fontWeight: 600 }} gutterBottom>
-            {t.projects.challengesLessons}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {project.challenges} {project.lessons}
-          </Typography>
-        </Box>
+        {!compact && (
+          <>
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="body2" sx={{ fontWeight: 600 }} gutterBottom>
+                {t.projects.problem}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {project.problem}
+              </Typography>
+            </Box>
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="body2" sx={{ fontWeight: 600 }} gutterBottom>
+                {t.projects.solution}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {project.solution}
+              </Typography>
+            </Box>
+            <Box sx={{ mb: 1 }}>
+              <Typography variant="body2" sx={{ fontWeight: 600 }} gutterBottom>
+                {t.projects.challengesLessons}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {project.challenges} {project.lessons}
+              </Typography>
+            </Box>
+          </>
+        )}
         <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: 0.5, mt: 2 }}>
           {project.technologies.map((tech) => (
             <Chip
@@ -83,7 +96,7 @@ export default function ProjectCard({ project }: { project: Project }) {
           ))}
         </Box>
       </CardContent>
-      <CardActions sx={{ px: 3, pb: 2 }}>
+      <CardActions sx={{ px: compact ? 2.5 : 3, pb: 2 }}>
         {project.github && (
           <Button
             size="small"

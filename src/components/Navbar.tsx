@@ -44,14 +44,24 @@ export default function Navbar() {
   return (
     <>
       <AppBar
-        position="sticky"
+        position="fixed"
         elevation={0}
         sx={{
           bgcolor: "background.default",
           borderBottom: `1px solid ${theme.palette.divider}`,
+          height: "var(--nav-h)",
         }}
       >
-        <Toolbar sx={{ maxWidth: 960, width: "100%", mx: "auto", px: { xs: 2, md: 0 } }}>
+        <Toolbar
+          disableGutters
+          sx={{
+            maxWidth: 960,
+            width: "100%",
+            mx: "auto",
+            px: { xs: 2, md: 0 },
+            height: "100%",
+          }}
+        >
           <Box
             component={Link}
             href="/"

@@ -15,7 +15,7 @@ export default function Hero() {
     <Container maxWidth="md">
       <Box
         sx={{
-          py: { xs: 8, md: 14 },
+          py: { xs: 4, md: 6 },
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

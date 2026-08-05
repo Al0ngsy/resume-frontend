@@ -15,6 +15,42 @@ a {
   text-decoration: none;
 }
 
+/*
+ * ─── Full-page scroll snapping (home page) ─────────────────────────
+ * The document snaps to full-viewport sections. Only sections marked
+ * .snap-section participate. scroll-padding-top accounts for the fixed
+ * navbar height.
+ *
+ * Snap is applied unconditionally: it is a navigation/layout behavior the
+ * user explicitly requested, not decorative motion, so it must not be
+ * disabled by the OS "reduce motion" setting.
+ */
+:root {
+  --nav-h: 64px;
+}
+
+html {
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: var(--nav-h);
+}
+
+.snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: calc(100vh - var(--nav-h));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Respect reduced motion: keep snapping (it's navigation) but avoid the
+   smooth-scroll animation on anchor/chevron jumps. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 /* ─── Fade-in animation ─── */
 @keyframes fadeInDown {
   from {
