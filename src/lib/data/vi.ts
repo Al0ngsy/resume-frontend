@@ -96,6 +96,7 @@ const siteDataVi: SiteData = {
         "Nhanh chóng làm quen với codebase có sẵn và đóng góp tính năng mà không gián đoạn hoạt động đang chạy.",
       lessons:
         "Onboarding vào dự án có sẵn đòi hỏi hiểu quy ước trước khi viết code. Các đóng góp nhỏ, có phạm vi rõ ràng xây dựng niềm tin nhanh hơn những thay đổi lớn.",
+      liveUrls: ["https://flexgold.com/"],
     },
     {
       id: "vod-platform",

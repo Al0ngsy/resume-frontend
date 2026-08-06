@@ -96,6 +96,7 @@ const siteDataEn: SiteData = {
         "Ramping up quickly on an existing codebase and contributing features without disrupting ongoing operations.",
       lessons:
         "Onboarding onto an existing project requires understanding conventions before writing code. Small, well-scoped contributions build trust faster than large changes.",
+      liveUrls: ["https://flexgold.com/"],
     },
     {
       id: "vod-platform",

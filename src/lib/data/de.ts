@@ -96,6 +96,7 @@ const siteDataDe: SiteData = {
         "Schnelles Einarbeiten in eine bestehende Codebase und Beitrag von Features ohne Unterbrechung des laufenden Betriebs.",
       lessons:
         "Das Onboarding in ein bestehendes Projekt erfordert das Verständnis der Konventionen vor dem Schreiben von Code. Kleine, gut abgegrenzte Beiträge bauen schneller Vertrauen auf als große Änderungen.",
+      liveUrls: ["https://flexgold.com/"],
     },
     {
       id: "vod-platform",
