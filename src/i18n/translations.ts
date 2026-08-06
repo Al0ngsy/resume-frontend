@@ -41,7 +41,6 @@ export type Translation = {
     solution: string;
     challengesLessons: string;
     code: string;
-    live: string;
   };
   resume: {
     title: string;
@@ -125,7 +124,6 @@ const en: Translation = {
     solution: "Solution",
     challengesLessons: "Challenges & Lessons",
     code: "Code",
-    live: "Live",
   },
   resume: {
     title: "Resume",
@@ -216,7 +214,6 @@ const de: Translation = {
     solution: "Lösung",
     challengesLessons: "Herausforderungen & Erkenntnisse",
     code: "Code",
-    live: "Live",
   },
   resume: {
     title: "Lebenslauf",
@@ -309,7 +306,6 @@ const vi: Translation = {
     solution: "Giải pháp",
     challengesLessons: "Thách thức & Bài học",
     code: "Mã nguồn",
-    live: "Live",
   },
   resume: {
     title: "CV",

@@ -1,17 +1,17 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardActions,
-  Typography,
-  Button,
-  Chip,
-  Box,
-} from "@mui/material";
-import { GitHub, Launch } from "@mui/icons-material";
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { Project } from "@/types";
+import { GitHub, Launch } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Chip,
+  Typography,
+} from "@mui/material";
 
 export default function ProjectCard({
   project,
@@ -79,7 +79,15 @@ export default function ProjectCard({
             </Box>
           </>
         )}
-        <Box sx={{ display: "flex", flexDirection: "row", flexWrap: "wrap", gap: 0.5, mt: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            gap: 0.5,
+            mt: 2,
+          }}
+        >
           {project.technologies.map((tech) => (
             <Chip
               key={tech}
@@ -97,14 +105,20 @@ export default function ProjectCard({
           ))}
         </Box>
       </CardContent>
-      <CardActions sx={{ px: compact ? 2.5 : 3, pb: 2, flexWrap: "wrap", gap: 1 }}>
+      <CardActions
+        sx={{ px: compact ? 2.5 : 3, pb: 2, flexWrap: "wrap", gap: 1 }}
+      >
         {project.github && (
           <Button
             size="small"
             startIcon={<GitHub />}
             href={project.github}
             target="_blank"
-            sx={{ textTransform: "none", borderRadius: 999, whiteSpace: "nowrap" }}
+            sx={{
+              textTransform: "none",
+              borderRadius: 999,
+              whiteSpace: "nowrap",
+            }}
           >
             {t.projects.code}
           </Button>
@@ -116,11 +130,13 @@ export default function ProjectCard({
             startIcon={<Launch />}
             href={url}
             target="_blank"
-            sx={{ textTransform: "none", borderRadius: 999, whiteSpace: "nowrap" }}
+            sx={{
+              textTransform: "none",
+              borderRadius: 999,
+              whiteSpace: "nowrap",
+            }}
           >
-            {liveUrls.length === 1
-              ? t.projects.live
-              : new URL(url).hostname.replace(/^www\./, "")}
+            {new URL(url).hostname.replace(/^www\./, "")}
           </Button>
         ))}
       </CardActions>
