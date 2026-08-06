@@ -21,6 +21,7 @@ export default function ProjectCard({
   compact?: boolean;
 }) {
   const { t } = useLanguage();
+  const liveUrls = project.liveUrls ?? [];
 
   return (
     <Card
@@ -96,29 +97,32 @@ export default function ProjectCard({
           ))}
         </Box>
       </CardContent>
-      <CardActions sx={{ px: compact ? 2.5 : 3, pb: 2 }}>
+      <CardActions sx={{ px: compact ? 2.5 : 3, pb: 2, flexWrap: "wrap", gap: 1 }}>
         {project.github && (
           <Button
             size="small"
             startIcon={<GitHub />}
             href={project.github}
             target="_blank"
-            sx={{ textTransform: "none", borderRadius: 999 }}
+            sx={{ textTransform: "none", borderRadius: 999, whiteSpace: "nowrap" }}
           >
             {t.projects.code}
           </Button>
         )}
-        {project.liveUrl && (
+        {liveUrls.map((url) => (
           <Button
+            key={url}
             size="small"
             startIcon={<Launch />}
-            href={project.liveUrl}
+            href={url}
             target="_blank"
-            sx={{ textTransform: "none", borderRadius: 999 }}
+            sx={{ textTransform: "none", borderRadius: 999, whiteSpace: "nowrap" }}
           >
-            {t.projects.live}
+            {liveUrls.length === 1
+              ? t.projects.live
+              : new URL(url).hostname.replace(/^www\./, "")}
           </Button>
-        )}
+        ))}
       </CardActions>
     </Card>
   );

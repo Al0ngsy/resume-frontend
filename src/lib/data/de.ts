@@ -14,6 +14,32 @@ const siteDataDe: SiteData = {
     "Backend Software Engineer mit über 6 Jahren Erfahrung im gesamten Backend-Stack — von Zahlungsintegrationen und Authentifizierungssystemen über CMS-Plattformen und öffentliche APIs bis hin zu KI-gestützten Diensten. Ich habe an einer B2B-SaaS-Video-on-Demand-Plattform für mehrere Unternehmenskunden gearbeitet, die jährlich über 100.000 Zahlungsvorgänge verarbeitet. Erfahrung mit verschiedenen Node.js-Frameworks inklusive Express.js, Fastify, Koa und NestJS. Aktuell fokussiert auf die Entwicklung KI-integrierter Backend-Services mit NestJS, LangChain und OpenAI.",
   projects: [
     {
+      id: "vexarium",
+      title: "VEXARIUM",
+      description:
+        "Ein Entscheidungs-Tool vor dem Trade: ein verständlicher Health-Check für jede Aktie, jeden ETF und jede Option — technische Indikatoren, Optionsdaten, Nachrichten-Sentiment und eine KI-Zweitmeinung vor dem Kauf oder Verkauf.",
+      problem:
+        "Als privater Investor wollte ich vor jedem Kauf oder Verkauf einen schnellen Check eines Tickers — vorhandene Dashboards waren entweder zu komplex oder kombinierten Technik, Optionen und News nicht an einem Ort.",
+      solution:
+        "Full-Stack-Plattform gebaut: FastAPI-Backend mit einer Indicator-Engine, Alpaca-Markt- und Optionsdaten sowie einer LLM-gestützten Analyse-Pipeline, dazu ein SvelteKit-Frontend mit einem Health-Check-Verdikt für jedes Symbol.",
+      technologies: [
+        "FastAPI",
+        "Python",
+        "SvelteKit",
+        "TypeScript",
+        "Alpaca API",
+        "PostgreSQL",
+        "Redis",
+        "LLM",
+      ],
+      challenges:
+        "Mehrere Datenquellen — Preis, Indikatoren, Options-Greeks und News — innerhalb einer Anfrage zu einem kohärenten Verdikt zu vereinen.",
+      lessons:
+        "Eine Analyse als ein einziges erklärbares Verdikt statt roher Zahlen präsentieren, macht sie auch für Nicht-Experten nutzbar; Caching pro Symbol und Tag hält den Free-Tier nachhaltig.",
+      liveUrls: ["https://vexarium.pages.dev"],
+    },
+    {
+      id: "ai-microservice",
       title: "KI-Microservice",
       description:
         "Ein REST-API-Microservice für KI-Funktionen mit Retrieval-Augmented Generation (RAG), Embeddings und Tool/Function Calling.",
@@ -36,6 +62,7 @@ const siteDataDe: SiteData = {
         "RAG-Pipelines erfordern sorgfältige Chunking-Strategien und Prompt Engineering. Vektorsuche allein reicht nicht — hybride Retrieval-Methoden (Keyword + semantisch) liefern bessere Ergebnisse. Deduplizierung ist unerlässlich, um redundante Informationen in Antworten zu vermeiden.",
     },
     {
+      id: "postgresql-migration-framework",
       title: "PostgreSQL-Migrationsframework",
       description:
         "Ein optimierter Migrationsprozess für Produktions-PostgreSQL-Datenbanken mit automatischer Schema-Rekonziliation und Änderungsverfolgung.",
@@ -50,6 +77,7 @@ const siteDataDe: SiteData = {
         "Datenbankmigrationen in der Produktion erfordern einen völlig anderen Ansatz als in der Entwicklung. Batching, Lock-free-Strategien und umfassende Rollback-Pläne sind essenziell.",
     },
     {
+      id: "flexgold",
       title: "FlexGold: Goldhandelsplattform",
       description:
         "Backend-Beiträge zu einer bestehenden Goldhandelsplattform, Implementierung von Transaktionsverarbeitung, Preislogik und API-Endpunkten.",
@@ -70,6 +98,7 @@ const siteDataDe: SiteData = {
         "Das Onboarding in ein bestehendes Projekt erfordert das Verständnis der Konventionen vor dem Schreiben von Code. Kleine, gut abgegrenzte Beiträge bauen schneller Vertrauen auf als große Änderungen.",
     },
     {
+      id: "vod-platform",
       title: "B2B SaaS VOD-Plattform Backend",
       description:
         "Kern-Backend-Services für eine Multi-Tenant-Video-on-Demand-Plattform für Unternehmenskunden inklusive Samsung und Waipu.",
@@ -90,12 +119,19 @@ const siteDataDe: SiteData = {
         "Docker",
         "Kubernetes",
       ],
+      liveUrls: [
+        "https://www.ardplus.de/",
+        "https://www.homeofhorror.de/",
+        "https://www.netzkino.de/",
+        "https://www.scream.hu/",
+      ],
       challenges:
         "Gleichzeitige Unterstützung mehrerer Zahlungsanbieter und Abo-Modelle bei gleichzeitiger Wartung einer sauberen Event-Driven-Architektur.",
       lessons:
         "Event-Driven-Architekturen mit Webhooks und Message-Queues sind essenziell für die Zahlungsabwicklung. Idempotenz ist unverhandelbar bei der Verarbeitung finanzieller Transaktionen.",
     },
     {
+      id: "options-trading-prototype",
       title: "Optionshandels-Plattform Prototyp",
       description:
         "Ein Full-Stack-Prototyp für eine Optionshandels-Plattform mit Microservice-Backend, Datenbankdesign und Monitoring-Dashboard.",

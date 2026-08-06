@@ -14,6 +14,32 @@ const siteDataEn: SiteData = {
     "Backend Software Engineer with 6+ years of experience across the full backend stack — from payment integrations and authentication systems to CMS platforms, public APIs, and AI-powered services. I've worked on a B2B SaaS video-on-demand platform serving multiple enterprise clients, processing over 100,000 payment transactions annually. Experienced across multiple Node.js frameworks including Express.js, Fastify, Koa, and NestJS. Currently focused on building AI-integrated backend services using NestJS, LangChain, and OpenAI.",
   projects: [
     {
+      id: "vexarium",
+      title: "VEXARIUM",
+      description:
+        "A pre-trade decision-support tool that runs a plain-language health check on any stock, ETF, or option — technical indicators, options data, news sentiment, and an AI second opinion before you buy or sell.",
+      problem:
+        "As a private investor, I wanted a fast way to sanity-check a ticker before buying or selling — existing dashboards were either too complex or didn't combine technicals, options, and news in one place.",
+      solution:
+        "Built a full-stack platform: a FastAPI backend with a technical-indicator engine, Alpaca market and options data, and an LLM-powered analysis pipeline, plus a SvelteKit frontend with a health-check verdict for any symbol.",
+      technologies: [
+        "FastAPI",
+        "Python",
+        "SvelteKit",
+        "TypeScript",
+        "Alpaca API",
+        "PostgreSQL",
+        "Redis",
+        "LLM",
+      ],
+      challenges:
+        "Aligning multiple data sources — price, indicators, options Greeks, and news — into a single coherent verdict within one request.",
+      lessons:
+        "Presenting analysis as one explainable verdict rather than raw numbers makes it usable for non-experts; per-symbol daily caching keeps the free tier sustainable.",
+      liveUrls: ["https://vexarium.pages.dev"],
+    },
+    {
+      id: "ai-microservice",
       title: "AI Microservice",
       description:
         "A REST API microservice powering AI features with Retrieval-Augmented Generation (RAG), embeddings, and tool/function calling.",
@@ -36,6 +62,7 @@ const siteDataEn: SiteData = {
         "RAG pipelines require careful chunking strategies and prompt engineering. Vector search alone isn't enough — hybrid retrieval (keyword + semantic) yields better results. Deduplication is a must to avoid redundant information in responses.",
     },
     {
+      id: "postgresql-migration-framework",
       title: "PostgreSQL Migration Framework",
       description:
         "An optimized migration process for production PostgreSQL databases with automatic schema reconciliation and change tracking.",
@@ -50,6 +77,7 @@ const siteDataEn: SiteData = {
         "Database migrations in production require a completely different approach than development. Batching, lock-free strategies, and comprehensive rollback plans are essential.",
     },
     {
+      id: "flexgold",
       title: "FlexGold: Gold Trading Platform",
       description:
         "Backend contributions to an existing gold trading platform, implementing transaction processing, pricing logic, and API endpoints.",
@@ -70,6 +98,7 @@ const siteDataEn: SiteData = {
         "Onboarding onto an existing project requires understanding conventions before writing code. Small, well-scoped contributions build trust faster than large changes.",
     },
     {
+      id: "vod-platform",
       title: "B2B SaaS VOD Platform Backend",
       description:
         "Core backend services for a multi-tenant video-on-demand platform serving enterprise clients including Samsung and Waipu.",
@@ -90,12 +119,19 @@ const siteDataEn: SiteData = {
         "Docker",
         "Kubernetes",
       ],
+      liveUrls: [
+        "https://www.ardplus.de/",
+        "https://www.homeofhorror.de/",
+        "https://www.netzkino.de/",
+        "https://www.scream.hu/",
+      ],
       challenges:
         "Supporting multiple payment providers and subscription models simultaneously while maintaining a clean event-driven architecture.",
       lessons:
         "Event-driven architectures with webhooks and message queues are essential for payment processing. Idempotency is non-negotiable when handling financial transactions.",
     },
     {
+      id: "options-trading-prototype",
       title: "Options Trading Platform Prototype",
       description:
         "A full-stack prototype for an options trading platform with microservice backend, database design, and monitoring dashboard.",

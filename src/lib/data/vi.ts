@@ -14,6 +14,32 @@ const siteDataVi: SiteData = {
     "Backend Software Engineer với hơn 6 năm kinh nghiệm trên toàn bộ stack backend — từ tích hợp thanh toán và hệ thống xác thực đến nền tảng CMS, API công khai và dịch vụ AI. Tôi đã làm việc với nền tảng B2B SaaS video-on-demand phục vụ nhiều khách doanh nghiệp, xử lý hơn 100.000 giao dịch thanh toán hàng năm. Kinh nghiệm với nhiều Node.js framework bao gồm Express.js, Fastify, Koa và NestJS. Hiện đang tập trung xây dựng dịch vụ backend tích hợp AI bằng NestJS, LangChain và OpenAI.",
   projects: [
     {
+      id: "vexarium",
+      title: "VEXARIUM",
+      description:
+        "Công cụ hỗ trợ quyết định trước khi giao dịch: kiểm tra sức khỏe bằng ngôn ngữ đơn giản cho bất kỳ cổ phiếu, ETF hoặc quyền chọn nào — chỉ báo kỹ thuật, dữ liệu options, tâm lý tin tức và ý kiến thứ hai từ AI trước khi mua hoặc bán.",
+      problem:
+        "Là nhà đầu tư cá nhân, tôi muốn một cách nhanh chóng để kiểm tra mã chứng khoán trước khi mua hoặc bán — nhưng các dashboard hiện có quá phức tạp hoặc không kết hợp được kỹ thuật, options và tin tức ở một nơi.",
+      solution:
+        "Xây dựng nền tảng full-stack: backend FastAPI với engine chỉ báo kỹ thuật, dữ liệu thị trường và options từ Alpaca, pipeline phân tích bằng LLM, cùng frontend SvelteKit với kết luận health-check cho từng mã.",
+      technologies: [
+        "FastAPI",
+        "Python",
+        "SvelteKit",
+        "TypeScript",
+        "Alpaca API",
+        "PostgreSQL",
+        "Redis",
+        "LLM",
+      ],
+      challenges:
+        "Tổng hợp nhiều nguồn dữ liệu — giá, chỉ báo, Greeks của options và tin tức — thành một kết luận mạch lạc trong một lần gọi.",
+      lessons:
+        "Trình bày phân tích như một kết luận duy nhất dễ hiểu thay vì số liệu thô giúp người không chuyên sử dụng được; caching theo mã-trong-ngày giúp gói miễn phí bền vững.",
+      liveUrls: ["https://vexarium.pages.dev"],
+    },
+    {
+      id: "ai-microservice",
       title: "AI Microservice",
       description:
         "Microservice REST API cung cấp các tính năng AI với Retrieval-Augmented Generation (RAG), embeddings và tool/function calling.",
@@ -36,6 +62,7 @@ const siteDataVi: SiteData = {
         "Pipeline RAG đòi hỏi chiến lược chunking cẩn thận và prompt engineering. Tìm kiếm vector thôi chưa đủ — retrieval kết hợp (keyword + semantic) cho kết quả tốt hơn. Khử trùng lặp là bắt buộc để tránh thông tin thừa trong phản hồi.",
     },
     {
+      id: "postgresql-migration-framework",
       title: "Framework Migration PostgreSQL",
       description:
         "Quy trình migration tối ưu cho cơ sở dữ liệu PostgreSQL production với hòa giải schema tự động và theo dõi thay đổi.",
@@ -50,6 +77,7 @@ const siteDataVi: SiteData = {
         "Migration cơ sở dữ liệu trên production đòi hỏi cách tiếp cận hoàn toàn khác so với development. Batching, chiến lược lock-free và kế hoạch rollback toàn diện là thiết yếu.",
     },
     {
+      id: "flexgold",
       title: "FlexGold: Nền tảng Giao dịch Vàng",
       description:
         "Đóng góp backend cho nền tảng giao dịch vàng đang hoạt động, triển khai xử lý giao dịch, logic định giá và các API endpoint.",
@@ -70,6 +98,7 @@ const siteDataVi: SiteData = {
         "Onboarding vào dự án có sẵn đòi hỏi hiểu quy ước trước khi viết code. Các đóng góp nhỏ, có phạm vi rõ ràng xây dựng niềm tin nhanh hơn những thay đổi lớn.",
     },
     {
+      id: "vod-platform",
       title: "Backend Nền tảng B2B SaaS VOD",
       description:
         "Các dịch vụ backend cốt lõi cho nền tảng video-on-demand multi-tenant phục vụ khách hàng doanh nghiệp bao gồm Samsung và Waipu.",
@@ -90,12 +119,19 @@ const siteDataVi: SiteData = {
         "Docker",
         "Kubernetes",
       ],
+      liveUrls: [
+        "https://www.ardplus.de/",
+        "https://www.homeofhorror.de/",
+        "https://www.netzkino.de/",
+        "https://www.scream.hu/",
+      ],
       challenges:
         "Hỗ trợ đồng thời nhiều nhà cung cấp thanh toán và mô hình subscription trong khi duy trì kiến trúc event-driven sạch sẽ.",
       lessons:
         "Kiến trúc event-driven với webhooks và message queues là thiết yếu cho xử lý thanh toán. Tính idempotent là không thể thương lượng khi xử lý giao dịch tài chính.",
     },
     {
+      id: "options-trading-prototype",
       title: "Prototype Nền tảng Giao dịch Options",
       description:
         "Prototype full-stack cho nền tảng giao dịch options với backend microservice, thiết kế cơ sở dữ liệu và dashboard monitoring.",

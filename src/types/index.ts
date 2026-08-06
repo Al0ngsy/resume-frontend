@@ -1,4 +1,5 @@
 export interface Project {
+  id: string;
   title: string;
   description: string;
   problem: string;
@@ -7,7 +8,7 @@ export interface Project {
   challenges: string;
   lessons: string;
   github?: string;
-  liveUrl?: string;
+  liveUrls?: string[];
 }
 
 export interface Experience {
