@@ -2,7 +2,7 @@
 
 import { Box, Typography } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check } from "lucide-react";
+import Check from "@mui/icons-material/Check";
 import { useEffect, useState } from "react";
 
 import type { StepInfo } from "./types";
@@ -182,7 +182,7 @@ export default function StepProgressPanel({
                     }}
                   >
                     {isDone ? (
-                      <Check size={12} color="#09090b" strokeWidth={3} />
+                      <Check sx={{ fontSize: 12, color: "#09090b" }} strokeWidth={3} />
                     ) : isRunning ? (
                       <motion.span
                         animate={{ opacity: [1, 0.3, 1] }}

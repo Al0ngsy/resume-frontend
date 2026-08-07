@@ -7,86 +7,7 @@ import type { Locale } from "./config";
  * Long-form content (bio, project descriptions, experience) lives in
  * src/lib/data/{en,de,vi}.ts and is served per-locale via useSiteData().
  */
-export type Translation = {
-  nav: {
-    home: string;
-    about: string;
-    projects: string;
-    resume: string;
-    contact: string;
-  };
-  hero: {
-    viewProjects: string;
-    getInTouch: string;
-  };
-  home: {
-    featuredProjects: string;
-    featuredProjectsSubtitle: string;
-    skills: string;
-    skillsSubtitle: string;
-    chatTitle: string;
-    chatSubtitleLive: (name: string) => string;
-    chatSubtitlePlaceholder: (name: string) => string;
-    askPrompt: string;
-  };
-  about: {
-    title: string;
-    experience: string;
-    technologies: string;
-  };
-  projects: {
-    title: string;
-    subtitle: string;
-    problem: string;
-    solution: string;
-    challengesLessons: string;
-    code: string;
-  };
-  resume: {
-    title: string;
-    subtitle: string;
-    downloadCvDe: string;
-    downloadCvEn: string;
-    professionalExperience: string;
-    skills: string;
-    referencesNote: string;
-  };
-  contact: {
-    title: string;
-    subtitle: string;
-    github: string;
-    linkedin: string;
-  };
-  footer: {
-    copyright: string;
-    frontend: string;
-    backend: string;
-  };
-  chat: {
-    aiAgentSuffix: string; // appended after name, e.g. "'s AI Agent"
-    aiAgentSubtitle: string; // prepended before name, ends with space
-    placeholder: string;
-    wakingUp: string;
-    wakingUpPlaceholder: string;
-    suggestedQuestions: string;
-    suggestedQuestionsLeft: (n: number) => string;
-    askToStart: string;
-    errorTitle: string;
-    errorMessage: string;
-    disclaimer: string; // before contact link
-    disclaimerContactPrefix: string; // before name
-    disclaimerContactSuffix: string; // after name + link
-    rateLimitMessage: string;
-    connectionError: string;
-    placeholderTitlePrefix: string; // before name
-    placeholderTitleSuffix: string; // after name
-    placeholderBodyPrefix: string; // before name
-    placeholderBodySuffix: string; // after name, before "."
-    underProgress: string;
-  };
-};
-
-const en: Translation = {
+const en = {
   nav: {
     home: "Home",
     about: "About",
@@ -105,9 +26,9 @@ const en: Translation = {
     skills: "Skills & Technologies",
     skillsSubtitle: "Tools and technologies I work with daily.",
     chatTitle: "Ask the AI Agent",
-    chatSubtitleLive: (name) =>
+    chatSubtitleLive: (name: string) =>
       `Chat with an AI assistant that knows everything about ${name}'s experience, skills, and projects.`,
-    chatSubtitlePlaceholder: (name) =>
+    chatSubtitlePlaceholder: (name: string) =>
       `An AI-powered chatbot is being built so recruiters can ask questions about ${name} directly.`,
     askPrompt: "Ask a question to get started:",
   },
@@ -154,7 +75,7 @@ const en: Translation = {
     wakingUp: "Starting up the AI agent — this can take up to 30 seconds.",
     wakingUpPlaceholder: "Type your question while the agent starts up...",
     suggestedQuestions: "Suggested questions",
-    suggestedQuestionsLeft: (n) => `Suggested questions (${n} left)`,
+    suggestedQuestionsLeft: (n: number) => `Suggested questions (${n} left)`,
     askToStart: "Ask a question to get started:",
     errorTitle: "Backend Unreachable",
     errorMessage:
@@ -174,6 +95,8 @@ const en: Translation = {
     underProgress: "Under Progress",
   },
 };
+
+export type Translation = typeof en;
 
 const de: Translation = {
   nav: {

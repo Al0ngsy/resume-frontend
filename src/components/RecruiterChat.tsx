@@ -7,7 +7,6 @@ import {
   useEffect,
   useRef,
   useState,
-  useSyncExternalStore,
 } from "react";
 
 import ChatDisclaimer from "./chat/ChatDisclaimer";
@@ -46,17 +45,12 @@ export default function RecruiterChat() {
   const [steps, setSteps] = useState<StepInfo[]>([]);
   const [stepError, setStepError] = useState(false);
 
-  // Avoid hydration mismatch: useSyncExternalStore returns "placeholder" on SSR
-  // and the real env value on the client after hydration.
-  const chatMode = useSyncExternalStore(
-    () => () => {},
-    () =>
-      (process.env.NEXT_PUBLIC_CHAT_MODE as
-        | "hidden"
-        | "placeholder"
-        | "live") || "placeholder",
-    () => "placeholder" as const,
-  );
+  // NEXT_PUBLIC_ vars are inlined at build time — same value on server and client.
+  const chatMode =
+    (process.env.NEXT_PUBLIC_CHAT_MODE as
+      | "hidden"
+      | "placeholder"
+      | "live") || "placeholder";
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Use English suggested questions for SSR, locale-specific after mount

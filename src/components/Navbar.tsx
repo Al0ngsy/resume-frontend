@@ -9,7 +9,7 @@ import { locales, localeNames, localeShortNames, type Locale } from "@/i18n/conf
 
 export default function Navbar() {
   const theme = useTheme();
-  const { t, locale, setLocale, mounted } = useLanguage();
+  const { t, locale, setLocale } = useLanguage();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langAnchor, setLangAnchor] = useState<HTMLElement | null>(null);
 
@@ -30,16 +30,7 @@ export default function Navbar() {
     setLangAnchor(null);
   };
 
-  // Use English labels for SSR to avoid hydration mismatch
-  const ssrNavLinks = [
-    { label: "Home", href: "/" },
-    { label: "About", href: "/about" },
-    { label: "Projects", href: "/projects" },
-    { label: "Resume", href: "/resume" },
-    { label: "Contact", href: "/contact" },
-  ];
-  const activeNavLinks = mounted ? navLinks : ssrNavLinks;
-  const activeShortName = mounted ? localeShortNames[locale] : "EN";
+  const activeShortName = localeShortNames[locale];
 
   return (
     <>
@@ -78,7 +69,7 @@ export default function Navbar() {
             LQAT
           </Box>
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
-            {activeNavLinks.map((link) => (
+            {navLinks.map((link) => (
               <Button
                 key={link.href}
                 component={Link}
@@ -158,7 +149,7 @@ export default function Navbar() {
           </IconButton>
         </Box>
         <List>
-          {activeNavLinks.map((link) => (
+          {navLinks.map((link) => (
             <ListItem key={link.href} disablePadding>
               <ListItemButton
                 component={Link}
