@@ -29,7 +29,7 @@ import { useLanguage } from "@/i18n/LanguageProvider";
 import { useSiteData } from "@/lib/useSiteData";
 
 export default function RecruiterChat() {
-  const { t, locale, mounted } = useLanguage();
+  const { t, locale } = useLanguage();
   const { data: siteData } = useSiteData();
 
   const [messages, setMessages] = useState<Message[]>([]);
@@ -53,10 +53,8 @@ export default function RecruiterChat() {
       | "live") || "placeholder";
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Use English suggested questions for SSR, locale-specific after mount
-  const suggestedQuestions = mounted
-    ? suggestedQuestionsByLocale[locale]
-    : suggestedQuestionsByLocale["en"];
+  // English before hydration (server snapshot), stored locale after.
+  const suggestedQuestions = suggestedQuestionsByLocale[locale];
 
   // Restore or create a conversation on mount.
   useEffect(() => {

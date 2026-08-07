@@ -5,7 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 import {
@@ -20,47 +20,52 @@ interface LanguageContextValue {
   locale: Locale;
   t: Translation;
   setLocale: (locale: Locale) => void;
-  mounted: boolean;
+}
+
+// Tiny external store for the persisted locale. useSyncExternalStore reads it
+// with the default locale as the server snapshot, so SSR and the first client
+// render agree (no hydration mismatch); after hydration React flips to the
+// stored locale.
+const localeListeners = new Set<() => void>();
+
+function subscribeLocale(onStoreChange: () => void): () => void {
+  localeListeners.add(onStoreChange);
+  return () => {
+    localeListeners.delete(onStoreChange);
+  };
+}
+
+function getLocaleSnapshot(): Locale {
+  return getStoredLocale();
 }
 
 const LanguageContext = createContext<LanguageContextValue>({
   locale: defaultLocale,
   t: translations[defaultLocale],
   setLocale: () => {},
-  mounted: false,
 });
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  // SSR and first client render use defaultLocale to avoid hydration mismatch.
-  // After mount, we read the stored locale and switch if different.
-  const [locale, setLocaleState] = useState<Locale>(defaultLocale);
-  const [mounted, setMounted] = useState(false);
+  const locale = useSyncExternalStore(
+    subscribeLocale,
+    getLocaleSnapshot,
+    () => defaultLocale,
+  );
 
-  useEffect(() => {
-    const stored = getStoredLocale();
-    if (stored !== defaultLocale) {
-      setLocaleState(stored);
-    }
-    setMounted(true);
+  const setLocale = useCallback((newLocale: Locale) => {
+    setStoredLocale(newLocale);
+    localeListeners.forEach((listener) => listener());
   }, []);
 
   // Keep <html lang="..."> in sync with the active locale.
   useEffect(() => {
-    if (mounted) {
-      document.documentElement.lang = locale;
-    }
-  }, [locale, mounted]);
-
-  const setLocale = useCallback((newLocale: Locale) => {
-    setLocaleState(newLocale);
-    setStoredLocale(newLocale);
-  }, []);
+    document.documentElement.lang = locale;
+  }, [locale]);
 
   const value: LanguageContextValue = {
     locale,
     t: translations[locale],
     setLocale,
-    mounted,
   };
 
   return (

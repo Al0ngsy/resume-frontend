@@ -39,16 +39,26 @@ export default function StepProgressPanel({
   visible,
   hasError,
 }: StepProgressPanelProps) {
-  const [shouldShow, setShouldShow] = useState(false);
+  // shouldShow is derived from props; the auto-hide delay is the only state.
+  // Reset it during render when the run (visible/steps) changes, per the
+  // React "adjusting state when props change" pattern.
+  const [autoHidden, setAutoHidden] = useState(false);
+  const [prevRun, setPrevRun] = useState({
+    visible,
+    stepCount: steps.length,
+  });
+  if (
+    visible !== prevRun.visible ||
+    steps.length !== prevRun.stepCount
+  ) {
+    setPrevRun({ visible, stepCount: steps.length });
+    setAutoHidden(false);
+  }
+  const shouldShow = visible && steps.length > 0 && !autoHidden;
 
-  // Auto-hide: 1.5s after all steps done, or 5s after error
+  // Auto-hide: 1.5s after all steps done, or 5s after error.
   useEffect(() => {
-    if (!visible || steps.length === 0) {
-      setShouldShow(false);
-      return;
-    }
-
-    setShouldShow(true);
+    if (!shouldShow) return;
 
     // Only consider "all done" when every step in STEP_ORDER has arrived
     // and is done — otherwise the panel auto-hides before later steps
@@ -57,12 +67,15 @@ export default function StepProgressPanel({
       steps.length >= STEP_ORDER.length &&
       steps.every((s) => s.status === "done");
     if (allDone) {
-      const timer = setTimeout(() => setShouldShow(false), hasError ? 5000 : 1500);
+      const timer = setTimeout(
+        () => setAutoHidden(true),
+        hasError ? 5000 : 1500,
+      );
       return () => clearTimeout(timer);
     }
-  }, [visible, steps, hasError]);
+  }, [shouldShow, steps, hasError]);
 
-  if (!shouldShow || steps.length === 0) return null;
+  if (!shouldShow) return null;
 
   // Progress: fraction of steps that are done (0 to 1)
   const doneCount = steps.filter((s) => s.status === "done").length;

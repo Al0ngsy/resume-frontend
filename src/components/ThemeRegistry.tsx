@@ -7,18 +7,27 @@ import { LanguageProvider } from "@/i18n/LanguageProvider";
 import { darkTheme } from "@/lib/theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+
+// prefers-reduced-motion as an external store: SSR + first client render
+// assume 3D is fine; after hydration the real media query wins.
+function subscribeReducedMotion(onStoreChange: () => void): () => void {
+  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mq.addEventListener("change", onStoreChange);
+  return () => mq.removeEventListener("change", onStoreChange);
+}
+
+function getReducedMotionSnapshot(): boolean {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
 
 export function ThemeRegistry({ children }: { children: React.ReactNode }) {
-  const [enable3D, setEnable3D] = useState(true);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setEnable3D(!mq.matches);
-    const handler = (e: MediaQueryListEvent) => setEnable3D(!e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
+  const reducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotionSnapshot,
+    () => false,
+  );
+  const enable3D = !reducedMotion;
 
   return (
     <AppRouterCacheProvider>

@@ -36,8 +36,10 @@ export default function SuggestedQuestions({
   const [shuffled, setShuffled] = useState(questions);
 
   // Shuffle once on mount so visitors see a different order each visit.
+  // Deferred via microtask: the rule forbids synchronous setState in effects,
+  // and render-phase shuffling would break hydration (Math.random).
   useEffect(() => {
-    setShuffled(shuffle(questions));
+    queueMicrotask(() => setShuffled(shuffle(questions)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -46,13 +48,15 @@ export default function SuggestedQuestions({
   // - A language switch (no overlap at all) → re-shuffle the new set
   useEffect(() => {
     const overlap = shuffled.filter((q) => questions.includes(q));
-    if (overlap.length === 0) {
-      // Language switched — completely new strings. Re-shuffle.
-      setShuffled(shuffle(questions));
-    } else {
-      // Same language, some questions removed by selection.
-      setShuffled(overlap);
-    }
+    queueMicrotask(() => {
+      if (overlap.length === 0) {
+        // Language switched — completely new strings. Re-shuffle.
+        setShuffled(shuffle(questions));
+      } else {
+        // Same language, some questions removed by selection.
+        setShuffled(overlap);
+      }
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [questions]);
 

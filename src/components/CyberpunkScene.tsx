@@ -452,6 +452,8 @@ function FlyingCars({
 }) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
   const halfRange = CITY_RANGE / 2;
+  // Mutable per-frame sim state — owned here, not copied from props.
+  const carsRef = useRef(cars);
 
   useEffect(() => {
     if (!meshRef.current) return;
@@ -470,8 +472,8 @@ function FlyingCars({
 
     const dt = Math.min(delta, 0.1); // clamp delta to avoid jumps
 
-    for (let i = 0; i < cars.length; i++) {
-      const c = cars[i];
+    for (let i = 0; i < carsRef.current.length; i++) {
+      const c = carsRef.current[i];
 
       // Move car
       c.x += c.vx * dt;
@@ -568,6 +570,8 @@ function FlyingSkyVehicles({
 }) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
   const halfRange = CITY_RANGE / 2;
+  // Mutable per-frame sim state — owned here, not copied from props.
+  const vehiclesRef = useRef(vehicles);
 
   useEffect(() => {
     if (!meshRef.current) return;
@@ -586,8 +590,8 @@ function FlyingSkyVehicles({
 
     const dt = Math.min(delta, 0.1);
 
-    for (let i = 0; i < vehicles.length; i++) {
-      const v = vehicles[i];
+    for (let i = 0; i < vehiclesRef.current.length; i++) {
+      const v = vehiclesRef.current[i];
 
       v.x += v.vx * dt;
       v.z += v.vz * dt;
@@ -672,6 +676,8 @@ function Satellites({
 }) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
   const halfRange = CITY_RANGE / 2;
+  // Mutable per-frame sim state — owned here, not copied from props.
+  const satellitesRef = useRef(satellites);
 
   useEffect(() => {
     if (!meshRef.current) return;
@@ -690,8 +696,8 @@ function Satellites({
     const dt = Math.min(delta, 0.1);
     const t = state.clock.elapsedTime;
 
-    for (let i = 0; i < satellites.length; i++) {
-      const sat = satellites[i];
+    for (let i = 0; i < satellitesRef.current.length; i++) {
+      const sat = satellitesRef.current[i];
       sat.x += sat.vx * dt;
       sat.z += sat.vz * dt;
 
@@ -800,6 +806,8 @@ function OrbitalHabitat({
 }) {
   const groupRefs = useRef<(THREE.Group | null)[]>([]);
   const halfRange = CITY_RANGE / 2;
+  // Mutable per-frame sim state — owned here, not copied from props.
+  const habitatsRef = useRef(habitats);
 
   useEffect(() => {
     groupRefs.current.forEach((g) => {
@@ -813,10 +821,10 @@ function OrbitalHabitat({
     const cam = camPosRef.current;
     const t = state.clock.elapsedTime;
 
-    for (let i = 0; i < habitats.length; i++) {
+    for (let i = 0; i < habitatsRef.current.length; i++) {
       const g = groupRefs.current[i];
       if (!g) continue;
-      const h = habitats[i];
+      const h = habitatsRef.current[i];
 
       // Drift in world space
       h.x += h.vx * dt;

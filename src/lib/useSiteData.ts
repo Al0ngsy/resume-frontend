@@ -14,15 +14,13 @@ const orderIndex = (id: string): number => {
  * Returns site data for the current locale, with projects sorted by
  * PROJECT_ORDER (see src/lib/data/projectOrder.ts — edit that file
  * to rearrange projects).
- * During SSR and before hydration, returns English (default locale)
- * to avoid hydration mismatches. After mount, returns the user's
- * selected locale.
+ * Before hydration the provider's server snapshot yields English, so SSR
+ * and the first client render agree; after hydration it flips to the
+ * user's stored locale.
  */
-export function useSiteData(): { data: SiteData; mounted: boolean } {
-  const { locale, mounted } = useLanguage();
-  // Before mount, always use English to match SSR
-  const effectiveLocale = mounted ? locale : "en";
-  const source = siteDataByLocale[effectiveLocale];
+export function useSiteData(): { data: SiteData } {
+  const { locale } = useLanguage();
+  const source = siteDataByLocale[locale];
   return {
     data: {
       ...source,
@@ -30,6 +28,5 @@ export function useSiteData(): { data: SiteData; mounted: boolean } {
         (a, b) => orderIndex(a.id) - orderIndex(b.id),
       ),
     },
-    mounted,
   };
 }
