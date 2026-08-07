@@ -1,16 +1,16 @@
 # Graph Report - resume-frontend  (2026-08-07)
 
 ## Corpus Check
-- 54 files · ~19,307 words
+- 54 files · ~19,500 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 308 nodes · 437 edges · 32 communities (21 shown, 11 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 8 edges (avg confidence: 0.85)
+- 313 nodes · 446 edges · 31 communities (20 shown, 11 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 12 edges (avg confidence: 0.73)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `50ce0d51`
+- Built from commit: `9fb2425a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -25,7 +25,6 @@
 - Project Docs & Guides
 - About Page
 - Contact Page
-- ProjectsClient.tsx
 - Deployment Config
 - CV PDFs
 - ESLint Config
@@ -74,7 +73,7 @@
 - **Resume Frontend Tech Stack** — readme_nextjs16, readme_typescript, readme_mui_v9, readme_framer_motion, readme_cloudflare_pages [EXTRACTED 1.00]
 - **Le Quoc Anh Tran Portfolio Assets** — readme_le_quoc_anh_tran, public_lequocanh_tran_cv_en_cv, public_lequocanh_tran_cv_de_cv, readme_pages_routes [INFERRED 0.85]
 
-## Communities (32 total, 11 thin omitted)
+## Communities (31 total, 11 thin omitted)
 
 ### Community 0 - "Home Page"
 Cohesion: 0.24
@@ -85,8 +84,8 @@ Cohesion: 0.06
 Nodes (33): @emotion/cache, @emotion/react, @emotion/styled, framer-motion, @mui/icons-material, @mui/material, @mui/material-nextjs, next (+25 more)
 
 ### Community 2 - "Dev Dependencies & Config"
-Cohesion: 0.11
-Nodes (19): eslint, eslint-config-next, @opennextjs/cloudflare, devDependencies, eslint, eslint-config-next, @opennextjs/cloudflare, @types/node (+11 more)
+Cohesion: 0.06
+Nodes (30): eslint, eslint-config-next, @opennextjs/cloudflare, devDependencies, eslint, eslint-config-next, @opennextjs/cloudflare, @types/node (+22 more)
 
 ### Community 3 - "TypeScript Config"
 Cohesion: 0.07
@@ -97,12 +96,12 @@ Cohesion: 0.06
 Nodes (31): Building, Car, _color, COLOR_HEX, CyberpunkScene(), _dirTable, _euler, generateBuildings() (+23 more)
 
 ### Community 5 - "Package Scripts"
-Cohesion: 0.17
-Nodes (11): name, packageManager, private, scripts, build, deploy, dev, lint (+3 more)
+Cohesion: 0.19
+Nodes (9): geistMono, geistSans, Footer(), techGroups, getReducedMotionSnapshot(), subscribeReducedMotion(), ThemeRegistry(), darkTheme (+1 more)
 
 ### Community 6 - "TS Path Aliases"
-Cohesion: 0.11
-Nodes (22): geistMono, geistSans, Footer(), techGroups, Navbar(), ThemeRegistry(), getStoredLocale(), Locale (+14 more)
+Cohesion: 0.17
+Nodes (18): Navbar(), getStoredLocale(), Locale, localeNames, locales, localeShortNames, setStoredLocale(), getLocaleSnapshot() (+10 more)
 
 ### Community 7 - "Project Docs & Guides"
 Cohesion: 0.09
@@ -114,11 +113,7 @@ Nodes (7): markdownSx, STEP_ICONS, STEP_ORDER, StepProgressPanelProps, Message, 
 
 ### Community 9 - "Contact Page"
 Cohesion: 0.40
-Nodes (3): ContactClient(), fadeIn, metadata
-
-### Community 10 - "ProjectsClient.tsx"
-Cohesion: 0.40
-Nodes (3): metadata, fadeIn, ResumeClient()
+Nodes (3): metadata, fadeIn, ProjectsClient()
 
 ### Community 11 - "Deployment Config"
 Cohesion: 0.50
@@ -133,28 +128,28 @@ Cohesion: 0.67
 Nodes (3): shuffle(), SuggestedQuestions(), SuggestedQuestionsProps
 
 ### Community 28 - "RecruiterChat.tsx"
-Cohesion: 0.11
-Nodes (24): AboutClient(), fadeIn, metadata, fadeIn, HomeClient(), metadata, fadeIn, ProjectsClient() (+16 more)
+Cohesion: 0.10
+Nodes (27): AboutClient(), fadeIn, metadata, ContactClient(), fadeIn, metadata, fadeIn, HomeClient() (+19 more)
 
 ## Knowledge Gaps
-- **136 isolated node(s):** `eslintConfig`, `nextConfig`, `name`, `version`, `private` (+131 more)
+- **137 isolated node(s):** `eslintConfig`, `nextConfig`, `name`, `version`, `private` (+132 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **11 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `useLanguage()` connect `RecruiterChat.tsx` to `Home Page`, `TS Path Aliases`, `Contact Page`, `ProjectsClient.tsx`, `PostCSS Config`?**
-  _High betweenness centrality (0.046) - this node is a cross-community bridge._
-- **Why does `dependencies` connect `UI Dependencies` to `Package Scripts`?**
-  _High betweenness centrality (0.031) - this node is a cross-community bridge._
-- **Why does `devDependencies` connect `Dev Dependencies & Config` to `Package Scripts`?**
-  _High betweenness centrality (0.020) - this node is a cross-community bridge._
+- **Why does `useLanguage()` connect `RecruiterChat.tsx` to `Home Page`, `Package Scripts`, `TS Path Aliases`, `Contact Page`, `PostCSS Config`?**
+  _High betweenness centrality (0.045) - this node is a cross-community bridge._
+- **Why does `dependencies` connect `UI Dependencies` to `Dev Dependencies & Config`?**
+  _High betweenness centrality (0.030) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `Resume Frontend` (e.g. with `Next.js Agent Rules (Breaking Changes Warning)` and `Yarn Node Linker: node-modules`) actually correct?**
   _`Resume Frontend` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `eslintConfig`, `nextConfig`, `name` to the rest of the system?**
-  _136 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _137 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `UI Dependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.06060606060606061 - nodes in this community are weakly interconnected._
 - **Should `Dev Dependencies & Config` be split into smaller, more focused modules?**
-  _Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06451612903225806 - nodes in this community are weakly interconnected._
+- **Should `TypeScript Config` be split into smaller, more focused modules?**
+  _Cohesion score 0.06896551724137931 - nodes in this community are weakly interconnected._
