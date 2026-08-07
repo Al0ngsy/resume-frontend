@@ -16,6 +16,7 @@ const siteDataEn: SiteData = {
     {
       id: "vexarium",
       title: "VEXARIUM",
+      context: "Private project",
       description:
         "A pre-trade decision-support tool that runs a plain-language health check on any stock, ETF, or option — technical indicators, options data, news sentiment, and an AI second opinion before you buy or sell.",
       problem:
@@ -41,6 +42,7 @@ const siteDataEn: SiteData = {
     {
       id: "ai-microservice",
       title: "AI Microservice",
+      context: "simpleTechs GmbH",
       description:
         "A REST API microservice powering AI features with Retrieval-Augmented Generation (RAG), embeddings, and tool/function calling.",
       problem:
@@ -64,6 +66,7 @@ const siteDataEn: SiteData = {
     {
       id: "postgresql-migration-framework",
       title: "PostgreSQL Migration Framework",
+      context: "simpleTechs GmbH",
       description:
         "An optimized migration process for production PostgreSQL databases with automatic schema reconciliation and change tracking.",
       problem:
@@ -79,6 +82,7 @@ const siteDataEn: SiteData = {
     {
       id: "flexgold",
       title: "FlexGold: Gold Trading Platform",
+      context: "simpleTechs GmbH",
       description:
         "Backend contributions to an existing gold trading platform, implementing transaction processing, pricing logic, and API endpoints.",
       problem:
@@ -101,8 +105,9 @@ const siteDataEn: SiteData = {
     {
       id: "vod-platform",
       title: "B2B SaaS VOD Platform Backend",
+      context: "simpleTechs GmbH",
       description:
-        "Core backend services for a multi-tenant video-on-demand platform serving enterprise clients including Samsung and Waipu.",
+        "Core backend services for a multi-tenant video-on-demand platform serving enterprise clients.",
       problem:
         "Multiple B2B clients needed a unified backend that could handle diverse content ingestion, payment models (SVOD, TVOD, EST), and third-party integrations.",
       solution:
@@ -134,6 +139,7 @@ const siteDataEn: SiteData = {
     {
       id: "options-trading-prototype",
       title: "Options Trading Platform Prototype",
+      context: "simpleTechs GmbH",
       description:
         "A full-stack prototype for an options trading platform with microservice backend, database design, and monitoring dashboard.",
       problem:
@@ -179,7 +185,7 @@ const siteDataEn: SiteData = {
       company: "simpleTechs GmbH",
       period: "Sep 2019 — Jun 2024",
       description:
-        "Contributed to the full backend stack of a B2B SaaS VOD platform. Extended CMS features with automated content ingestion from AWS S3. Developed event-driven payment workflows handling 100K+ transactions/year across PayPal, Stripe, and major app store IAPs. Designed and maintained a public RESTful Feed API for partners including Samsung and Waipu. Optimized database schemas, queries, and reporting functionalities.",
+        "Contributed to the full backend stack of a B2B SaaS VOD platform. Extended CMS features with automated content ingestion from AWS S3. Developed event-driven payment workflows handling 100K+ transactions/year across PayPal, Stripe, and major app store IAPs. Designed and maintained a public RESTful Feed API for B2B partners including Samsung and Waipu. Optimized database schemas, queries, and reporting functionalities.",
       technologies: [
         "TypeScript",
         "Node.js",

@@ -2,7 +2,7 @@
 
 import { useLanguage } from "@/i18n/LanguageProvider";
 import { Project } from "@/types";
-import { GitHub, Launch } from "@mui/icons-material";
+import { Business, GitHub, Launch } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -48,6 +48,16 @@ export default function ProjectCard({
         <Typography variant={compact ? "h5" : "h4"} gutterBottom>
           {project.title}
         </Typography>
+        {project.context && (
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ display: "flex", alignItems: "center", gap: 0.5, mb: 1.5 }}
+          >
+            <Business fontSize="small" />
+            {project.context}
+          </Typography>
+        )}
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
           {project.description}
         </Typography>

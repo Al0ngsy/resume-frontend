@@ -16,6 +16,7 @@ const siteDataVi: SiteData = {
     {
       id: "vexarium",
       title: "VEXARIUM",
+      context: "Dự án cá nhân",
       description:
         "Công cụ hỗ trợ quyết định trước khi giao dịch: kiểm tra sức khỏe bằng ngôn ngữ đơn giản cho bất kỳ cổ phiếu, ETF hoặc quyền chọn nào — chỉ báo kỹ thuật, dữ liệu options, tâm lý tin tức và ý kiến thứ hai từ AI trước khi mua hoặc bán.",
       problem:
@@ -41,6 +42,7 @@ const siteDataVi: SiteData = {
     {
       id: "ai-microservice",
       title: "AI Microservice",
+      context: "simpleTechs GmbH",
       description:
         "Microservice REST API cung cấp các tính năng AI với Retrieval-Augmented Generation (RAG), embeddings và tool/function calling.",
       problem:
@@ -64,6 +66,7 @@ const siteDataVi: SiteData = {
     {
       id: "postgresql-migration-framework",
       title: "Framework Migration PostgreSQL",
+      context: "simpleTechs GmbH",
       description:
         "Quy trình migration tối ưu cho cơ sở dữ liệu PostgreSQL production với hòa giải schema tự động và theo dõi thay đổi.",
       problem:
@@ -79,6 +82,7 @@ const siteDataVi: SiteData = {
     {
       id: "flexgold",
       title: "FlexGold: Nền tảng Giao dịch Vàng",
+      context: "simpleTechs GmbH",
       description:
         "Đóng góp backend cho nền tảng giao dịch vàng đang hoạt động, triển khai xử lý giao dịch, logic định giá và các API endpoint.",
       problem:
@@ -101,8 +105,9 @@ const siteDataVi: SiteData = {
     {
       id: "vod-platform",
       title: "Backend Nền tảng B2B SaaS VOD",
+      context: "simpleTechs GmbH",
       description:
-        "Các dịch vụ backend cốt lõi cho nền tảng video-on-demand multi-tenant phục vụ khách hàng doanh nghiệp bao gồm Samsung và Waipu.",
+        "Các dịch vụ backend cốt lõi cho nền tảng video-on-demand multi-tenant phục vụ khách hàng doanh nghiệp.",
       problem:
         "Nhiều khách hàng B2B cần một backend thống nhất có thể xử lý đa dạng content ingestion, mô hình thanh toán (SVOD, TVOD, EST) và tích hợp bên thứ ba.",
       solution:
@@ -134,6 +139,7 @@ const siteDataVi: SiteData = {
     {
       id: "options-trading-prototype",
       title: "Prototype Nền tảng Giao dịch Options",
+      context: "simpleTechs GmbH",
       description:
         "Prototype full-stack cho nền tảng giao dịch options với backend microservice, thiết kế cơ sở dữ liệu và dashboard monitoring.",
       problem:
@@ -179,7 +185,7 @@ const siteDataVi: SiteData = {
       company: "simpleTechs GmbH",
       period: "Thg 9 2019 — Thg 6 2024",
       description:
-        "Đóng góp cho toàn bộ stack backend của nền tảng B2B SaaS VOD. Mở rộng tính năng CMS với content ingestion tự động từ AWS S3. Phát triển quy trình thanh toán event-driven xử lý 100K+ giao dịch/năm qua PayPal, Stripe và IAP của các app store lớn. Thiết kế và bảo trì RESTful Feed API công khai cho đối tác bao gồm Samsung và Waipu. Tối ưu hóa schema cơ sở dữ liệu, truy vấn và chức năng reporting.",
+        "Đóng góp cho toàn bộ stack backend của nền tảng B2B SaaS VOD. Mở rộng tính năng CMS với content ingestion tự động từ AWS S3. Phát triển quy trình thanh toán event-driven xử lý 100K+ giao dịch/năm qua PayPal, Stripe và IAP của các app store lớn. Thiết kế và bảo trì RESTful Feed API công khai cho B2B đối tác bao gồm Samsung và Waipu. Tối ưu hóa schema cơ sở dữ liệu, truy vấn và chức năng reporting.",
       technologies: [
         "TypeScript",
         "Node.js",
