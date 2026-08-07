@@ -40,6 +40,31 @@ const siteDataDe: SiteData = {
       liveUrls: ["https://vexarium.pages.dev"],
     },
     {
+      id: "vitaeo",
+      title: "Vitaeo",
+      context: "Privates Projekt",
+      description:
+        "Ein kostenloser, rein browserbasierter CV-Builder, der ATS-sichere PDFs in sechs professionellen Vorlagen erzeugt — mit Live-Vorschau, ATS-Textansicht und verschlüsselten Ein-String-Backups.",
+      problem:
+        "Lebensläufe entstehen meist in Programmen, die entweder unschöne oder ATS-feindliche PDFs liefern, während Web-Builder oft ein Konto verlangen und die Daten auf Servern speichern.",
+      solution:
+        "Entwickelt als reine Client-App (Vite + React + TypeScript + MUI), die PDFs direkt im Browser rendert (@react-pdf/renderer), eine ATS-Textansicht bietet und den gesamten Lebenslauf über einen einzigen kodierten String oder die PDF-Metadaten wiederherstellt — ohne Backend, ohne Datenbank, ohne Konto, die Daten bleiben im Browser.",
+      technologies: [
+        "TypeScript",
+        "React",
+        "Vite",
+        "MUI",
+        "@react-pdf/renderer",
+        "pdfjs-dist",
+        "Cloudflare Pages",
+      ],
+      challenges:
+        "Sechs Vorlagen wirklich ATS-sicher zu halten — Textextraktionsreihenfolge, absolut positionierte Sidebar-Blöcke und Invisible-Text-Fallen — verifiziert mit der eigenen ATS-Ansicht.",
+      lessons:
+        "ATS-Tauglichkeit ist eine messbare Eigenschaft der Textebene, nicht des Designs; reine Client-Speicherung (localStorage plus verschlüsselte Backup-Strings) eliminiert alle serverseitigen Datenschutzfragen.",
+      liveUrls: ["https://vitaeo.pages.dev"],
+    },
+    {
       id: "ai-microservice",
       title: "KI-Microservice",
       context: "simpleTechs GmbH",

@@ -40,6 +40,31 @@ const siteDataVi: SiteData = {
       liveUrls: ["https://vexarium.pages.dev"],
     },
     {
+      id: "vitaeo",
+      title: "Vitaeo",
+      context: "Dự án cá nhân",
+      description:
+        "Trình tạo CV miễn phí chạy hoàn toàn trên trình duyệt, xuất ra PDF an toàn với ATS theo sáu mẫu chuyên nghiệp — xem trước trực tiếp, chế độ xem văn bản ATS và sao lưu mã hóa dưới dạng chuỗi duy nhất.",
+      problem:
+        "CV thường được soạn bằng các chương trình tạo PDF vừa xấu vừa không thân thiện với ATS, còn các trình tạo CV trực tuyến thường yêu cầu tài khoản và lưu dữ liệu trên máy chủ.",
+      solution:
+        "Xây dựng ứng dụng thuần client (Vite + React + TypeScript + MUI) render PDF ngay trong trình duyệt bằng @react-pdf/renderer, kèm chế độ xem văn bản ATS và khôi phục toàn bộ CV qua một chuỗi mã hóa duy nhất hoặc metadata của PDF — không backend, không cơ sở dữ liệu, không tài khoản, dữ liệu nằm trong trình duyệt.",
+      technologies: [
+        "TypeScript",
+        "React",
+        "Vite",
+        "MUI",
+        "@react-pdf/renderer",
+        "pdfjs-dist",
+        "Cloudflare Pages",
+      ],
+      challenges:
+        "Giữ sáu mẫu thực sự an toàn với ATS — thứ tự trích xuất văn bản, các khối sidebar định vị tuyệt đối và bẫy văn bản vô hình — được kiểm chứng bằng chính chế độ xem ATS của ứng dụng.",
+      lessons:
+        "Khả năng tương thích ATS là thuộc tính đo được của lớp văn bản, không phải của thiết kế; lưu trữ hoàn toàn phía client (localStorage cộng chuỗi backup mã hóa) loại bỏ mọi lo ngại về quyền riêng tư phía máy chủ.",
+      liveUrls: ["https://vitaeo.pages.dev"],
+    },
+    {
       id: "ai-microservice",
       title: "AI Microservice",
       context: "simpleTechs GmbH",

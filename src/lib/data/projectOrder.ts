@@ -10,6 +10,7 @@
  */
 export const PROJECT_ORDER: readonly string[] = [
   "vexarium",
+  "vitaeo",
   "vod-platform",
   "flexgold",
   "ai-microservice",
