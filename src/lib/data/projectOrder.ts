@@ -9,11 +9,11 @@
  * - Unknown ids (typos, or projects not yet listed) sort to the end.
  */
 export const PROJECT_ORDER: readonly string[] = [
+  "vod-platform",
+  "postgresql-migration-framework",
   "vexarium",
   "vitaeo",
-  "vod-platform",
   "flexgold",
   "ai-microservice",
-  "postgresql-migration-framework",
   "options-trading-prototype",
 ];
